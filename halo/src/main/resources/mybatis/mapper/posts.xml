@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="posts" >
+	<select id="qbyslug" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time as createTime, siteid , update_time , disallow_comment , edit_time , editor_type , format_content as formatContent  , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail , title , top_priority, url , visits
+		from posts
+		where type=0 and slug=#{slug} and siteid=#{siteid}
+	</select>
+	<update id="uvisit" parameterType="java.util.HashMap">
+		update posts set visits=visits+1 where id=#{postid}  and siteid=#{siteid}
+	</update>
+	<select id="qprevPost" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+		<![CDATA[
+		select  slug  ,title from posts where siteid=#{siteid} and id < #{postid}  order by id desc limit 1
+		]]>
+	</select>
+	<select id="qnextPost" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
+		select  slug,  title from posts where siteid=#{siteid} and id>#{postid}  limit 1
+	</select>
+	<select id="qpostslimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select id , create_time  as createTime  , siteid , update_time , disallow_comment , edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+			 top_priority , url , visits from posts
+			where type=0 and status=#{status} and siteid=#{siteid} order by top_priority desc, create_time desc, id desc limit #{start},10
+	</select>
+	<select id="qpostscount" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select count(id) as ct from posts  where type=0 and status=#{status} and siteid=#{siteid}
+	</select>
+	<select id="qsheet" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select id , create_time as createTime, siteid , update_time , disallow_comment , edit_time , editor_type , format_content as formatContent  , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail , title , top_priority, url , visits
+		from posts
+		where type=1 and slug=#{slug} and siteid=#{siteid}
+	</select>
+
+	<select id="qall" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time as createTime, siteid , update_time , disallow_comment , edit_time , editor_type , format_content as formatContent  , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail , title , top_priority, url , visits
+		from posts
+		where type=0  and siteid=#{siteid}
+	</select>
+
+</mapper>

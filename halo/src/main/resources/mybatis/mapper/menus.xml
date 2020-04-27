@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="menus" >
+	<select id="qall" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		select id , create_time , siteid , update_time , icon , name , parent_id , priority , target, team , url from menus
+		 where siteid=#{siteid}
+	</select>
+	<update id="uoption"  parameterType="java.util.Map">
+	update options set  update_time=#{update_time},option_value=#{option_value}  where   siteid=#{siteid} and option_key=#{option_key}
+	</update>
+	<insert id="ioption"  parameterType="java.util.Map">
+		insert into options(
+		create_time,update_time,option_key,type,option_value,siteid
+		) values(
+		#{create_time},#{update_time},#{option_key},#{type},#{option_value},#{siteid}
+		)
+	</insert>
+
+
+
+</mapper>

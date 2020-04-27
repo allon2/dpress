@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="categories" >
+	<select id="qbypostid" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		 select category_id   from post_categories  where
+		 post_id=#{postid} and siteid=#{siteid}
+	</select>
+	<select id="qBySlug" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		 select id ,name,slug  from categories   where
+		 slug=#{slug} and siteid=#{siteid}
+	</select>
+
+	<select id="qall" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		 select id ,name,slug,create_time as createTime  from categories   where
+		   siteid=#{siteid} order by create_time desc
+	</select>
+
+
+
+
+
+
+</mapper>

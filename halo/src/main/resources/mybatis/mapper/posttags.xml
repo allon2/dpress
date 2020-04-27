@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="posttag" >
+<!--	<select id="qtaginposts" resultType="java.util.HashMap" parameterType="java.util.HashMap">-->
+<!--		select id , create_time , siteid , update_time , post_id , tag_id  from post_tags  where-->
+<!--		post_id in-->
+<!--		<foreach collection="posts" item="id" index="index" open="(" close=")" separator=",">-->
+<!--		#{id}-->
+<!--		</foreach>-->
+<!--	  and siteid=#{siteid}-->
+<!--	</select>-->
+	<select id="qpost" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+		 select post.format_content,post.likes,post.meta_description,post.meta_keywords,post.summary,post.slug,post.id,post.title,post.create_time as createTime from post_tags posttag, posts post where posttag.id = #{tagid} and
+		post.id = posttag.post_id and post.status = 0
+		and posttag.siteid=#{siteid} and post.siteid=#{siteid}
+		 limit #{start},10
+
+	</select>
+	<select id="qpostcount" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+
+			 select  count(1) as ct from post_tags posttag, posts post where posttag.id = #{tagid} and
+		post.id = posttag.post_id and post.status = 0
+		and posttag.siteid=#{siteid} and post.siteid=#{siteid}
+		 limit #{start},10
+
+	</select>
+
+	<select id="qtagbypostid" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time , siteid , update_time , post_id , tag_id  from post_tags  where
+		post_id =#{postid}
+
+		and siteid=#{siteid}
+	</select>
+
+
+</mapper>
