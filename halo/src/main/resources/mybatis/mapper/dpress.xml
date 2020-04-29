@@ -36,5 +36,14 @@
 	<delete id="dsiteinfo" parameterType="java.util.Map">
 		delete from dpress_siteinfo where id=#{id}
 	</delete>
+	<insert id="itemplate" parameterType="java.util.HashMap">
+        insert into dpress_template(content,bcontent,lastModified,siteid,path,cifseq,theme ) values(
+        #{content},#{bcontent},#{lastModified},#{siteid},#{path},#{cifseq},#{theme}
+        )
+    </insert>
+	<delete id="dtemplatebytheme"  parameterType="java.util.HashMap">
+		delete from dpress_template where siteid=#{siteid} and theme=#{theme}
+	</delete>
+
 
 </mapper>

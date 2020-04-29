@@ -16,6 +16,9 @@
 		#{create_time},#{update_time},#{option_key},#{type},#{option_value},#{siteid}
 		)
 	</insert>
+	<select id="qoption" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+select option_value from options where siteid=#{siteid} and option_key=#{key}
+	</select>
 	<select id="qactivetheme" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
 select option_value from options where siteid=#{siteid} and option_key='theme'
 	</select>

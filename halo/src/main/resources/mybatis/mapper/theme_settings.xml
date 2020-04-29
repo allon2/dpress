@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="theme_settings" >
+
+	<insert id="iall"  parameterType="java.util.Map">
+		insert into theme_settings(
+		create_time,update_time,setting_key,theme_id,setting_value,siteid
+		) values(
+		#{create_time},#{update_time},#{setting_key},#{theme_id},#{setting_value},#{siteid}
+		)
+	</insert>
+	<select id="qall" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+ 		select create_time,update_time,setting_key,theme_id,setting_value,siteid from theme_settings where siteid=#{siteid} and theme_id=#{theme_id}
+ 	</select>
+	<select id="qbyvalue" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+			 		select create_time,update_time,setting_key,theme_id,setting_value,siteid from theme_settings
+			 		where siteid=#{siteid} and theme_id=#{theme_id} and setting_key=#{setting_key}
+
+	</select>
+	<update id="ubyvalue" parameterType="java.util.HashMap">
+		update theme_settings set
+		update_time=#{update_time},
+		setting_value=#{setting_value}
+		where siteid=#{siteid} and theme_id=#{theme_id} and setting_key=#{setting_key}
+	</update>
+
+
+</mapper>
