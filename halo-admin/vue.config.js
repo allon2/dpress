@@ -34,7 +34,23 @@ module.exports = {
     ],
     externals: isProd ? assetsCDN.externals : {}
   },
-
+  devServer: {
+    // contentBase: './',
+    proxy: {
+      // 当你请求是以/api开头的时候，则我帮你代理访问到http://localhost:3000
+      // 例如：
+      // /api/users  http://localhost:3000/api/users
+      // 我们真是服务器接口是没有/api的
+      '/upload': {
+        target: 'http://localhost:8090'
+        // pathRewrite:{"^/api":""}
+      },
+      '/themes': {
+        target: 'http://localhost:8090'
+        // pathRewrite:{"^/api":""}
+      }
+    }
+  },
   chainWebpack: (config) => {
     config.resolve.alias
       .set('@$', resolve('src'))
