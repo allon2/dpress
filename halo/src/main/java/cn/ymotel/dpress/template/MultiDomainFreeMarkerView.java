@@ -3,6 +3,7 @@ package cn.ymotel.dpress.template;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.actor.OptionsService;
+import cn.ymotel.dpress.service.SiteThemeService;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.BeansException;
@@ -174,9 +175,9 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     }
 
     private void setBaseUrlVariables(Configuration configuration , String baseUrl) throws TemplateModelException {
-        ThemeProperty activatedTheme = themeService.getActivatedTheme();
+        String themeBasePath= baseUrl +"/themes/";
 
-        String themeBasePath = baseUrl + "/themes/" + activatedTheme.getFolderName();
+//        String themeBasePath = baseUrl + "/themes/" + activatedTheme.getFolderName();
 
         configuration.setSharedVariable("static", themeBasePath);
 
@@ -185,18 +186,28 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     private void loadThemeConfig(Configuration configuration,String baseurl) throws TemplateModelException {
 
         // Get current activated theme.
-        ThemeProperty activatedTheme = themeService.getActivatedTheme();
-
-        String themeBasePath = (optionService.isEnabledAbsolutePath() ? baseurl : "") + "/themes/" + activatedTheme.getFolderName();
-
+//        ThemeProperty activatedTheme = themeService.getActivatedTheme();
+        String themeName=siteThemeService.getActiveThemeName(Utils.getSiteId());
+       Map activatedTheme= siteThemeService.getThemeInfo(Utils.getSiteId(),themeName);
+//        String themeBasePath = (optionService.isEnabledAbsolutePath() ? baseurl : "") + "/themes/" + activatedTheme.getFolderName();
+        String themeBasePath= "/themes";
         configuration.setSharedVariable("theme", activatedTheme);
 
-//        configuration.setSharedVariable("static", themeBasePath);
+        configuration.setSharedVariable("static", themeBasePath);
 //
-//        configuration.setSharedVariable("theme_base", themeBasePath);
+        configuration.setSharedVariable("theme_base", themeBasePath);
+        //getSettingWithValue
+//        Object obj= siteThemeService.getSettingWithValue(Utils.getSiteId(),themeName);
+        configuration.setSharedVariable("settings", siteThemeService.getSettingWithValue(Utils.getSiteId(),themeName));
 
-        configuration.setSharedVariable("settings", themeSettingService.listAsMapBy(themeService.getActivatedThemeId()));
+//        configuration.setSharedVariable("settings", themeSettingService.listAsMapBy(themeService.getActivatedThemeId()));
     }
+    @Autowired
+    private  SiteThemeService siteThemeService;
+//    public Map getActiveTheme(){
+//       String theme= optionsService.getOption(Utils.getSiteId(),"theme",null);
+//
+//    }
     private ApplicationContext applicationContext;
     @Override
     public void setApplicationContext(ApplicationContext applicationContext) throws BeansException {

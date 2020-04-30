@@ -1,5 +1,6 @@
 package cn.ymotel.dpress;
 
+import cn.ymotel.dactor.core.MessageThreadLocal;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.actor.FreemarkerActor;
 import cn.ymotel.dpress.admin.sitemgmt.ChangeCurrentSiteActor;
@@ -12,25 +13,35 @@ import javax.servlet.http.HttpServletRequest;
 import java.util.Map;
 
 public class Utils {
+    public static  String SESSION_SITEID="_SITEID";
     public static Long getSiteIdFromMvc(){
         RequestAttributes ra = RequestContextHolder.getRequestAttributes();
         if(ra==null){
             return null;
         }
         HttpServletRequest request = ((ServletRequestAttributes)ra).getRequest();
-        return Long.parseLong(request.getSession().getAttribute(ChangeCurrentSiteActor.SESSION_SITE).toString());
+        Object obj=request.getSession().getAttribute(ChangeCurrentSiteActor.SESSION_SITE);
+        return Long.parseLong(obj.toString());
     }
     public static long getSiteIdFromMessage(ServletMessage message){
         HttpServletRequest request=message.getRequest();
         return Long.parseLong(request.getSession().getAttribute(ChangeCurrentSiteActor.SESSION_SITE).toString());
     }
     public static Object getSiteId(){
-        Map map=FreemarkerActor.CONTEXT_HOLDER.get();
-        if(map==null){
-            return SiteIdFilter.getSiteId();
+       Object id=FreemarkerActor.CONTEXT_HOLDER.get();
+       if(id!=null){
+           return id;
+       }
+        ServletMessage message=(ServletMessage)MessageThreadLocal.getMessage();
+        if(message==null){
+            return null;
         }
-        Object siteid= map.get("id");
-            return siteid;
+       return  ((HttpServletRequest)message.getAsyncContext().getRequest()).getSession().getAttribute(SESSION_SITEID);
+//        if(map==null){
+//            return SiteIdFilter.getSiteId();
+//        }
+//        Object siteid= map.get("id");
+//            return siteid;
     }
     public  static String getBaseUrl(ServletMessage message){
         HttpServletRequest request= message.getRequest();

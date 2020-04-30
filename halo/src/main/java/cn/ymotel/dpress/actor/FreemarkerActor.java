@@ -19,7 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FreemarkerActor implements Actor<ServletMessage> {
-    public final static ThreadLocal<Map> CONTEXT_HOLDER = new ThreadLocal<>();
+    public final static ThreadLocal<Object> CONTEXT_HOLDER = new ThreadLocal<>();
     @Autowired
     private MultiDomainFreeMarkerView multiDomainFreeMarkerView;
     @Autowired

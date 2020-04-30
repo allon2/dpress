@@ -169,7 +169,7 @@ public abstract class BasePostServiceImpl<POST extends BasePost> extends Abstrac
         Assert.isTrue(top > 0, "Top number must not be less than 0");
 
         PageRequest latestPageable = PageRequest.of(0, top, Sort.by(DESC, "createTime"));
-        Object siteid= FreemarkerActor.CONTEXT_HOLDER.get().get("id");
+        Object siteid= Utils.getSiteId();
 
         return basePostRepository.findAllByStatusAndSiteid(PostStatus.PUBLISHED,siteid, latestPageable).getContent();
     }

@@ -1,15 +1,16 @@
 package cn.ymotel.dpress.filter;
 
-import cn.ymotel.dactor.message.Message;
-import cn.ymotel.dactor.message.ServletMessage;
+import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.actor.FreemarkerActor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
-import run.halo.app.security.context.SecurityContext;
+import org.springframework.web.context.request.RequestContextHolder;
+import org.springframework.web.context.request.ServletRequestAttributes;
 
 import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
@@ -17,13 +18,14 @@ import java.util.Map;
 public class SiteIdFilter implements Filter {
     @Autowired
     private SqlSession sqlSession;
-    public static Object getSiteId() {
-        // Get from thread local
-        Object context = FreemarkerActor.CONTEXT_HOLDER.get();
 
-        return context;
-    }
-    private Map getSiteId(HttpServletRequest request){
+    private void SaveSiteId(HttpServletRequest request){
+        if( request.getSession().getAttribute(Utils.SESSION_SITEID)!=null){
+            FreemarkerActor.CONTEXT_HOLDER.set(request.getSession().getAttribute(Utils.SESSION_SITEID));
+            return;
+        }
+
+
         String domain=request.getServerName();
         /**
          * 得到域名,
@@ -34,19 +36,21 @@ public class SiteIdFilter implements Filter {
         if(rtnMap==null||rtnMap.isEmpty()){
 
         }else{
-            String ssid =  rtnMap.get("id").toString();
+            Object ssid =  rtnMap.get("id") ;
             if(ssid!=null){
-                FreemarkerActor.CONTEXT_HOLDER.set(rtnMap);
+                request.getSession().setAttribute(Utils.SESSION_SITEID,ssid);
+                FreemarkerActor.CONTEXT_HOLDER.set(ssid);
 
             }
         }
-        return rtnMap;
     }
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
-         getSiteId((HttpServletRequest) request);
+        RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) request,(HttpServletResponse) response),false);
+        SaveSiteId((HttpServletRequest) request);
 
        chain.doFilter(request,response);
+        FreemarkerActor.CONTEXT_HOLDER.remove();
 
     }
 }

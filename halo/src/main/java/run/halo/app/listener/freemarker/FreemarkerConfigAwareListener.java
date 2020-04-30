@@ -128,20 +128,20 @@ public class FreemarkerConfigAwareListener {
     }
 
     private void loadThemeConfig() throws TemplateModelException {
-
+//        return ;
         // Get current activated theme.
-        ThemeProperty activatedTheme = themeService.getActivatedTheme();
-
-        String themeBasePath = (optionService.isEnabledAbsolutePath() ? optionService.getBlogBaseUrl() : "") + "/themes/" + activatedTheme.getFolderName();
-
-        configuration.setSharedVariable("theme", activatedTheme);
-
-        // TODO: It will be removed in future versions
-        configuration.setSharedVariable("static", themeBasePath);
-
-        configuration.setSharedVariable("theme_base", themeBasePath);
-
-        configuration.setSharedVariable("settings", themeSettingService.listAsMapBy(themeService.getActivatedThemeId()));
-        log.debug("Loaded theme and settings");
+//        ThemeProperty activatedTheme = themeService.getActivatedTheme();
+//
+//        String themeBasePath = (optionService.isEnabledAbsolutePath() ? optionService.getBlogBaseUrl() : "") + "/themes/" + activatedTheme.getFolderName();
+//
+//        configuration.setSharedVariable("theme", activatedTheme);
+//
+//        // TODO: It will be removed in future versions
+//        configuration.setSharedVariable("static", themeBasePath);
+//
+//        configuration.setSharedVariable("theme_base", themeBasePath);
+//        Object obj=themeSettingService.listAsMapBy(themeService.getActivatedThemeId());
+//        configuration.setSharedVariable("settings", themeSettingService.listAsMapBy(themeService.getActivatedThemeId()));
+//        log.debug("Loaded theme and settings");
     }
 }

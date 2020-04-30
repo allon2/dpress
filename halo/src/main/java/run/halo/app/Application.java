@@ -24,7 +24,7 @@ import run.halo.app.repository.base.BaseRepositoryImpl;
 @SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"})
 @EnableJpaAuditing
 @EnableScheduling
-@EnableAsync
+//@EnableAsync
 @EnableJpaRepositories(basePackages = "run.halo.app.repository", repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableMethodCache(basePackages ={"run.halo.app","cn.ymotel.dpress"})
 @EnableCreateCacheAnnotation

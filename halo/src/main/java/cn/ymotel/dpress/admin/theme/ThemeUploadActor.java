@@ -5,6 +5,7 @@ import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.response.ResponseViewType;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.SiteThemeService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.fasterxml.jackson.dataformat.yaml.YAMLFactory;
@@ -85,7 +86,7 @@ public class ThemeUploadActor  implements Actor<ServletMessage> {
             String path=(String)entry.getKey();
             byte[] bytes=(byte[])entry.getValue();
             Map paramMap=new HashMap();
-            if(istext(path)){
+            if(SiteThemeService.istext(path)){
                 paramMap.put("content",new String(bytes,"UTF-8"));
             }else{
                 paramMap.put("bcontent",bytes);
@@ -129,25 +130,7 @@ public class ThemeUploadActor  implements Actor<ServletMessage> {
 
             return rtnMap;
         }
-    public static boolean istext(String path){
-        path=path.toLowerCase();
-        if(path.endsWith("ftl")){
-            return true;
-        }
-        if(path.endsWith("js")){
-            return true;
-        }
-        if(path.endsWith("css")){
-            return true;
-        }
-        if(path.endsWith("md")){
-            return true;
-        }
-        if(path.endsWith("yaml")){
-            return true;
-        }
-        return false;
-    }
+
     public Map getDataFromBytes(byte[] bytes) throws IOException {
         Map rtnMap=new HashMap();
         ByteArrayInputStream byteInputStream=new ByteArrayInputStream(bytes);
