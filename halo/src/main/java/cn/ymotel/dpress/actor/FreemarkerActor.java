@@ -4,6 +4,7 @@ import cn.ymotel.dactor.Constants;
 import cn.ymotel.dactor.action.Actor;
 import cn.ymotel.dactor.message.Message;
 import cn.ymotel.dactor.message.ServletMessage;
+import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.template.MultiDomainFreeMarkerView;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -22,20 +23,20 @@ public class FreemarkerActor implements Actor<ServletMessage> {
     public final static ThreadLocal<Object> CONTEXT_HOLDER = new ThreadLocal<>();
     @Autowired
     private MultiDomainFreeMarkerView multiDomainFreeMarkerView;
-    @Autowired
-    private SqlSession sqlSession;
-    private Map getSiteId(Message message){
-        ServletMessage localServletMessage=(ServletMessage)message;
-        String domain= localServletMessage.getRequest().getServerName();
-        /**
-         * 得到域名,
-         */
-        Map tMap=new HashMap();
-        tMap.put("domain",domain);
-        Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
-        CONTEXT_HOLDER.set(rtnMap);
-        return rtnMap;
-    }
+//    @Autowired
+//    private SqlSession sqlSession;
+//    private Map getSiteId(Message message){
+//        ServletMessage localServletMessage=(ServletMessage)message;
+//        String domain= localServletMessage.getRequest().getServerName();
+//        /**
+//         * 得到域名,
+//         */
+//        Map tMap=new HashMap();
+//        tMap.put("domain",domain);
+//        Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
+//        CONTEXT_HOLDER.set(rtnMap);
+//        return rtnMap;
+//    }
 //    private Object getSiteId(HttpServletRequest request){
 //        String domain=request.getServerName();
 //        /**
@@ -57,7 +58,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
 //     }
     @Override
     public Object HandleMessage(ServletMessage message) throws Throwable {
-        Map siteMap= getSiteId(message);
+//        Map siteMap= getSiteId(message);
 
         ;
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(message.getRequest(),message.getResponse()),false);
@@ -69,7 +70,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
             if(obj instanceof ViewData){
                 ViewData viewData=(ViewData)obj;
                 ;
-               Object id=siteMap.get("id");
+               Object id= Utils.getSiteId();
 
                 String content = multiDomainFreeMarkerView.getProcessedString(message,id,(String)viewData.getViewName(),(Map)viewData.getData());
                 if(viewData.getContentType()!=null) {

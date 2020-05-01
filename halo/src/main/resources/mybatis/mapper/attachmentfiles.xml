@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="attachmentfiles" >
+
+	 <insert id="i" parameterType="java.util.HashMap">
+		insert into attachments (
+		create_time,update_time,file_key,height,media_type,name,path,size,suffix,thumb_path,type,width,siteid,content,thumbnailcontent
+		)
+		values(
+		#{create_time},#{update_time},#{file_key},#{height},#{media_type},#{name},#{path},#{size},#{suffix},#{thumb_path},#{type},#{width},#{siteid},#{content},#{thumbnailcontent}
+
+		)
+	 </insert>
+	<select id="qdetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select create_time,update_time,file_key,height,media_type,name,path,size,suffix,thumb_path,type,width,siteid,content,thumbnailcontent from attachments where path=#{path} and siteid=#{siteid}
+
+	</select>
+	<delete id="dbyid" parameterType="java.util.HashMap">
+		delete from attachments where id=#{id} and siteid=#{siteid}
+	</delete>
+
+	<select id="qlimit" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select id,create_time as createTime,update_time,file_key as fileKey,height,media_type as mediaType ,name,path,size,suffix,thumb_path as thumbPath,type,width,siteid from attachments where
+		siteid=#{siteid}
+
+		<if test="media_type != null">
+		and media_type=#{media_type}
+		</if>
+		<if test="type != null">
+
+		and type=#{type}
+		</if>
+
+		<if test="keyword != null">
+
+			and name like #{keyword}
+		</if>
+		order by create_time desc
+		 limit #{start},#{size}
+
+	</select>
+	<select id="qtotal" parameterType="java.util.HashMap" resultType="java.util.HashMap">
+		select count(1) as ct from attachments where
+		 siteid=#{siteid}
+
+		<if test="media_type != null">
+			and media_type=#{media_type}
+		</if>
+		<if test="type != null">
+
+			and type=#{type}
+		</if>
+		<if test="keyword != null">
+
+			and name like #{keyword}
+		</if>
+	</select>
+
+</mapper>

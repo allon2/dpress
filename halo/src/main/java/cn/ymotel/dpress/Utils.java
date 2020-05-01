@@ -28,15 +28,17 @@ public class Utils {
         return Long.parseLong(request.getSession().getAttribute(ChangeCurrentSiteActor.SESSION_SITE).toString());
     }
     public static Object getSiteId(){
-       Object id=FreemarkerActor.CONTEXT_HOLDER.get();
-       if(id!=null){
-           return id;
-       }
+
         ServletMessage message=(ServletMessage)MessageThreadLocal.getMessage();
         if(message==null){
+            Object id=FreemarkerActor.CONTEXT_HOLDER.get();
+            if(id!=null){
+                return id;
+            }
             return null;
         }
-       return  ((HttpServletRequest)message.getAsyncContext().getRequest()).getSession().getAttribute(SESSION_SITEID);
+        HttpServletRequest request=((HttpServletRequest)message.getAsyncContext().getRequest());
+       return  request.getSession().getAttribute(SESSION_SITEID);
 //        if(map==null){
 //            return SiteIdFilter.getSiteId();
 //        }
