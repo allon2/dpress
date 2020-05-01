@@ -28,14 +28,10 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     private Map<Object,Configuration> templateConfigMap=new ConcurrentHashMap();
     @Autowired
     private SqlSession sqlSession;
-    @Autowired
-    private  ThemeService themeService;
-    @Autowired
-    private  ThemeSettingService themeSettingService;
+
     @Autowired
     private  UserService userService;
-    @Autowired
-    private  OptionService optionService;
+
 
     @Autowired
     private OptionsService optionsService;
