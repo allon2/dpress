@@ -41,7 +41,7 @@
 </#macro>
 
 <#macro globalHeader>
-    <#if options.seo_spider_disabled=='false'>
+    <#if options.seo_spider_disabled!false>
         <meta name="robots" content="none">
     </#if>
     <meta name="generator" content="Halo ${version!}"/>

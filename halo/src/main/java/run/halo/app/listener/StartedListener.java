@@ -88,30 +88,30 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
      */
     private void migrate() throws SQLException {
         log.info("Starting migrate database...");
-
-        Flyway flyway = Flyway
-            .configure()
-            .locations("classpath:/migration")
-            .baselineVersion("1")
-            .baselineOnMigrate(true)
-            .dataSource(url, username, password)
-            .load();
-        flyway.repair();
-        flyway.migrate();
-
-        // Gets database connection
-        Connection connection = flyway.getConfiguration().getDataSource().getConnection();
-
-        // Gets database metadata
-        DatabaseMetaData databaseMetaData = JdbcUtils.getDatabaseMetaData(connection);
-
-        // Gets database product name
-        HaloConst.DATABASE_PRODUCT_NAME = databaseMetaData.getDatabaseProductName() + " " + databaseMetaData.getDatabaseProductVersion();
-
-        // Close connection.
-        connection.close();
-
-        log.info("Migrate database succeed.");
+//
+//        Flyway flyway = Flyway
+//            .configure()
+//            .locations("classpath:/migration")
+//            .baselineVersion("1")
+//            .baselineOnMigrate(true)
+//            .dataSource(url, username, password)
+//            .load();
+//        flyway.repair();
+//        flyway.migrate();
+//
+//        // Gets database connection
+//        Connection connection = flyway.getConfiguration().getDataSource().getConnection();
+//
+//        // Gets database metadata
+//        DatabaseMetaData databaseMetaData = JdbcUtils.getDatabaseMetaData(connection);
+//
+//        // Gets database product name
+//        HaloConst.DATABASE_PRODUCT_NAME = databaseMetaData.getDatabaseProductName() + " " + databaseMetaData.getDatabaseProductVersion();
+//
+//        // Close connection.
+//        connection.close();
+//
+//        log.info("Migrate database succeed.");
     }
 
     /**

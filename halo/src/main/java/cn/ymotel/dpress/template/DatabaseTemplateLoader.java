@@ -75,10 +75,10 @@ import static freemarker.template.Configuration.AUTO_DETECT_TAG_SYNTAX;
 //        DatabaseTemplateLoader loader = new DatabaseTemplateLoader();
         FreeMarkerConfigurer configurer = new FreeMarkerConfigurer();
 //        configurer.setTemplateLoaderPaths("classpath:/templates/");
-        configurer.setTemplateLoaderPaths("file://f:/tmp/ftl/","classpath:/templates/");
+        configurer.setTemplateLoaderPaths("classpath:/templates/");
 //        configurer.setPreferFileSystemAccess(false);
         configurer.setDefaultEncoding("UTF-8");
-//        configurer.setPostTemplateLoaders(templateLoader);
+        configurer.setPostTemplateLoaders(templateLoader);
         Properties properties = new Properties();
         properties.setProperty("auto_import", "/common/macro/common_macro.ftl as common,/common/macro/global_macro.ftl as global");
 

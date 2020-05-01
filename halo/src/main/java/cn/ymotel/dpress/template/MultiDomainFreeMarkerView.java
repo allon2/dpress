@@ -2,7 +2,7 @@ package cn.ymotel.dpress.template;
 
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.Utils;
-import cn.ymotel.dpress.actor.OptionsService;
+import cn.ymotel.dpress.service.OptionsService;
 import cn.ymotel.dpress.service.SiteThemeService;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
@@ -12,16 +12,12 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.ApplicationContextAware;
 import org.springframework.stereotype.Component;
 import run.halo.app.core.freemarker.tag.*;
-import run.halo.app.handler.theme.config.support.ThemeProperty;
-import run.halo.app.model.properties.BlogProperties;
-import run.halo.app.model.properties.SeoProperties;
 import run.halo.app.model.support.HaloConst;
 import run.halo.app.service.OptionService;
 import run.halo.app.service.ThemeService;
 import run.halo.app.service.ThemeSettingService;
 import run.halo.app.service.UserService;
 
-import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;

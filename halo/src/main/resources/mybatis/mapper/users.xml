@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="users" >
+
+	<insert id="i"  parameterType="java.util.HashMap">
+		insert into users(
+create_time,update_time,avatar,description,email,expire_time,nickname,password,username,siteid
+		) values(
+	#{create_time},#{update_time},#{avatar},#{description},#{email},#{expire_time},#{nickname},#{password},#{username},#{siteid}
+
+		)
+	</insert>
+	<select id="qsitenumber" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+select count(1) as ct from dpress_siteinfo
+	</select>
+
+
+</mapper>

@@ -3,6 +3,7 @@ package cn.ymotel.dpress.actor;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.OptionsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,7 +22,6 @@ import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
 
 import java.util.*;
-import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 

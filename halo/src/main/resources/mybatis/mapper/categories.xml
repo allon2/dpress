@@ -16,6 +16,13 @@
 		 select id ,name,slug,create_time as createTime  from categories   where
 		   siteid=#{siteid} order by create_time desc
 	</select>
+	<insert id="i" parameterType="java.util.HashMap">
+		insert into categories (
+		create_time,update_time,description,name,parent_id,slug,slug_name,thumbnail,siteid
+		) values(
+		#{create_time},#{update_time},#{description},#{name},#{parent_id},#{slug},#{slug_name},#{thumbnail},#{siteid}
+		)
+	</insert>
 
 
 

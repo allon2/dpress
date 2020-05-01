@@ -1,4 +1,4 @@
-package cn.ymotel.dpress.actor;
+package cn.ymotel.dpress.service;
 
 import com.alicp.jetcache.anno.Cached;
 import com.alicp.jetcache.anno.CreateCache;

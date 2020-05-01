@@ -1,5 +1,6 @@
 package run.halo.app.security.filter;
 
+import cn.ymotel.dpress.service.OptionsService;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.lang.NonNull;
@@ -169,11 +170,11 @@ public abstract class AbstractAuthenticationFilter extends OncePerRequestFilter 
         this.failureHandler = failureHandler;
     }
 
+    private OptionsService optionsService;
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Check whether the blog is installed or not
         Boolean isInstalled = optionService.getByPropertyOrDefault(PrimaryProperties.IS_INSTALLED, Boolean.class, false);
-
         if (!isInstalled && !Mode.TEST.equals(haloProperties.getMode())) {
             // If not installed
             getFailureHandler().onFailure(request, response, new NotInstallException("当前博客还没有初始化"));

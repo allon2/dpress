@@ -1,12 +1,11 @@
 package cn.ymotel.dpress.admin.attachments;
 
 import cn.ymotel.dactor.action.Actor;
-import cn.ymotel.dactor.message.Message;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.sequence.IdWorker;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
-import cn.ymotel.dpress.actor.OptionsService;
+import cn.ymotel.dpress.service.OptionsService;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.MediaType;

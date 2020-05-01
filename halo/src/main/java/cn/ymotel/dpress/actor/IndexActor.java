@@ -1,10 +1,9 @@
 package cn.ymotel.dpress.actor;
 
-import cn.ymotel.dactor.action.Actor;
-import cn.ymotel.dactor.message.Message;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.OptionsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +15,8 @@ import org.springframework.lang.NonNull;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.support.BindingAwareModelMap;
-import org.springframework.web.bind.annotation.PathVariable;
 import run.halo.app.controller.content.model.PostModel;
-import run.halo.app.model.entity.Post;
 import run.halo.app.model.enums.PostPermalinkType;
-import run.halo.app.model.properties.PostProperties;
 import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;

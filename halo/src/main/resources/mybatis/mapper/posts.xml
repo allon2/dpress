@@ -38,5 +38,15 @@
 		from posts
 		where type=0  and siteid=#{siteid}
 	</select>
+	<insert id="i" parameterType="java.util.HashMap">
+ 		insert into posts (
+type,create_time,update_time,edit_time,editor_type,format_content,likes
+,meta_description,meta_keywords,original_content,password,slug,
+status,summary,template,thumbnail,title,top_priority,url,visits,siteid
+ 		) values(
+#{type},#{create_time},#{update_time},#{edit_time},#{editor_type},#{format_content},#{likes},#{meta_description},#{meta_keywords},#{original_content},#{password},#{slug}
+,#{status},#{summary},#{template},#{thumbnail},#{title},#{top_priority},#{url},#{visits},#{siteid}
+ 		)
+	</insert>
 
 </mapper>

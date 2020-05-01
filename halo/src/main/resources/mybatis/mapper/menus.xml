@@ -17,6 +17,13 @@
 		#{create_time},#{update_time},#{option_key},#{type},#{option_value},#{siteid}
 		)
 	</insert>
+	<insert id="i" parameterType="java.util.Map">
+		insert into menus (
+		create_time,update_time,icon,name,parent_id,priority,target,team,url,siteid
+		) values(
+		#{create_time},#{update_time},#{icon},#{name},#{parent_id},#{priority},#{target},#{team},#{url},#{siteid}
+		)
+	</insert>
 
 
 

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="comments" >
+
+	<insert id="i" parameterType="java.util.HashMap">
+ 		insert into comments (
+type,create_time,update_time,allow_notification,author,author_url,content,email,gravatar_md5,ip_address,is_admin,parent_id,post_id,status,top_priority,user_agent,siteid
+ 		) values(
+
+#{type},#{create_time},#{update_time},#{allow_notification},#{author},#{author_url},#{content},#{email},#{gravatar_md5},#{ip_address},#{is_admin},#{parent_id},#{post_id},#{status},#{top_priority},#{user_agent},#{siteid}
+	)
+	</insert>
+
+</mapper>
