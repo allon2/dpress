@@ -25,7 +25,7 @@ public class ThemeStaticResourceActor implements Actor<ServletMessage> {
     @Autowired
     SiteThemeService siteThemeService;
     @Override
-    public Object Execute(ServletMessage message) throws Throwable {
+    public Object HandleMessage(ServletMessage message) throws Throwable {
         String activeName=siteThemeService.getActiveThemeName(Utils.getSiteId());
         String path=message.getControlData(Constants.EXTRACTPATH);
        Object content= siteThemeService.getContent(Utils.getSiteId(),activeName,path);
@@ -43,6 +43,6 @@ public class ThemeStaticResourceActor implements Actor<ServletMessage> {
             response.flushBuffer();
         }
         message.getAsyncContext().complete();
-        return new HashMap<>();
+        return null;
     }
 }
