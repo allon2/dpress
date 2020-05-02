@@ -27,6 +27,8 @@ const assetsCDN = {
 
 // vue.config.js
 module.exports = {
+  // outputDir: 'build/resources/main',
+
   publicPath: process.env.PUBLIC_PATH,
   configureWebpack: {
     plugins: [

@@ -3,6 +3,8 @@ plugins {
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
     id 'checkstyle'
     id 'java'
+    id 'com.github.johnrengelman.shadow' version '5.2.0'
+
 }
 
 group = 'run.halo.app'
@@ -135,6 +137,14 @@ dependencies {
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
     compile group: 'com.alicp.jetcache', name: 'jetcache-starter-redis', version: '2.6.0'
-
+    tasks.findByPath("bootjar")
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
+    compile  project(':halo-admin')//server模块依赖web模块
+
+}
+shadowJar {
+//    include(dependencies {})
+ }
+jar{
+
 }

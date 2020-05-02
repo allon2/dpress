@@ -1,0 +1,41 @@
+plugins {
+    id 'java'
+    id "com.moowork.node" version "1.3.1"
+}
+
+//调用npm run build命令的Gradle任务
+task npmBuild(type: NpmTask, dependsOn: npmInstall) {
+    group = 'node'
+    args = ['run', 'build']
+}
+task copyBuild(type: Copy, dependsOn: npmBuild) {
+    from "dist"
+    into "$buildDir/resources/main/admin"
+}
+//Gradle的java插件的jar任务，依赖npmBuild,即web子模块打jar包前必须运行npm run build
+
+jar.dependsOn copyBuild
+//jar.dependsOn copyAdminFiles.
+
+//jar{
+//    dependsOn 'copyBuild'
+//    from "dist"
+//    into "$buildDir/resources/main/admin"
+//
+//}
+
+
+//task copyAdminFiles(type: Copy, dependsOn: npmBuild) {
+////    group = "node"
+//    from "dist/dist"
+//    include "**/**"
+//    into "${project.buildDir}/resources/main/public-web-resources"
+//}
+
+//调用npm run dev
+task npmDev(type: NpmTask, dependsOn: npmInstall) {
+    group = 'node'
+    args = ['run', 'dev']
+
+
+}
