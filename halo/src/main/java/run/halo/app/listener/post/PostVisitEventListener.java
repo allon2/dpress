@@ -12,7 +12,7 @@ import run.halo.app.service.PostService;
  * @author johnniang
  * @date 19-4-22
  */
-@Component
+//@Component
 public class PostVisitEventListener extends AbstractVisitEventListener {
 
     public PostVisitEventListener(PostService postService) {

@@ -5,13 +5,15 @@ import com.alicp.jetcache.anno.config.EnableMethodCache;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
+import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
-import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import run.halo.app.repository.base.BaseRepositoryImpl;
 
@@ -21,13 +23,16 @@ import run.halo.app.repository.base.BaseRepositoryImpl;
  * @author ryanwang
  * @date 2017-11-14
  */
-@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"})
+@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"},exclude = {DataSourceAutoConfiguration.class, FlywayAutoConfiguration.class})
+//@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"})
 @EnableJpaAuditing
 @EnableScheduling
 //@EnableAsync
 @EnableJpaRepositories(basePackages = "run.halo.app.repository", repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableMethodCache(basePackages ={"run.halo.app","cn.ymotel.dpress"})
 @EnableCreateCacheAnnotation
+//@PropertySource(value = {"classpath*:/conf/**.properties","classpath*:/conf/**.yml", "classpath*:/conf/**.yaml"},factory = CompositePropertySourceFactory.class)
+@Lazy
 public class Application extends SpringBootServletInitializer {
 
     private static ConfigurableApplicationContext CONTEXT;
@@ -36,15 +41,18 @@ public class Application extends SpringBootServletInitializer {
         // Customize the spring config location
 //        System.setProperty("spring.config.additional-location", "file:${user.home}/.halo/,file:${user.home}/halo-dev/");
         additionLocation();
-
+        SpringApplication springApplication=new SpringApplication(Application.class);
+//        springApplication.setResourceLoader();
+//        springApplication.setDefaultProperties(loadProperties());
         // Run application
-        CONTEXT = SpringApplication.run(Application.class, args);
+        CONTEXT = springApplication.run(Application.class, args);
 
     }
+//    public Map
     public static void additionLocation(){
         ApplicationHome applicationHome=new ApplicationHome(Application.class);
         String parent=applicationHome.getSource().getParent();
-        parent=parent+"/conf/application.yaml";
+        parent=parent+ "/application.yaml";
         System.setProperty("spring.config.additional-location", "file:${user.home}/.halo/,file:${user.home}/halo-dev/,file:"+parent);
 
     }

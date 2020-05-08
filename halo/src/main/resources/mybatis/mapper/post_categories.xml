@@ -28,6 +28,9 @@
 		and postCategory.siteid=#{siteid} and post.siteid=#{siteid}
 
 	</select>
+	<select id="qpostcountbycategoriesId" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select count(1) as ct from post_categories where siteid=#{siteid} and post_id=#{postid}
+	</select>
 
 
 

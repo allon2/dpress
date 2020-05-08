@@ -48,5 +48,57 @@ status,summary,template,thumbnail,title,top_priority,url,visits,siteid
 ,#{status},#{summary},#{template},#{thumbnail},#{title},#{top_priority},#{url},#{visits},#{siteid}
  		)
 	</insert>
+	<select id="q" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime  , siteid , update_time as updateTime , disallow_comment , edit_time , editor_type as editorType , format_content , likes , meta_description as metaDescription , meta_keywords  as metaKeywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+			 top_priority , url , visits from posts where id=#{id} and siteid=#{siteid}
+	</select>
+	<select id="qadminposts"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select id , create_time  as createTime  , siteid , update_time , disallow_comment , edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+			 top_priority , url , visits from posts
+
+
+where type=0 and siteid=#{siteid}
+		<if test="status != null">
+
+and status=#{status}
+		</if>
+		<if test="categoryId != null">
+
+		and (exists (select post_id from post_categories  where id=post_id and category_id=#{categoryId}))
+		</if>
+		<if test="keyword1 != null">
+
+		and (title like #{keyword} or original_content like #{keyword})
+		</if>
+
+ order by top_priority desc, create_time desc limit #{start},10
+
+	</select>
+	<update id="u" parameterType="java.util.HashMap">
+		update posts set  update_time=#{update_time}, disallow_comment=#{disallow_comment}, edit_time=#{edit_time},
+		 editor_type=#{editor_type}, format_content=#{format_content}, likes=#{likes}, meta_description=#{meta_description},
+		 meta_keywords=#{meta_keywords},
+		 original_content=#{original_content}, password=#{password}, slug=#{slug}, status=#{status}, summary=#{summary},
+		 template=#{template}, thumbnail=#{thumbnail}, title=#{title}, top_priority=#{top_priority}, url=#{url}
+		where id=#{id} and siteid=#{siteid}
+	</update>
+	<select id="qadmincountposts"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select  count(1) as ct from posts
+
+where type=0 and siteid=#{siteid}
+		<if test="status != null">
+
+			and status=#{status}
+		</if>
+		<if test="categoryId != null">
+
+			and (exists (select post_id from post_categories  where id=post_id and category_id=#{categoryId}))
+		</if>
+		<if test="keyword1 != null">
+
+			and (title like #{keyword} or original_content like #{keyword})
+		</if>
+
+	</select>
 
 </mapper>

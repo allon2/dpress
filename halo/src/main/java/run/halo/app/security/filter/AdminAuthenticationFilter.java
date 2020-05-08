@@ -1,5 +1,6 @@
 package run.halo.app.security.filter;
 
+import cn.ymotel.dactor.Constants;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import lombok.extern.slf4j.Slf4j;
 import org.apache.commons.lang3.StringUtils;
@@ -101,9 +102,9 @@ public class AdminAuthenticationFilter extends AbstractAuthenticationFilter {
         if (!optionalUserId.isPresent()) {
             throw new AuthenticationException("Token 已过期或不存在").setErrorData(token);
         }
-
         // Get the user
         User user = userService.getById(optionalUserId.get());
+        request.getSession().setAttribute(Constants.USER,user);
 
         // Build user detail
         UserDetail userDetail = new UserDetail(user);

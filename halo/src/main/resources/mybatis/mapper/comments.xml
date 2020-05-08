@@ -12,5 +12,53 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 #{type},#{create_time},#{update_time},#{allow_notification},#{author},#{author_url},#{content},#{email},#{gravatar_md5},#{ip_address},#{is_admin},#{parent_id},#{post_id},#{status},#{top_priority},#{user_agent},#{siteid}
 	)
 	</insert>
+	<update id="ustatus"   parameterType="java.util.Map">
+			update comments set status=#{status} where  		siteid=#{siteid}
+			and id=#{id}
+	</update>
+	<delete id="d"  parameterType="java.util.Map">
+	delete from comments where siteid=#{siteid}
+			and id=#{id}
+	</delete>
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from comments where
+		siteid=#{siteid}
+		<if test="status != null">
+		and
+		status=#{status}
+		</if>
+		<if test="keyword1 != null">
+
+		and
+		(
+		author like #{keyword}
+		or content like #{keyword}
+		or email like #{keyword}
+		)
+		</if>
+
+
+	</select>
+	<select id="qlimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,type,create_time as createTime,update_time as updateTime,allow_notification,author,author_url as authorUrl ,content,email,gravatar_md5 as gravatarMd5 ,ip_address as ipAddress,is_admin as isAdmin ,parent_id as parentId ,post_id,status,top_priority,user_agent as userAgent
+ from comments where
+ siteid=#{siteid}
+		<if test="status != null">
+			and
+			status=#{status}
+		</if>
+		<if test="keyword1 != null">
+
+			and
+			(
+			author like #{keyword}
+			or content like #{keyword}
+			or email like #{keyword}
+			)
+		</if>
+		order by create_time desc
+		limit #{start},#{size}
+
+	</select>
 
 </mapper>

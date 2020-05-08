@@ -51,25 +51,25 @@ public class StartedListener implements ApplicationListener<ApplicationStartedEv
     @Autowired
     private ThemeService themeService;
 
-    @Value("${spring.datasource.url}")
+//    @Value("${spring.datasource.url}")
     private String url;
 
-    @Value("${spring.datasource.username}")
+//    @Value("${spring.datasource.username}")
     private String username;
 
-    @Value("${spring.datasource.password}")
+//    @Value("${spring.datasource.password}")
     private String password;
 
     @Override
     public void onApplicationEvent(ApplicationStartedEvent event) {
-        try {
-            this.migrate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
-        this.initThemes();
-        this.initDirectory();
-        this.printStartInfo();
+//        try {
+//            this.migrate();
+//        } catch (SQLException e) {
+//            e.printStackTrace();
+//        }
+//        this.initThemes();
+//        this.initDirectory();
+//        this.printStartInfo();
     }
 
     private void printStartInfo() {

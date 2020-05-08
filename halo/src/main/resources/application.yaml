@@ -12,38 +12,71 @@ spring:
     ansi:
       enabled: always
   datasource:
-    type: com.zaxxer.hikari.HikariDataSource
-
-    # H2 database configuration.
-#    driver-class-name: org.h2.Driver
-#    url: jdbc:h2:file:~/.halo/db/halo
-#    username: admin
-#    password: 123456
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/halodb1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
-    username: root
-    password: 111111
-  h2:
-    console:
-      settings:
-        web-allow-others: false
-      path: /h2-console
-      enabled: false
+    druid:
+      initialSize:  5
+      minIdle:  10
+      maxActive:  20
+      maxWait:  60000
+      timeBetweenEvictionRunsMillis:  60000
+      minEvictableIdleTimeMillis: 300000
+      maxEvictableIdleTimeMillis: 900000
+      validationQuery:  SELECT 1 FROM DUAL
+      testWhileIdle:  true
+      testOnBorrow: false
+      testOnReturn: false
+      webStatFilter:
+        enabled:  true
+      statViewServlet:
+        enabled:  true
+        allow:
+        url-pattern: /admin/druid/*
+      filter:
+        stat:
+          enabled:  true
+          log-slow-sql: true
+          slow-sql-millis:  1000
+          merge-sql:  true
+        wall:
+          config:
+            multi-statement-allow:  true
+#  datasource:
+#    type: com.zaxxer.hikari.HikariDataSource
+#
+#    # H2 database configuration.
+##    driver-class-name: org.h2.Driver
+##    url: jdbc:h2:file:~/.halo/db/halo
+##    username: admin
+##    password: 123456
+#    driver-class-name: com.mysql.cj.jdbc.Driver
+#    url: jdbc:mysql://127.0.0.1:3306/halodb1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true
+#    username: root
+#    password: 111111
+#  h2:
+#    console:
+#      settings:
+#        web-allow-others: false
+#      path: /h2-console
+#      enabled: false
   jpa:
     hibernate:
       ddl-auto: none
     show-sql: true
     open-in-view: false
-  flyway:
-    enabled: true
-    locations: classpath:/migration
+    database-platform: org.hibernate.dialect.MySQLDialect
+#  flyway:
+#    enabled: true
+#    locations: classpath:/migration
   servlet:
     multipart:
       max-file-size: 10240MB
       max-request-size: 10240MB
       location: ${java.io.tmpdir}
 management:
+  health:
+    db:
+#      enabled: false
   endpoints:
+    enabled: false
     web:
       base-path: /api/admin/actuator
       exposure:
@@ -52,7 +85,12 @@ mybatis-plus:
   mapper-locations: classpath*:/mybatis/mapper/*.xml
 logging:
   level:
-    run.halo.app: INFO
+#    root: DEBUG
+    com.apache.ibatis: DEBUG
+    java.sql.Connection: DEBUG
+    java.sql.Statement: DEBUG
+    java.sql.PreparedStatement: DEBUG
+    run.halo.app: DEBUG
   file:
     path: ${user.home}/.halo/logs
 

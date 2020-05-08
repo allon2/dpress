@@ -44,7 +44,7 @@ CREATE TABLE categories  (
   thumbnail varchar(1023)   NULL DEFAULT NULL,
   siteid bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE INDEX UK_oul14ho7bctbefv8jywp5v3i2(slug) USING BTREE,
+  UNIQUE INDEX UK_oul14ho7bctbefv8jywp5v3i2(slug,siteid) USING BTREE,
   INDEX categories_name(name) USING BTREE,
   INDEX categories_parent_id(parent_id) USING BTREE
 ) ;
@@ -87,7 +87,7 @@ CREATE TABLE comments  (
   user_agent varchar(511)   NULL DEFAULT NULL,
   siteid bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
-  INDEX comments_post_id(post_id) USING BTREE,
+  INDEX comments_post_id(post_id,siteid) USING BTREE,
   INDEX comments_type_status(type, status) USING BTREE,
   INDEX comments_parent_id(parent_id) USING BTREE
 ) ;
@@ -303,7 +303,7 @@ CREATE TABLE posts  (
   visits bigint(20) NULL DEFAULT 0,
   siteid bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE INDEX UK_qmmso8qxjpbxwegdtp0l90390(slug) USING BTREE,
+  UNIQUE INDEX UK_qmmso8qxjpbxwegdtp0l90390(slug,siteid) USING BTREE,
   INDEX posts_type_status(type, status) USING BTREE,
   INDEX posts_create_time(create_time) USING BTREE
 ) ;

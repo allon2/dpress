@@ -1,5 +1,6 @@
 package run.halo.app.model.entity;
 
+import cn.ymotel.dpress.Utils;
 import lombok.Data;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
@@ -50,7 +51,7 @@ public class BaseEntity {
         }
         if(siteid.equals(new Long(-1L))){
             try {
-                siteid=new Long(cn.ymotel.dpress.Utils.getSiteIdFromMvc());
+                siteid=new Long(Utils.getSiteId().toString());
             } catch (Exception e) {
                 e.printStackTrace();
             }

@@ -7,7 +7,9 @@ import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.sequence.IdWorker;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.ThemeZipUtils;
+import cn.ymotel.dpress.Utils;
 import org.apache.ibatis.session.SqlSession;
+import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
@@ -25,6 +27,13 @@ import java.util.Map;
 public class InstallSiteActor implements Actor<ServletMessage> {
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
+        if(Utils.isInstall()){
+//            throw new BadRequestException("该博客已初始化，不能再次安装！");
+
+        }else{
+            InstallDbScript(message.getContext());
+
+        }
         if(!emptySite()){
             throw new BadRequestException("该博客已初始化，不能再次安装！");
         }
@@ -41,7 +50,26 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         createDefaultSheet(siteid);
         createDefaultMenu(siteid);
         InstallDefaultThemes(siteid);
+        System.out.println("安装完成！");
         return "安装完成！";
+    }
+    public void InstallDbScript(Map params) throws IOException {
+        String dbhost=(String)params.get("dbhost");
+        String dbname=(String)params.get("dbname");
+        String dbpassword=(String)params.get("dbpassword");
+        String dbport=(String)params.get("dbport");
+        String dbusername=(String)params.get("dbusername");
+        String url="jdbc:mysql://"+dbhost+":"+dbport+"/"+dbname+"?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true";
+        Flyway flyway = Flyway
+            .configure()
+            .locations("classpath:/migration")
+            .baselineVersion("1")
+            .baselineOnMigrate(true)
+            .dataSource(url, dbusername, dbpassword)
+            .load();
+        flyway.repair();
+        flyway.migrate();
+        Utils.WriteMysqlInfo(url,dbusername,dbpassword);
     }
     public void InstallDefaultThemes(Object siteid) throws IOException {
         String path="classpath:/themes/*.zip";
@@ -228,7 +256,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         userMap.put("siteid",siteid);
         sqlSession.insert("users.i",userMap);
     }
-    public void initSetting(long siteid,Map params){
+    public void initSetting(Object siteid,Map params){
         Map settingMap=new HashMap();
         settingMap.put("siteid",siteid);
         settingMap.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
@@ -250,8 +278,9 @@ public class InstallSiteActor implements Actor<ServletMessage> {
             sqlSession.insert("options.ioption",settingMap);
         }
         {
+
             settingMap.put("option_key","blog_url");
-            settingMap.put("option_value",params.get("url"));
+            settingMap.put("option_value",params.getOrDefault("url",""));
             sqlSession.insert("options.ioption",settingMap);
         }
         {

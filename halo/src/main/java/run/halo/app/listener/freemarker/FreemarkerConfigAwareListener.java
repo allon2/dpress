@@ -29,7 +29,7 @@ import run.halo.app.service.UserService;
  * @date 2019-04-20
  */
 @Slf4j
-@Component
+//@Component
 public class FreemarkerConfigAwareListener {
 
     private final OptionService optionService;

@@ -5,6 +5,7 @@ import cn.ymotel.dactor.async.web.view.CustomHttpView;
 import cn.ymotel.dactor.message.Message;
 import cn.ymotel.dactor.message.ServletMessage;
 import com.alibaba.fastjson.JSON;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
 
@@ -22,7 +23,24 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
     public void successRender(ServletMessage message, String viewName) {
         Object obj=message.getContextData(Constants.CONTENT);
         Map rtnMap=new HashMap();
-        rtnMap.put("data",obj);
+        if(obj instanceof Page){
+            Page page=(Page)obj;
+            Map dataMap=new HashMap();
+            dataMap.put("content",page.getContent());
+            dataMap.put("pages",page.getTotalPages());
+            dataMap.put("total",page.getTotalElements());
+            dataMap.put("page",page.getNumber());
+            dataMap.put("rpp",page.getSize());
+            dataMap.put("hasNext",page.hasNext());
+            dataMap.put("hasPrevious",page.hasPrevious());
+            dataMap.put("isFirst",page.isFirst());
+            dataMap.put("isLast",page.isLast());
+            dataMap.put("isEmpty",page.isEmpty());
+            dataMap.put("hasContent",page.hasContent());
+            rtnMap.put("data", dataMap);
+        }else {
+            rtnMap.put("data", obj);
+        }
         rtnMap.put("status",HttpStatus.OK.value());
         rtnMap.put("message",HttpStatus.OK.getReasonPhrase());
        String json= JSON.toJSONString(rtnMap);

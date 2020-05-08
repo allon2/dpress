@@ -12,7 +12,7 @@
 		 slug=#{slug} and siteid=#{siteid}
 	</select>
 
-	<select id="qall" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+	<select id="qall" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 		 select id ,name,slug,create_time as createTime  from categories   where
 		   siteid=#{siteid} order by create_time desc
 	</select>

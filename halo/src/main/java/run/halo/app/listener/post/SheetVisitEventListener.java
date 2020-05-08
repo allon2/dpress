@@ -12,7 +12,7 @@ import run.halo.app.service.SheetService;
  * @author johnniang
  * @date 19-4-24
  */
-@Component
+//@Component
 public class SheetVisitEventListener extends AbstractVisitEventListener {
 
     protected SheetVisitEventListener(SheetService sheetService) {
