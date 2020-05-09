@@ -14,7 +14,7 @@
 		)
 	 </insert>
 	<select id="qdetail" parameterType="java.util.HashMap" resultType="java.util.HashMap">
-		select create_time,update_time,file_key,height,media_type,name,path,size,suffix,thumb_path,type,width,siteid,content,thumbnailcontent from attachments where path=#{path} and siteid=#{siteid}
+		select create_time,update_time,file_key,height,media_type,name,path,size,suffix,thumb_path,type,width,siteid,content,thumbnailcontent from attachments where path=#{path}
 
 	</select>
 	<delete id="dbyid" parameterType="java.util.HashMap">

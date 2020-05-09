@@ -4,6 +4,7 @@ import cn.ymotel.dactor.action.Actor;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.OptionsService;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
@@ -16,11 +17,12 @@ import java.util.Map;
 public class CategoriesListActor implements Actor<ServletMessage> {
     @Autowired
     private SqlSession sqlSession;
-
+    @Autowired
+    OptionsService optionsService;
     @Override
     public List Execute(ServletMessage message) throws Throwable {
         Map siteMap=new HashMap();
-        siteMap.put("siteid", Utils.getSiteIdFromMessage(message));
+        siteMap.put("siteid", Utils.getSiteId());
         List list= sqlSession.selectList("categories.qall",siteMap);
         for(int i=0;i<list.size();i++){
             Map tMap=(Map)list.get(i);
@@ -29,6 +31,9 @@ public class CategoriesListActor implements Actor<ServletMessage> {
             tmpMap.put("postid",tMap.get("id"));
             Map rtnMap=sqlSession.selectOne("post_categories.qpostcountbycategoriesId",tMap);
             tMap.put("postCount",rtnMap.get("ct"));
+            String fullpath="/"+optionsService.getOption(Utils.getSiteId(),OptionsService.CATEGORIES_PREFIX,"categories");
+            fullpath=fullpath+"/"+tMap.get("slug");
+            tMap.put("fullPath",fullpath);
         }
         return list;
     }

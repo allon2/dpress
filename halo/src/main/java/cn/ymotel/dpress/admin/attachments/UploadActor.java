@@ -36,7 +36,7 @@ public class UploadActor  implements Actor<ServletMessage> {
         params.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
         params.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
         params.put("siteid", Utils.getSiteId());
-        params.put("path", "upload/"+IdWorker.getInstance().nextId()+"."+extension);
+        params.put("path", "upload/"+Utils.getSiteId()+"/"+IdWorker.getInstance().nextId()+"."+extension);
         params.put("thumb_path",params.get("path"));
         params.put("file_key",params.get("path"));
         params.put("content",bs);

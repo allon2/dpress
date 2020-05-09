@@ -13,7 +13,7 @@
 	</select>
 
 	<select id="qall" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-		 select id ,name,slug,create_time as createTime  from categories   where
+		 select id ,name,slug,create_time as createTime,thumbnail,description,parent_id  as parentId from categories   where
 		   siteid=#{siteid} order by create_time desc
 	</select>
 	<insert id="i" parameterType="java.util.HashMap">
@@ -23,6 +23,14 @@
 		#{create_time},#{update_time},#{description},#{name},#{parent_id},#{slug},#{slug_name},#{thumbnail},#{siteid}
 		)
 	</insert>
+	<update id="u" parameterType="java.util.HashMap">
+	update categories set update_time=#{update_time},description=#{description},name=#{name},parent_id=#{parent_id},slug=#{slug},
+	slug_name=#{slug_name},thumbnail=#{thumbnail}
+	where siteid=#{siteid} and id=#{id}
+	</update>
+	<delete id="d" parameterType="java.util.HashMap">
+		delete from categories where siteid=#{siteid} and id=#{id}
+	</delete>
 
 
 

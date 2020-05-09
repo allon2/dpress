@@ -24,8 +24,11 @@
 			 select  count(1) as ct from post_tags posttag, posts post where posttag.id = #{tagid} and
 		post.id = posttag.post_id and post.status = 0
 		and posttag.siteid=#{siteid} and post.siteid=#{siteid}
-		 limit #{start},10
 
+
+	</select>
+	<select id="qcountbytagid"  resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from post_tags where siteid=#{siteid} and tag_id=#{tag_id}
 	</select>
 
 	<select id="qtagbypostid" resultType="java.util.HashMap" parameterType="java.util.HashMap">
