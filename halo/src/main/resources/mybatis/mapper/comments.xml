@@ -20,6 +20,10 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 	delete from comments where siteid=#{siteid}
 			and id=#{id}
 	</delete>
+	<select id="qcountbypostid" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from comments where
+		siteid=#{siteid} and post_id=#{post_id}
+	</select>
 	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
 		select count(1) from comments where
 		siteid=#{siteid}

@@ -191,6 +191,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         map.put("format_content",map.get("original_content"));
         map.put("editor_type","0");
         map.put("likes","0");
+        map.put("visits",0);
 
         sqlSession.insert("posts.i",map);
 
@@ -223,6 +224,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         map.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("edit_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("type","0");
+        map.put("visits",0);
         sqlSession.insert("posts.i",map);
 
         Map rtnMap=sqlSession.selectOne("posts.qbyslug",map);
@@ -237,6 +239,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         map.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("siteid",siteid);
+        map.put("parent_id",0);
         sqlSession.insert("categories.i",map);
 
     }

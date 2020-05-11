@@ -21,6 +21,9 @@ public class TagAddActor implements Actor<ServletMessage> {
         map.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("siteid", Utils.getSiteId());
+        if(!map.containsKey("slug")){
+            map.put("slug",map.get("name"));
+        }
         sqlSession.update("tags.i",map);
         return new HashMap<>();
     }

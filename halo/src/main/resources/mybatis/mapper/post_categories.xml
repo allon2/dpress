@@ -7,6 +7,9 @@
 		 select category_id   from post_categories  where
 		 post_id=#{postid} and siteid=#{siteid}
 	</select>
+
+
+
 	<select id="qBySlug" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
 		 select category_id   from post_categories  where
 		 post_id=#{postid} and siteid=#{siteid}

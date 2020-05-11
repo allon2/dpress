@@ -100,5 +100,12 @@ where type=0 and siteid=#{siteid}
 		</if>
 
 	</select>
+	<update id="ustatusbyid" parameterType="java.util.HashMap">
+
+		update posts set status=#{status} where id=#{id} and siteid=#{siteid}
+	</update>
+	<delete id="d" parameterType="java.util.HashMap">
+delete from posts where id=#{id} and siteid=#{siteid}
+	</delete>
 
 </mapper>

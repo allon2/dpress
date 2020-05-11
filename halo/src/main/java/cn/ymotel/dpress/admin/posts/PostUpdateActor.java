@@ -10,7 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.HashMap;
 import java.util.List;
 
-@ActorCfg(urlPatterns = "/api/admin/posts/{postid}",methods = RequestMethod.PUT)
+//@ActorCfg(urlPatterns = "/api/admin/posts/{postid}",methods = RequestMethod.PUT)
 public class PostUpdateActor implements Actor<ServletMessage> {
     @Autowired
     private SqlSession sqlSession;

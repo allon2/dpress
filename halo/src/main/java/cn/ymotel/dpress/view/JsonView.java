@@ -50,7 +50,7 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
 
     @Override
     public void exceptionRender(ServletMessage message, String viewName) {
-        message.getException();
+        message.getException().printStackTrace();
         Map map=new HashMap();
         map.put("message",message.getException().getMessage());
         map.put("status", HttpStatus.BAD_REQUEST.value());
