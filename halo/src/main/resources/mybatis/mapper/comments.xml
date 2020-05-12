@@ -20,6 +20,10 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 	delete from comments where siteid=#{siteid}
 			and id=#{id}
 	</delete>
+	<delete id="dbyparentId"  parameterType="java.util.Map">
+	delete from comments where siteid=#{siteid}
+			and parent_id=#{parent_id}
+	</delete>
 	<select id="qcountbypostid" resultType="java.lang.Long" parameterType="java.util.HashMap">
 		select count(1) from comments where
 		siteid=#{siteid} and post_id=#{post_id}
@@ -79,5 +83,11 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 		order by create_time desc
 		limit #{start},#{size}
 
+	</select>
+	<select id="qallbypostid" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+select id,type,create_time as createTime,update_time as updateTime,allow_notification,author,author_url as authorUrl ,content,email,gravatar_md5 as gravatarMd5 ,ip_address as ipAddress,is_admin as isAdmin ,parent_id as parentId ,post_id,status,top_priority,user_agent as userAgent
+		from comments where
+				siteid=#{siteid}
+		and type=#{type} and post_id=#{post_id}
 	</select>
 </mapper>

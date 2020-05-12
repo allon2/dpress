@@ -8,6 +8,7 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import run.halo.app.model.support.CommentPage;
 
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
@@ -37,10 +38,16 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
             dataMap.put("isLast",page.isLast());
             dataMap.put("isEmpty",page.isEmpty());
             dataMap.put("hasContent",page.hasContent());
+            if (obj instanceof CommentPage) {
+                CommentPage commentPage = (CommentPage) page;
+                dataMap.put("commentPage",commentPage.getCommentCount());
+            }
             rtnMap.put("data", dataMap);
+
         }else {
             rtnMap.put("data", obj);
         }
+
         rtnMap.put("status",HttpStatus.OK.value());
         rtnMap.put("message",HttpStatus.OK.getReasonPhrase());
        String json= JSON.toJSONString(rtnMap);

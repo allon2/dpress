@@ -20,18 +20,102 @@
           >
 
             <a-steps :current="stepCurrent">
+              <a-step title="数据库信息">
+              </a-step>
               <a-step title="博主信息">
               </a-step>
               <a-step title="博客信息">
               </a-step>
-              <a-step title="数据导入">
-              </a-step>
+
             </a-steps>
             <a-divider dashed />
+            <!-- DB info -->
+
+            <a-form
+              :form="dbForm"
+              layout="horizontal"
+              v-show="stepCurrent == 0"
+            >
+              <a-form-item class="animated fadeInUp">
+                <a-input
+                  v-model="installation.dbhost"
+                  placeholder="Host"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="link"
+                    style="color: rgba(0,0,0,.25)"
+                  />
+                </a-input>
+              </a-form-item>
+              <a-form-item
+                class="animated fadeInUp"
+                :style="{'animation-delay': '0.2s'}"
+              >
+                <a-input
+                  v-model="installation.dbport"
+                  placeholder="Port"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="book"
+                    style="color: rgba(0,0,0,.25)"
+                  />
+                </a-input>
+              </a-form-item>
+              <a-form-item
+                class="animated fadeInUp"
+                :style="{'animation-delay': '0.2s'}"
+              >
+                <a-input
+                  v-model="installation.dbname"
+                  placeholder="DbName"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="book"
+                    style="color: rgba(0,0,0,.25)"
+                  />
+                </a-input>
+              </a-form-item>
+              <a-form-item
+                class="animated fadeInUp"
+                :style="{'animation-delay': '0.2s'}"
+              >
+                <a-input
+                  v-model="installation.dbusername"
+                  placeholder="DbName"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="book"
+                    style="color: rgba(0,0,0,.25)"
+                  />
+                </a-input>
+              </a-form-item>
+              <a-form-item
+                class="animated fadeInUp"
+                :style="{'animation-delay': '0.2s'}"
+              >
+                <a-input
+                  type="password"
+
+                  v-model="installation.dbpassword"
+                  placeholder="Password"
+                >
+                  <a-icon
+                    slot="prefix"
+                    type="book"
+                    style="color: rgba(0,0,0,.25)"
+                  />
+                </a-input>
+              </a-form-item>
+            </a-form>
+            <!-- DB info -->
             <!-- Blogger info -->
             <a-form
               layout="horizontal"
-              v-show="stepCurrent == 0"
+              v-show="stepCurrent == 1"
               :form="bloggerForm"
             >
               <a-form-item class="animated fadeInUp">
@@ -130,7 +214,7 @@
 
             <a-form
               layout="horizontal"
-              v-show="stepCurrent == 1"
+              v-show="stepCurrent == 2"
             >
               <a-form-item class="animated fadeInUp">
                 <a-input
@@ -160,23 +244,6 @@
                 </a-input>
               </a-form-item>
             </a-form>
-
-            <!-- Data migration -->
-            <div v-show="stepCurrent == 2">
-              <a-alert
-                style="margin-bottom: 1rem"
-                message="如果有数据导入需求，请点击并选择之前导出的文件。需要注意的是，并不是所有数据都会导入，该初始化表单的数据会覆盖你导入的数据。"
-                type="info"
-              />
-              <FilePondUpload
-                ref="upload"
-                name="file"
-                accept="application/json"
-                label="拖拽或点击选择数据文件，请确认是否为 Halo 后台导出的文件。"
-                :multiple="false"
-                :uploadHandler="handleMigrationUpload"
-              ></FilePondUpload>
-            </div>
 
             <a-row
               class="install-action"
@@ -221,7 +288,9 @@ export default {
       installation: {},
       stepCurrent: 0,
       migrationData: null,
-      bloggerForm: this.$form.createForm(this)
+      bloggerForm: this.$form.createForm(this),
+      dbForm: this.$form.createForm(this)
+
     }
   },
   created() {
@@ -238,14 +307,15 @@ export default {
     },
     handleNextStep(e) {
       e.preventDefault()
-      this.bloggerForm.validateFields((error, values) => {
-        this.$log.debug('error', error)
-        this.$log.debug('Received values of form: ', values)
-        if (error != null) {
-        } else {
-          this.stepCurrent++
-        }
-      })
+      this.stepCurrent++
+      // this.bloggerForm.validateFields((error, values) => {
+      //   this.$log.debug('error', error)
+      //   this.$log.debug('Received values of form: ', values)
+      //   if (error != null) {
+      //   } else {
+      //     this.stepCurrent++
+      //   }
+      // })
     },
     handleMigrationUpload(data) {
       this.$log.debug('Selected data', data)
