@@ -28,8 +28,8 @@ public class CategoriesListActor implements Actor<ServletMessage> {
             Map tMap=(Map)list.get(i);
             Map tmpMap=new HashMap();
             tmpMap.put("siteid",Utils.getSiteIdFromMessage(message));
-            tmpMap.put("postid",tMap.get("id"));
-            Map rtnMap=sqlSession.selectOne("post_categories.qpostcountbycategoriesId",tMap);
+            tmpMap.put("category_id",tMap.get("id"));
+            Map rtnMap=sqlSession.selectOne("post_categories.qpostcountbycategoriesId",tmpMap);
             tMap.put("postCount",rtnMap.get("ct"));
             String fullpath="/"+optionsService.getOption(Utils.getSiteId(),OptionsService.CATEGORIES_PREFIX,"categories");
             fullpath=fullpath+"/"+tMap.get("slug");

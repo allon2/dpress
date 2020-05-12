@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="journals" >
+
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from journals  where  siteid=#{siteid}
+	</select>
+	<insert id="i" parameterType="java.util.HashMap">
+		insert into journals (
+		create_time,update_time,content,likes,source_content,type,siteid
+		)
+		values(
+		#{create_time},#{update_time},#{content},#{likes},#{sourceContent},#{type},#{siteid}
+		)
+	</insert>
+	<update id="u" parameterType="java.util.HashMap">
+		update journals set
+		update_time=#{update_time},content=#{content},likes=#{likes},source_content=#{sourceContent}
+		,type=#{type} where siteid=#{siteid} and id=#{id}
+	</update>
+	<delete id="d" parameterType="java.util.HashMap">
+	delete from journals where siteid=#{siteid} and id=#{id}
+	</delete>
+	<select id="qlimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time as createTime ,update_time as updateTime ,content,likes,source_content as sourceContent,type from  journals where siteid=#{siteid}
+		<if test="type!=null">
+			and type=#{type}
+		</if>
+		 order by create_time desc
+		limit #{start},#{size}
+	</select>
+	<select id="qlimitcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from  journals where siteid=#{siteid}
+		<if test="type!=null">
+			and type=#{type}
+		</if>
+	</select>
+	<select id="qone" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time as createTime ,update_time as updateTime,content,likes,source_content as sourceContent,type from  journals where siteid=#{siteid} and id=#{id}
+	</select>
+</mapper>

@@ -32,9 +32,17 @@
 
 	</select>
 	<select id="qpostcountbycategoriesId" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-		select count(1) as ct from post_categories where siteid=#{siteid} and post_id=#{postid}
+		select count(1) as ct from post_categories where siteid=#{siteid} and category_id=#{category_id}
 	</select>
-
+<delete id="dbypostid" parameterType="java.util.HashMap">
+delete from post_categories where siteid=#{siteid} and post_id=#{post_id}
+</delete>
+	<insert id="i" parameterType="java.util.HashMap">
+	insert into post_categories(create_time,update_time,category_id,post_id,siteid)
+	values(
+	#{create_time},#{update_time},#{category_id},#{post_id},#{siteid}
+	)
+	</insert>
 
 
 </mapper>

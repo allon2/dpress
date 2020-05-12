@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="links" >
+
+
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from links  where  siteid=#{siteid}
+	</select>
+	<insert id="i" parameterType="java.util.HashMap">
+insert into links (
+create_time,update_time,description,logo,name,priority,team,url,siteid
+) values (
+#{create_time},#{update_time},#{description},#{logo},#{name},#{priority},#{team},#{url},#{siteid}
+
+)
+	</insert>
+	<update id="u" parameterType="java.util.HashMap">
+update links set
+update_time=#{update_time},description=#{description},logo=#{logo},name=#{name},
+priority=#{priority},team=#{team},url=#{url}
+where siteid=#{siteid} and id=#{id}
+	</update>
+	<delete id="d" parameterType="java.util.HashMap">
+delete from links  where  siteid=#{siteid} and id=#{id}
+	</delete>
+	<select id="qall" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	select id,description,logo,name,priority,team,url,siteid from links where siteid=#{siteid}
+	</select>
+	<select id="qdetail" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+	select id,description,logo,name,priority,team,url,siteid from links where siteid=#{siteid} and id=#{id}
+	</select>
+</mapper>

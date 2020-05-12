@@ -35,7 +35,8 @@ public class LogController {
     @GetMapping("latest")
     @ApiOperation("Pages latest logs")
     public List<LogDTO> pageLatest(@RequestParam(name = "top", defaultValue = "10") int top) {
-        return logService.pageLatest(top).getContent();
+        List ls= logService.pageLatest(top).getContent();
+        return ls;
     }
 
     @GetMapping

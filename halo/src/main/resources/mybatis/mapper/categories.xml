@@ -38,7 +38,9 @@
 		delete from categories where siteid=#{siteid} and id=#{id}
 	</delete>
 
-
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from categories  where siteid=#{siteid}
+	</select>
 
 
 

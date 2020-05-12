@@ -34,6 +34,18 @@
 
 		and siteid=#{siteid}
 	</select>
+	<delete id="dbypostid" parameterType="java.util.HashMap">
+delete from post_tags where
+post_id =#{post_id}
+
+		and siteid=#{siteid}
+	</delete>
+	<insert id="i" parameterType="java.util.HashMap">
+		insert into post_tags(create_time,update_time,post_id,tag_id,siteid) values(
+		#{create_time},#{update_time},#{post_id},#{tag_id},#{siteid}
+
+		)
+	</insert>
 
 
 </mapper>

@@ -322,7 +322,7 @@ CREATE TABLE tags  (
   thumbnail varchar(1023)   NULL DEFAULT NULL,
   siteid bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
-  UNIQUE INDEX UK_sn0d91hxu700qcw0n4pebp5vc(slug) USING BTREE,
+  UNIQUE INDEX UK_sn0d91hxu700qcw0n4pebp5vc(slug,siteid) USING BTREE,
   INDEX tags_name(name) USING BTREE
 );
 

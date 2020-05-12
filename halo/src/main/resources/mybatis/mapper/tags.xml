@@ -34,5 +34,7 @@
 	delete from tags where siteid=#{siteid} and id=#{id}
 	</delete>
 
-
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from tags  where  siteid=#{siteid}
+	</select>
 </mapper>

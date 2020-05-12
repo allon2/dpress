@@ -57,5 +57,7 @@
 			and name like #{keyword}
 		</if>
 	</select>
-
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from attachments  where   siteid=#{siteid}
+	</select>
 </mapper>

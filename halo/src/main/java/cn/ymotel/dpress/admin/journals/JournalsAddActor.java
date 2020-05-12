@@ -1,0 +1,31 @@
+package cn.ymotel.dpress.admin.journals;
+
+import cn.ymotel.dactor.action.Actor;
+import cn.ymotel.dactor.message.ServletMessage;
+import cn.ymotel.dactor.spring.annotaion.ActorCfg;
+import cn.ymotel.dpress.Utils;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.RequestMethod;
+import run.halo.app.model.enums.JournalType;
+import run.halo.app.utils.MarkdownUtils;
+
+import java.util.HashMap;
+import java.util.Map;
+
+@ActorCfg(urlPatterns = "/api/admin/journals",methods = RequestMethod.POST)
+public class JournalsAddActor implements Actor<ServletMessage> {
+    @Autowired
+    private SqlSession sqlSession;
+    @Override
+    public Map Execute(ServletMessage message) throws Throwable {
+        Map map=message.getContext();
+        map.put("siteid", Utils.getSiteId());
+        map.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
+        map.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
+        map.put("type", JournalType.valueOf((String)map.get("type")).getValue());
+        map.put("content",MarkdownUtils.renderHtml((String)map.get("sourceContent")));
+        sqlSession.insert("journals.i",map);
+        return new HashMap();
+    }
+}

@@ -78,7 +78,10 @@ public class PostListActor  implements Actor<ServletMessage> {
             Map ttMap=new HashMap();
             ttMap.put("siteid",siteid);
             ttMap.put("id",tListMap.get("category_id"));
-            rtnList.add(sqlSession.selectOne("categories.qdetailbypostid",ttMap));
+            Object obj=sqlSession.selectOne("categories.qdetailbypostid",ttMap);
+            if(obj!=null) {
+                rtnList.add(obj);
+            }
         }
         return rtnList;
     }

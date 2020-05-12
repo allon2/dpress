@@ -8,6 +8,9 @@
 		select id,create_time,update_time,meta_key,post_id,meta_value from metas where
 		siteid=#{siteid} and post_id=#{post_id} and type=#{type}
 	</select>
+	<delete id="d" parameterType="java.util.HashMap">
+delete from metas where siteid=#{siteid} and post_id=#{post_id}
+	</delete>
 
 
 </mapper>

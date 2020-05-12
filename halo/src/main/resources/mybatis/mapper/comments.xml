@@ -64,5 +64,20 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 		limit #{start},#{size}
 
 	</select>
+	<select id="qcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from comments  where type=0 and   siteid=#{siteid}
+	</select>
+	<select id="qpostlimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,type,create_time as createTime,update_time as updateTime,allow_notification,author,author_url as authorUrl ,content,email,gravatar_md5 as gravatarMd5 ,ip_address as ipAddress,is_admin as isAdmin ,parent_id as parentId ,post_id,status,top_priority,user_agent as userAgent
+		from comments where
+		siteid=#{siteid}
+		<if test="status != null">
+			and
+			status=#{status}
+		</if>
+		and type=#{type}
+		order by create_time desc
+		limit #{start},#{size}
 
+	</select>
 </mapper>
