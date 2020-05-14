@@ -80,7 +80,8 @@ public class UserServiceImpl extends AbstractCrudService<User, Integer> implemen
 
     @Override
     public Optional<User> getByUsername(String username) {
-        return userRepository.findByUsername(username);
+        Optional<User> user= userRepository.findByUsername(username);
+        return  user;
     }
 
     @Override

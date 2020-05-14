@@ -1,4 +1,4 @@
-package cn.ymotel.dpress.admin;
+package cn.ymotel.dpress.admin.statistics;
 
 import cn.ymotel.dactor.action.Actor;
 import cn.ymotel.dactor.message.ServletMessage;

@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="photos" >
+
+
+	<select id="qlimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time as createTime,update_time as updateTime ,description,location,name,take_time as takeTime,team,thumbnail,url
+ from photos where
+ siteid=#{siteid}
+		<if test="team != null">
+			and
+			team=#{team}
+		</if>
+		<if test="keyword != null">
+
+			and name like #{keyword}
+		</if>
+		order by create_time desc
+		limit #{start},#{size}
+
+	</select>
+
+	<select id="qlimitcount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select  count(1)
+		from photos where
+		siteid=#{siteid}
+		<if test="team != null">
+			and
+			team=#{team}
+		</if>
+		<if test="keyword != null">
+
+			and name like #{keyword}
+		</if>
+	</select>
+	<select id="qteams"  resultType="java.lang.String" parameterType="java.util.HashMap">
+		select distinct team from photos  where 	siteid=#{siteid}
+	</select>
+	<insert id="i" parameterType="java.util.HashMap">
+		insert into photos(
+create_time,update_time,description,location,name,take_time,team,thumbnail,url,siteid
+		)  values (
+#{create_time},#{update_time},#{description},#{location},#{name},#{take_time},#{team},#{thumbnail},#{url},#{siteid}
+
+		)
+	</insert>
+	<delete id="d"   parameterType="java.util.HashMap">
+	delete from photos where siteid=#{siteid} and id=#{id}
+	</delete>
+	<update id="u" parameterType="java.util.HashMap">
+		update photos set
+		update_time=#{update_time},description=#{description},location=#{location},name=#{name},take_time=#{take_time},team=#{team},thumbnail=#{thumbnail},url=#{url}
+
+		where siteid=#{siteid} and id=#{id}
+	</update>
+
+</mapper>

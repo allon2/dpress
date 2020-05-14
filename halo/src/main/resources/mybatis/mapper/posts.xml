@@ -42,10 +42,10 @@
  		insert into posts (
 type,create_time,update_time,edit_time,editor_type,format_content,likes
 ,meta_description,meta_keywords,original_content,password,slug,
-status,summary,template,thumbnail,title,top_priority,url,visits,siteid
+status,summary,template,thumbnail,title,top_priority,url,visits,siteid,disallow_comment
  		) values(
 #{type},#{create_time},#{update_time},#{edit_time},#{editor_type},#{format_content},#{likes},#{meta_description},#{meta_keywords},#{original_content},#{password},#{slug}
-,#{status},#{summary},#{template},#{thumbnail},#{title},#{top_priority},#{url},#{visits},#{siteid}
+,#{status},#{summary},#{template},#{thumbnail},#{title},#{top_priority},#{url},#{visits},#{siteid},#{disallow_comment}
  		)
 	</insert>
 	<select id="q" resultType="java.util.HashMap" parameterType="java.util.HashMap">
@@ -78,6 +78,14 @@ and status=#{status}
 		update posts set  update_time=#{update_time}, disallow_comment=#{disallow_comment}, edit_time=#{edit_time},
 		 editor_type=#{editor_type}, format_content=#{format_content}, likes=#{likes}, meta_description=#{meta_description},
 		 meta_keywords=#{meta_keywords},
+		 original_content=#{original_content}, password=#{password}, slug=#{slug}, status=#{status}, summary=#{summary},
+		 template=#{template}, thumbnail=#{thumbnail}, title=#{title}, top_priority=#{top_priority}, url=#{url}
+		where id=#{id} and siteid=#{siteid}
+	</update>
+	<update id="u2" parameterType="java.util.HashMap">
+		update posts set  update_time=#{update_time}, disallow_comment=#{disallow_comment}, edit_time=#{edit_time},
+		 editor_type=#{editor_type}, format_content=#{format_content}, likes=#{likes}, meta_description=#{meta_description},
+		 meta_keywords=#{meta_keywords},create_time=#{create_time},
 		 original_content=#{original_content}, password=#{password}, slug=#{slug}, status=#{status}, summary=#{summary},
 		 template=#{template}, thumbnail=#{thumbnail}, title=#{title}, top_priority=#{top_priority}, url=#{url}
 		where id=#{id} and siteid=#{siteid}
@@ -117,8 +125,29 @@ delete from posts where id=#{id} and siteid=#{siteid}
 			select sum(likes) as ct from posts  where type=#{type}  and siteid=#{siteid}
 	</select>
 	<select id="qsheetlimit"  resultType="java.util.HashMap" parameterType="java.util.HashMap">
-		select id , create_time  as createTime  , siteid , update_time , disallow_comment , edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
-		top_priority , url , visits from posts a
+		select id , create_time  as createTime  , siteid , update_time  as updateTime , disallow_comment as disallowComment , edit_time as editTime , editor_type as editorType  , format_content , likes , meta_description as metaDescription , meta_keywords  as metaKeywords, original_content , password , slug , status , summary , template , thumbnail, title ,
+		top_priority  as topPriority, url , visits from posts a
+
+
+		where type=1 and siteid=#{siteid}
+		<if test="status != null">
+
+			and status=#{status}
+		</if>
+		<if test="categoryId != null">
+
+			and (exists (select post_id from post_categories  where a.id=post_id and category_id=#{categoryId}))
+		</if>
+		<if test="keyword1 != null">
+
+			and (title like #{keyword} or original_content like #{keyword})
+		</if>
+
+		order by top_priority desc, create_time desc limit #{start},#{size}
+
+	</select>
+	<select id="qsheetlimitcount"  resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(id) from posts a
 
 
 		where type=1 and siteid=#{siteid}

@@ -130,6 +130,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
             map.put("url", "/");
             map.put("priority",1);
             map.put("target","_self");
+            map.put("parent_id",0);
             sqlSession.insert("menus.i",map);
         }
         {
@@ -138,6 +139,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
             map.put("url", "/archives");
             map.put("priority",2);
             map.put("target","_self");
+            map.put("parent_id",0);
             sqlSession.insert("menus.i",map);
         }
         {
@@ -146,6 +148,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
             map.put("url", "/categories/default");
             map.put("priority",3);
             map.put("target","_self");
+            map.put("parent_id",0);
             sqlSession.insert("menus.i",map);
         }
         {
@@ -154,6 +157,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
             map.put("url", "/s/about");
             map.put("priority",4);
             map.put("target","_self");
+            map.put("parent_id",0);
             sqlSession.insert("menus.i",map);
         }
 

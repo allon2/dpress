@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="statistics" >
+	<select id="postCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(id)  from posts  where type=0 and status=0
+	</select>
+	<select id="postCommentCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(id)  from comments  where type=0 and status=0
+	</select>
+	<select id="sheetCommentCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(id)  from comments  where type=1 and status=0
+	</select>
+	<select id="journalCommentCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(id)  from comments  where type=2 and status=0
+	</select>
+
+	<select id="categoryCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*)  from categories
+	</select>
+	<select id="attachmentCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*)  from attachments
+	</select>
+	<select id="tagCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*)  from tags
+	</select>
+	<select id="journalCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*)  from journals
+	</select>
+	<select id="linkCount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*)  from links
+	</select>
+	<select id="postvisitscount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select sum(visits)  from posts   where type=0
+	</select>
+	<select id="sheetvisitscount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select sum(visits)  from posts   where type=1
+	</select>
+
+	<select id="sheetlikescount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select sum(likes)  from posts   where type=1
+	</select>
+	<select id="postlikescount" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select sum(likes)  from posts   where type=0
+	</select>
+	<select id="quser" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time as createTime ,update_time as updateTime,avatar,description,email,expire_time,nickname,password,username from users
+	</select>
+
+
+</mapper>

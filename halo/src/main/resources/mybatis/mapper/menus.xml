@@ -25,6 +25,23 @@
 		)
 	</insert>
 
-
+	<select id="qall1" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime, siteid , update_time  as updateTime, icon , name , parent_id  as parentId , priority , target, team , url from menus
+		 where siteid=#{siteid}
+	</select>
+	<select id="qteams" resultType="java.lang.String" parameterType="java.util.HashMap">
+		select distinct team from menus  where siteid=#{siteid}
+	</select>
+	<update id="u" parameterType="java.util.HashMap">
+			update menus set
+			update_time=#{update_time},icon=#{icon},name=#{name},parent_id=#{parentId},priority=#{priority},target=#{target},team=#{team},url=#{url}
+			where siteid=#{siteid} and id=#{id}
+	</update>
+<delete id="d" parameterType="java.util.HashMap">
+	delete menus where siteid=#{siteid} and id=#{id}
+</delete>
+	<delete id="dbyparentid" parameterType="java.util.HashMap">
+	delete menus where siteid=#{siteid} and parent_id=#{parent_id}
+</delete>
 
 </mapper>

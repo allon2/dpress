@@ -6,6 +6,9 @@
 	<select id="qall" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
 		select id,create_time,update_time,option_key,type,option_value,siteid from options where siteid=#{siteid}
 	</select>
+	<select id="qall1" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time,update_time,option_key,type,option_value,siteid from options where siteid=#{siteid}
+	</select>
 	<update id="uoption"  parameterType="java.util.Map">
 	update options set  update_time=#{update_time},option_value=#{option_value}  where   siteid=#{siteid} and option_key=#{option_key}
 	</update>
