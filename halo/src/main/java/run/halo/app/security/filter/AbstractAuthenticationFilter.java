@@ -175,11 +175,15 @@ public abstract class AbstractAuthenticationFilter extends OncePerRequestFilter 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
         // Check whether the blog is installed or not
-        Boolean isInstalled = optionService.getByPropertyOrDefault(PrimaryProperties.IS_INSTALLED, Boolean.class, false);
-//        Boolean isInstalled= Utils.isInstall();
-        if (!isInstalled && !Mode.TEST.equals(haloProperties.getMode())) {
-            // If not installed
-            getFailureHandler().onFailure(request, response, new NotInstallException("当前博客还没有初始化"));
+//        Boolean isInstalled = optionService.getByPropertyOrDefault(PrimaryProperties.IS_INSTALLED, Boolean.class, false);
+////        Boolean isInstalled= Utils.isInstall();
+//        if (!isInstalled && !Mode.TEST.equals(haloProperties.getMode())) {
+//            // If not installed
+//            getFailureHandler().onFailure(request, response, new NotInstallException("当前博客还没有初始化"));
+//            return;
+//        }
+        if(!Utils.isInstall()){
+             getFailureHandler().onFailure(request, response, new NotInstallException("当前博客还没有初始化"));
             return;
         }
 

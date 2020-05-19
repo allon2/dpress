@@ -8,6 +8,9 @@ import com.alibaba.fastjson.JSON;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
+import org.springframework.util.PathMatcher;
+import run.halo.app.exception.AbstractHaloException;
 import run.halo.app.model.support.CommentPage;
 
 import javax.servlet.http.HttpServletResponse;
@@ -23,6 +26,10 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
     @Override
     public void successRender(ServletMessage message, String viewName) {
         Object obj=message.getContextData(Constants.CONTENT);
+        if(obj instanceof  String){
+            writeString(message,(String)obj,null);
+            return;
+        }
         Map rtnMap=new HashMap();
         if(obj instanceof Page){
             Page page=(Page)obj;
@@ -57,12 +64,16 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
 
     @Override
     public void exceptionRender(ServletMessage message, String viewName) {
-        message.getException().printStackTrace();
+        HttpStatus status=HttpStatus.BAD_REQUEST;
         Map map=new HashMap();
+        if(message.getException() instanceof AbstractHaloException){
+            status=((AbstractHaloException)message.getException()).getStatus();
+            map.put("data",((AbstractHaloException)message.getException()).getErrorData());
+        };
         map.put("message",message.getException().getMessage());
-        map.put("status", HttpStatus.BAD_REQUEST.value());
+        map.put("status", status.value());
         String json= JSON.toJSONString(map);
-        writeString(message,json,HttpStatus.BAD_REQUEST);
+        writeString(message,json,status);
     }
     public void writeString(ServletMessage message,String string,HttpStatus status){
         try {
@@ -87,4 +98,13 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
         return "/api/admin/**";
     }
 
+    @Override
+    public String getExcludeUrlPattern() {
+        return "/api/admin/**/*.json";
+    }
+    public static void main(String[] args){
+        PathMatcher matcher=new AntPathMatcher();
+        boolean b=matcher.match("/api/admin/**/*.json","/api/admin/site/list.json");
+        System.out.println(b);
+    }
 }
