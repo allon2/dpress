@@ -22,4 +22,7 @@ yarn-error.log*
 *.sw*
 *build*
 *.gradle*
+*.classpath*
+*.project*
+
 
