@@ -5,6 +5,7 @@
     "serve": "vue-cli-service serve",
     "build": "vue-cli-service build",
     "build-jsdelivr": "vue-cli-service build --mode jsdelivr",
+    "build-github": "vue-cli-service build --mode github",
     "lint": "vue-cli-service lint",
     "test:unit": "vue-cli-service test:unit"
   },
