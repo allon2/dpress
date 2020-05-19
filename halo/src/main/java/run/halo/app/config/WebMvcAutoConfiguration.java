@@ -117,7 +117,7 @@ public class WebMvcAutoConfiguration extends WebMvcConfigurationSupport {
         registry.addResourceHandler(uploadUrlPattern)
             .addResourceLocations(workDir + "upload/");
         registry.addResourceHandler(adminPathPattern)
-            .addResourceLocations("classpath*:/admin/");
+            .addResourceLocations("classpath:/admin/");
 
         if (!haloProperties.isDocDisabled()) {
             // If doc is enable
