@@ -5,6 +5,7 @@ import cn.ymotel.dpress.actor.FreemarkerActor;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import org.springframework.util.AntPathMatcher;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 import org.springframework.web.util.UrlPathHelper;
@@ -13,17 +14,26 @@ import javax.servlet.*;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 @Component
 public class SiteIdFilter implements Filter {
     @Autowired
     private SqlSession sqlSession;
     private UrlPathHelper urlPathHelper=new UrlPathHelper();
-
+    private AntPathMatcher antPathMatcher=new AntPathMatcher();
+    private List<String> installSkipList=new ArrayList<>();
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         urlPathHelper.setAlwaysUseFullPath(false);
+        antPathMatcher.setCaseSensitive(false);
+        installSkipList.add("/admin/**");
+        installSkipList.add("/api/admin/installations");
+        installSkipList.add("/api/admin/is_installed");
+        installSkipList.add("/install");
+
     }
 
     private void SaveSiteId(HttpServletRequest request){
@@ -51,20 +61,26 @@ public class SiteIdFilter implements Filter {
             }
         }
     }
+    private boolean isInStallPath(String path){
+        for(int i=0;i<installSkipList.size();i++){
+           boolean b= antPathMatcher.match(installSkipList.get(i),path);
+           if(b){
+               return true;
+           }
+        }
+        return false;
+    }
     @Override
     public void doFilter(ServletRequest request, ServletResponse response, FilterChain chain) throws IOException, ServletException {
         Boolean isInstalled= Utils.isInstall();
         String path=urlPathHelper.getLookupPathForRequest((HttpServletRequest) request);
         if(!isInstalled){//未安装
-            if(path.startsWith("/api/admin/installations")||path.startsWith("/api/admin/is_installed"))
-            {
+            if(isInStallPath(path)){
                 chain.doFilter(request,response);
-                return ;
-            }else {
-
-                ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/install");
-                return;
+            }else{
+                               ((HttpServletResponse) response).sendRedirect(((HttpServletRequest) request).getContextPath() + "/install");
             }
+            return ;
         }
         {
             if(path.startsWith("/api/admin")){
@@ -72,7 +88,6 @@ public class SiteIdFilter implements Filter {
                 chain.doFilter(request,response);
                     return ;
             }
-
 
         }
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes((HttpServletRequest) request,(HttpServletResponse) response),false);
