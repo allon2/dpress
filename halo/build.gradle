@@ -29,7 +29,7 @@ repositories {
 
 configurations {
     implementation {
-        exclude module: 'spring-boot-starter-tomcat'
+//        exclude module: 'spring-boot-starter-tomcat'
         exclude module: 'slf4j-log4j12'
     }
 
@@ -78,7 +78,10 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-actuator'
     implementation 'org.springframework.boot:spring-boot-starter-data-jpa'
     implementation 'org.springframework.boot:spring-boot-starter-web'
+//    //begin jar
 //    implementation 'org.springframework.boot:spring-boot-starter-undertow'
+//
+//    // end jar
     implementation 'org.springframework.boot:spring-boot-starter-freemarker'
 //  begin  web
     providedRuntime 'org.springframework.boot:spring-boot-starter-tomcat'
@@ -129,8 +132,8 @@ dependencies {
     runtimeOnly "com.h2database:h2:${h2Version}"
     runtimeOnly 'mysql:mysql-connector-java'
 
-    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.3.1.tmp'
-    compile group: 'com.baomidou', name: 'mybatis-plus-generator', version: '3.3.1.tmp'
+    compile group: 'com.baomidou', name: 'mybatis-plus-boot-starter', version: '3.3.1'
+    compile group: 'com.baomidou', name: 'mybatis-plus-generator', version: '3.3.1'
     compile group: 'cn.ymotel', name: 'dactor', version: '1.1.0'
     compile group: 'taglibs', name: 'standard', version:'1.1.2'
     compile group: 'jstl', name: 'jstl', version:'1.2'
