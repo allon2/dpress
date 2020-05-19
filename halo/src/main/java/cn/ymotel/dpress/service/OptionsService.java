@@ -30,7 +30,12 @@ public class OptionsService {
     @Autowired
     private SqlSession sqlSession;
 
-    @Cached
+    /**
+     *  60秒过期
+     * @param id
+     * @return
+     */
+    @Cached(expire = 60)
     public Map getOptions(Object id){
         Map rtnMap=new HashMap();
         Map map=new HashMap();
@@ -46,11 +51,11 @@ public class OptionsService {
        }
        return rtnMap;
     }
-    @Cached
+    @Cached(expire = 60)
     public  <T> T getOption(Object id,Object key,T defaultValue){
         return (T)getOptions(id).getOrDefault(key,defaultValue);
     }
-    @Cached
+    @Cached(expire = 60)
     public Boolean getBooleanOption(Object id,Object key,Boolean defaultValue){
         String ss=getOptions(id).getOrDefault(key,defaultValue).toString();
         return Boolean.valueOf(ss);
