@@ -31,14 +31,13 @@ public class RefreshActor implements Actor<ServletMessage> {
 
     @Autowired
     AutokenService autokenService;
-    @Autowired
-    private SqlSession sqlSession;
+
 
     @Override
     public Map Execute(ServletMessage message) throws Throwable {
 
 
-        AuthToken token= autokenService.refreshToken((User)message.getUser(),message.getContextData("refreshToken"));
+        AuthToken token= autokenService.refreshToken(message.getUser(),message.getContextData("refreshToken"));
         Map rtnMap=new HashMap();
         rtnMap.put("access_token",token.getAccessToken());
         rtnMap.put("expired_in",token.getExpiredIn());
