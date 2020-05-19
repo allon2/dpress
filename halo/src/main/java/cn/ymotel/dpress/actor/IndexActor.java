@@ -78,7 +78,7 @@ public class IndexActor extends  FreemarkerActor {
                ttMap.put("postid",tMap.get("id"));
                tMap.put("tags",sqlSession.selectList("posttag.qtagbypostid",ttMap));
                tMap.put("summary",generateSummary((String)tMap.get("format_content")));
-               tMap.put("fullPath","/archives/"+tMap.get("slug"));
+               tMap.put("fullPath","/"+optionsService.getArchives(Utils.getSiteId())+"/"+tMap.get("slug"));
            }
             Map ctMap=sqlSession.selectOne("posts.qpostscount",map);
             long total=Long.parseLong(ctMap.get("ct").toString());
@@ -91,6 +91,7 @@ public class IndexActor extends  FreemarkerActor {
         viewData.setViewName("index");
         return viewData;
     }
+
     private final Pattern summaryPattern = Pattern.compile("\\s*|\t|\r|\n");
 
     @NonNull

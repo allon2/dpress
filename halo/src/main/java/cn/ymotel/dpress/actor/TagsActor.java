@@ -1,5 +1,6 @@
 package cn.ymotel.dpress.actor;
 
+import cn.ymotel.dactor.core.DyanmicUrlPattern;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
@@ -20,18 +21,29 @@ import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+//@ActorCfg(urlPatterns = "/tags/{slug}")
 
-@ActorCfg(urlPatterns = "/tags/{slug}")
-public class TagsActor extends  FreemarkerActor {
-    @Autowired
-    private  PostService postService;
-    @Autowired
-    private  OptionService optionService;
+@ActorCfg()
+public class TagsActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
+    @Override
+    public String[] getPatterns(HttpServletRequest request) {
+        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        String archives=optionsService.getTags(siteid);
+
+//        String archives=optionsService.getOption(request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID),"archives_prefix","archives");
+        return new String[]{"/"+archives+"/{slug}"};
+    }
+//
+//    @Autowired
+//    private  PostService postService;
+//    @Autowired
+//    private  OptionService optionService;
     @Autowired
     private  PostModel postModel;
 

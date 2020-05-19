@@ -1,8 +1,10 @@
 package cn.ymotel.dpress.actor;
 
+import cn.ymotel.dactor.core.DyanmicUrlPattern;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.OptionsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,12 +19,13 @@ import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg(urlPatterns = "/archives/{slug}")
-public class ArchiveActor extends  FreemarkerActor {
+@ActorCfg( )
+public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern<HttpServletRequest> {
     @Autowired
     private SqlSession sqlSession;
     private final Pattern summaryPattern = Pattern.compile("\\s*|\t|\r|\n");
@@ -88,5 +91,14 @@ public class ArchiveActor extends  FreemarkerActor {
         viewData.setViewName("post");
         return viewData;
     }
+    @Autowired
+   private  OptionsService optionsService;
+    @Override
+    public String[] getPatterns(HttpServletRequest request) {
+        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        String archives=optionsService.getArchives(siteid);
 
+//        String archives=optionsService.getOption(request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID),"archives_prefix","archives");
+        return new String[]{"/"+archives+"/{slug}"};
+    }
 }

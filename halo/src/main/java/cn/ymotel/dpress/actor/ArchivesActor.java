@@ -1,5 +1,6 @@
 package cn.ymotel.dpress.actor;
 
+import cn.ymotel.dactor.core.DyanmicUrlPattern;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
@@ -21,13 +22,22 @@ import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
 
+import javax.servlet.http.HttpServletRequest;
 import java.util.*;
 import java.util.function.BiConsumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg(urlPatterns = {"/archives","/archives/","/archives/page/{page}"})
-public class ArchivesActor extends  FreemarkerActor {
+//@ActorCfg(urlPatterns = {"/archives","/archives/","/archives/page/{page}"})
+@ActorCfg()
+public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
+
+    @Override
+    public String[] getPatterns(HttpServletRequest request) {
+        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        String archives=optionsService.getArchives(siteid);
+        return new String[]{"/"+archives,"/"+archives+"/","/"+archives+"/page/{page}"};
+    }
     @Autowired
     private  PostService postService;
     @Autowired

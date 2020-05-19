@@ -55,9 +55,27 @@ public class OptionsService {
     public  <T> T getOption(Object id,Object key,T defaultValue){
         return (T)getOptions(id).getOrDefault(key,defaultValue);
     }
+
     @Cached(expire = 60)
     public Boolean getBooleanOption(Object id,Object key,Boolean defaultValue){
         String ss=getOptions(id).getOrDefault(key,defaultValue).toString();
         return Boolean.valueOf(ss);
+    }
+    @Cached(expire = 60)
+    public String getArchives(Object id){
+//        return getOption(id,ARCHIVES_PREFIX,"archivesabcedfafd");
+
+        return getOption(id,ARCHIVES_PREFIX,"archives");
+    }
+    @Cached(expire = 60)
+    public String getCategories(Object id){
+        return getOption(id,CATEGORIES_PREFIX,"categories");
+    }
+    @Cached(expire = 60)
+    public String getTags(Object id){
+        return getOption(id,TAGS_PREFIX,"tags");
+    }
+    public  String getSheet(Object id){
+        return  getOption(id,SHEET_PREFIX,"s");
     }
 }
