@@ -24,7 +24,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg( )
+@ActorCfg(chain = "publicchain")
 public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern<HttpServletRequest> {
     @Autowired
     private SqlSession sqlSession;

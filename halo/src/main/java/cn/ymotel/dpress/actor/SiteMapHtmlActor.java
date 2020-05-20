@@ -11,7 +11,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/sitemap.html")
+@ActorCfg(urlPatterns = "/sitemap.html",chain = "publicchain")
 public class SiteMapHtmlActor extends  FreemarkerActor {
     @Autowired
     private SqlSession sqlSession;

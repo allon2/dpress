@@ -83,7 +83,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                 message.getResponse().getWriter().print(content);
                 message.getResponse().getWriter().flush();
                 message.getAsyncContext().complete();
-                return null;
+                return message;
             }
             if (obj != null) {
                 message.getContext().put(Constants.CONTENT, obj);

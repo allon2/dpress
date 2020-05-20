@@ -29,7 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //@ActorCfg(urlPatterns = "/tags/{slug}")
 
-@ActorCfg()
+@ActorCfg(chain = "publicchain")
 public class TagsActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
     @Override
     public String[] getPatterns(HttpServletRequest request) {

@@ -1,16 +1,22 @@
 package run.halo.app;
 
+import cn.ymotel.dactor.ActorUtils;
+import cn.ymotel.dactor.core.ActorChainCfg;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
 import com.alicp.jetcache.anno.config.EnableMethodCache;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.autoconfigure.condition.ConditionalOnMissingBean;
 import org.springframework.boot.autoconfigure.flyway.FlywayAutoConfiguration;
 import org.springframework.boot.autoconfigure.jdbc.DataSourceAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.boot.web.servlet.support.SpringBootServletInitializer;
+import org.springframework.context.ApplicationContext;
 import org.springframework.context.ConfigurableApplicationContext;
+import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Lazy;
 import org.springframework.data.jpa.repository.config.EnableJpaAuditing;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -36,7 +42,8 @@ import run.halo.app.repository.base.BaseRepositoryImpl;
 public class Application extends SpringBootServletInitializer {
 
     private static ConfigurableApplicationContext CONTEXT;
-
+    @Autowired
+    private ApplicationContext applicationContext=null;
     public static void main(String[] args) {
         // Customize the spring config location
 //        System.setProperty("spring.config.additional-location", "file:${user.home}/.halo/,file:${user.home}/halo-dev/");
@@ -47,6 +54,10 @@ public class Application extends SpringBootServletInitializer {
         // Run application
         CONTEXT = springApplication.run(Application.class, args);
 
+    }
+    @Bean(name="publicchain")
+    public ActorChainCfg creatDefaultChain(){
+        return  ActorUtils.creatDefaultChain(applicationContext,"publicchain",null);
     }
 //    public Map
     public static void additionLocation(){

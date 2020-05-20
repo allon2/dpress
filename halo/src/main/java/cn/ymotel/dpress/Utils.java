@@ -59,6 +59,10 @@ public class Utils {
 
         return accessKey;
     }
+    public static  String getTokenFromRequest(@NonNull HttpServletRequest request){
+        String token= getTokenFromRequest(request, ADMIN_TOKEN_QUERY_NAME, ADMIN_TOKEN_HEADER_NAME);
+        return  token;
+    }
     public static  Object getAdminSiteId(){
 
         ServletRequestAttributes servletRequestAttributes= (ServletRequestAttributes) RequestContextHolder.getRequestAttributes();

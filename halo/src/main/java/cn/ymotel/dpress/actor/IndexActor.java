@@ -25,7 +25,7 @@ import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg(urlPatterns = {"/","/page/{page}"})
+@ActorCfg(urlPatterns = {"/","/page/{page}"},chain = "publicchain")
 public class IndexActor extends  FreemarkerActor {
     @Autowired
     private  PostService postService;

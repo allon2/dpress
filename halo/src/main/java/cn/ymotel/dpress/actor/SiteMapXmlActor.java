@@ -12,7 +12,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/sitemap.xml")
+@ActorCfg(urlPatterns = "/sitemap.xml",chain = "publicchain")
 public class SiteMapXmlActor extends  FreemarkerActor {
     @Autowired
     private SqlSession sqlSession;

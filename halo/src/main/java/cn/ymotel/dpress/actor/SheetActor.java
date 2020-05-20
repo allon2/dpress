@@ -21,7 +21,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 //@ActorCfg(urlPatterns = "/s/{slug}")
 
-@ActorCfg()
+@ActorCfg(chain = "publicchain")
 public class SheetActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
     @Autowired
     OptionsService optionsService;

@@ -29,7 +29,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //@ActorCfg(urlPatterns = {"/archives","/archives/","/archives/page/{page}"})
-@ActorCfg()
+@ActorCfg(chain = "publicchain")
 public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
 
     @Override
