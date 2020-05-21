@@ -15,7 +15,7 @@
         <div class="card-container">
           <a-card
             :bordered="false"
-            title="Halo 安装向导"
+            title="Dpress 安装向导"
             style="box-shadow: 0px 10px 20px 0px rgba(236, 236, 236, 0.86);"
           >
 

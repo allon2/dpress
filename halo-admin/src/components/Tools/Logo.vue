@@ -4,7 +4,7 @@
       href="javascript:void(0);"
       @click="onLogoClick()"
     >
-      <h1 class="logo-title">Halo</h1>
+      <h1 class="logo-title">Dpress</h1>
       <h1
         class="logo-sub-title"
         style="padding-left: 10px;"
