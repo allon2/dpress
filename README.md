@@ -13,15 +13,15 @@ dpress1.0 beta版本
 安装步骤
 1:浏览器中输入http://localhost:8090  
 2:填写数据库信息  
-![](docs/images/1590030875.png)  
+![image](docs/images/1590030875.png)  
 3:填写个人信息  
-![](docs/images/1590031992.png)  
+![Image text](docs/images/1590031992.png)  
 4:填写博客信息  
-![](docs/images/1590032029.png)  
+![Image text](docs/images/1590032029.png)  
 5:安装完成后，会自动跳转到管理端页面。
-![](docs/images/1590032559.png)  
+![Image text](docs/images/1590032559.png)  
 6:管理端首页  
-![](docs/images/1590032806.png)  
+![Image text](docs/images/1590032806.png)  
 
 
  
