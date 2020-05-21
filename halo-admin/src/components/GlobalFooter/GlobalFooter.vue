@@ -9,7 +9,7 @@
     >
       Proudly power by
       <router-link :to="{ name:'About' }">
-        <a href="javascript:void(0);">Halo</a>
+        <a href="javascript:void(0);">Dpress</a>
       </router-link>
     </div>
   </div>
