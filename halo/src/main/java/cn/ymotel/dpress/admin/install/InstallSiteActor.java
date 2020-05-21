@@ -202,12 +202,12 @@ public class InstallSiteActor implements Actor<ServletMessage> {
     }
     public  Object createDefaultPost(Object siteid){
         Map map=new HashMap();
-        map.put("slug","hello-halo");
-        map.put("title","Hello Halo");
+        map.put("slug","hello-dpress");
+        map.put("title","Hello Dpress");
         map.put("status","0");
         map.put("original_content","## Hello Halo\n" +
                 "\n" +
-                "如果你看到了这一篇文章，那么证明你已经安装成功了，感谢使用 [Halo](https://halo.run) 进行创作，希望能够使用愉快。\n" +
+                "如果你看到了这一篇文章，那么证明你已经安装成功了，感谢使用 [Dpress](https://halo.run) 进行创作，希望能够使用愉快。\n" +
                 "\n" +
                 "## 相关链接\n" +
                 "\n" +
