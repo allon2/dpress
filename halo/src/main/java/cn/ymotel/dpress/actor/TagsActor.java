@@ -33,6 +33,9 @@ import java.util.regex.Pattern;
 public class TagsActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
     @Override
     public String[] getPatterns(HttpServletRequest request) {
+        if(!Utils.isInstall()){
+            return null;
+        }
         Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
         String archives=optionsService.getTags(siteid);
 

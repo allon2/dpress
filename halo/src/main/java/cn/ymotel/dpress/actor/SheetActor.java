@@ -27,6 +27,9 @@ public class SheetActor extends  FreemarkerActor implements DyanmicUrlPattern<Ht
     OptionsService optionsService;
     @Override
     public String[] getPatterns(HttpServletRequest request) {
+        if(!Utils.isInstall()){
+            return null;
+        }
         Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
         String archives=optionsService.getSheet(siteid);
 

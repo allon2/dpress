@@ -33,6 +33,9 @@ public class CategoryActor extends  FreemarkerActor implements DyanmicUrlPattern
 
     @Override
     public String[] getPatterns(HttpServletRequest request) {
+        if(!Utils.isInstall()){
+            return null;
+        }
         Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
         String archives=optionsService.getCategories(siteid);
 
