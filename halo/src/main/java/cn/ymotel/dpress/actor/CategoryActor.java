@@ -36,7 +36,7 @@ public class CategoryActor extends  FreemarkerActor implements DyanmicUrlPattern
         if(!Utils.isInstall()){
             return null;
         }
-        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getCategories(siteid);
 
 //        String archives=optionsService.getOption(request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID),"archives_prefix","archives");

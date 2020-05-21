@@ -39,6 +39,15 @@ public class Utils {
         Object obj=request.getSession().getAttribute(ADMIN_SITEID);
         return Long.parseLong(obj.toString());
     }
+    public static Object getFrontSiteId(@NonNull HttpServletRequest request){
+        {
+            Long siteid = preview(request);
+            if(siteid!=null){
+                return siteid;
+            }
+        }
+        return  request.getSession().getAttribute(FRONT_SESSION_SITEID);
+    }
     public static long getSiteIdFromMessage(ServletMessage message){
         HttpServletRequest request=message.getRequest();
         return Long.parseLong(request.getSession().getAttribute(ADMIN_SITEID).toString());

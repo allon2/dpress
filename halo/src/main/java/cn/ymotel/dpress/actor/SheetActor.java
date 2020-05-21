@@ -30,7 +30,7 @@ public class SheetActor extends  FreemarkerActor implements DyanmicUrlPattern<Ht
         if(!Utils.isInstall()){
             return null;
         }
-        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getSheet(siteid);
 
 //        String archives=optionsService.getOption(request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID),"archives_prefix","archives");

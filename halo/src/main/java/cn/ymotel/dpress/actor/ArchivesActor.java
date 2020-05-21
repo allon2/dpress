@@ -37,7 +37,7 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
         if(!Utils.isInstall()){
             return null;
         }
-        Object siteid=request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID);
+        Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getArchives(siteid);
         return new String[]{"/"+archives,"/"+archives+"/","/"+archives+"/page/{page}"};
     }
