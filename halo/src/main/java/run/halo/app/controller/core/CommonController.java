@@ -1,7 +1,13 @@
 package run.halo.app.controller.core;
 
 import cn.hutool.extra.servlet.ServletUtil;
+import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.template.MultiDomainFreeMarkerView;
+import freemarker.template.Template;
+import freemarker.template.TemplateException;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.ibatis.session.SqlSession;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.autoconfigure.web.ErrorProperties;
 import org.springframework.boot.autoconfigure.web.ServerProperties;
 import org.springframework.boot.autoconfigure.web.servlet.error.AbstractErrorController;
@@ -14,6 +20,7 @@ import org.springframework.util.Assert;
 import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.NestedServletException;
 import run.halo.app.exception.AbstractHaloException;
 import run.halo.app.exception.NotFoundException;
@@ -23,7 +30,9 @@ import run.halo.app.utils.FilenameUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -65,14 +74,16 @@ public class CommonController extends AbstractErrorController {
         this.errorProperties = serverProperties.getError();
         this.optionService = optionService;
     }
-
+    @Autowired
+    private SqlSession sqlSession;
     /**
      * Handle error
      *
      * @param request request
      * @return String
      */
-    @GetMapping
+    @GetMapping(produces = "text/html;charset=UTF-8")
+    @ResponseBody
     public String handleError(HttpServletRequest request, HttpServletResponse response, Model model) {
         log.error("Request URL: [{}], URI: [{}], Request Method: [{}], IP: [{}]",
             request.getRequestURL(),
@@ -92,14 +103,51 @@ public class CommonController extends AbstractErrorController {
         HttpStatus status = getStatus(request);
 
         if (status.equals(HttpStatus.INTERNAL_SERVER_ERROR)) {
-            return contentInternalError();
-        } else if (status.equals(HttpStatus.NOT_FOUND)) {
-            return contentNotFound();
-        } else {
-            return defaultErrorHandler();
-        }
-    }
+            try {
+                String domain=request.getServerName();
+                /**
+                 * 得到域名,
+                 */
+                Map tMap=new HashMap();
+                tMap.put("domain",domain);
+                Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
+                Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),"404");
+                if(template!=null){
+                    String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),"404",new HashMap());
 
+                    return content;
+                }
+
+            } catch (java.lang.Throwable e) {
+                e.printStackTrace();
+            }
+
+        } else if (status.equals(HttpStatus.NOT_FOUND)) {
+            try {
+                String domain=request.getServerName();
+                /**
+                 * 得到域名,
+                 */
+                Map tMap=new HashMap();
+                tMap.put("domain",domain);
+                Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
+                Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),"404");
+                if(template!=null){
+                   String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),"404",new HashMap());
+
+                    return content;
+                }
+
+            } catch (java.lang.Throwable e) {
+                e.printStackTrace();
+            }
+        }
+        String content= defaultErrorContent(request,model.asMap());
+        return content;
+
+    }
+    @Autowired
+    private MultiDomainFreeMarkerView multiDomainFreeMarkerView;
     /**
      * Render 404 error page
      *
@@ -135,8 +183,30 @@ public class CommonController extends AbstractErrorController {
 
         return defaultErrorHandler();
     }
+    private String defaultErrorContent(HttpServletRequest request,Map params){
+        try {
+            String domain=request.getServerName();
+            /**
+             * 得到域名,
+             */
+            Map tMap=new HashMap();
+            tMap.put("domain",domain);
+            Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
+            Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),DEFAULT_ERROR_PATH);
+            if(template!=null){
+                String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),DEFAULT_ERROR_PATH,params);
 
+                return content;
+            }
+
+        } catch (java.lang.Throwable e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
     private String defaultErrorHandler() {
+
+
         return DEFAULT_ERROR_PATH;
     }
 

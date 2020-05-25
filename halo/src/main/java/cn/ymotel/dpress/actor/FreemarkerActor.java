@@ -92,7 +92,6 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                 e.printStackTrace();
             message.setException(e);
         }finally {
-            CONTEXT_HOLDER.set(null);
         }
         return message;
     }

@@ -38,7 +38,6 @@ public class SiteIdFilter implements Filter {
 
     private void SaveSiteId(HttpServletRequest request){
         if( request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID)!=null){
-            FreemarkerActor.CONTEXT_HOLDER.set(request.getSession().getAttribute(Utils.FRONT_SESSION_SITEID));
             return;
         }
 
@@ -56,7 +55,6 @@ public class SiteIdFilter implements Filter {
             Object ssid =  rtnMap.get("id") ;
             if(ssid!=null){
                 request.getSession().setAttribute(Utils.FRONT_SESSION_SITEID,ssid);
-                FreemarkerActor.CONTEXT_HOLDER.set(ssid);
 
             }
         }
@@ -94,7 +92,6 @@ public class SiteIdFilter implements Filter {
         SaveSiteId((HttpServletRequest) request);
 
        chain.doFilter(request,response);
-        FreemarkerActor.CONTEXT_HOLDER.remove();
 
     }
 }

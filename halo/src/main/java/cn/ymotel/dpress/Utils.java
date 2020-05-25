@@ -105,14 +105,6 @@ public class Utils {
             return obj;
         }
 
-        if(message==null){
-            Object id= FreemarkerActor.CONTEXT_HOLDER.get();
-            if(id!=null){
-                return id;
-            }
-
-            return null;
-        }
 
 
 

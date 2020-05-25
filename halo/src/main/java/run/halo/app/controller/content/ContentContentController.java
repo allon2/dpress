@@ -79,7 +79,7 @@ public class ContentContentController {
         this.cacheStore = cacheStore;
     }
 
-    @GetMapping("{prefix}")
+//    @GetMapping("{prefix}")
     public String content(@PathVariable("prefix") String prefix,
                           Model model) {
         if (optionService.getArchivesPrefix().equals(prefix)) {
@@ -114,7 +114,7 @@ public class ContentContentController {
         }
     }
 
-    @GetMapping("{prefix}/{slug}")
+//    @GetMapping("{prefix}/{slug}")
     public String content(@PathVariable("prefix") String prefix,
                           @PathVariable("slug") String slug,
                           @RequestParam(value = "token", required = false) String token,

@@ -85,7 +85,7 @@ mybatis-plus:
   mapper-locations: classpath*:/mybatis/mapper/*.xml
 logging:
   level:
-#    root: DEBUG
+#    root: TRACE
     com.apache.ibatis: DEBUG
     java.sql.Connection: DEBUG
     java.sql.Statement: DEBUG
@@ -106,3 +106,4 @@ jetcache:
   remote:
     default:
       type: mock
+

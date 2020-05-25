@@ -18,6 +18,7 @@ import run.halo.app.service.ThemeService;
 import run.halo.app.service.ThemeSettingService;
 import run.halo.app.service.UserService;
 
+import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
@@ -38,12 +39,26 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
 
 
     public Configuration getConfiguration(ServletMessage message,Object id) throws IOException, TemplateException {
-
+       return  getConfiguration(message.getRequest(),id);
+//        Configuration config= templateConfigMap.get(id+"");
+//        if(config==null){
+//            config=createTemplateConfig((long)id);
+//            config.setSharedVariable("_siteid",new SimpleNumber((long)id));
+//            String url= Utils.getBaseUrl(message.getRequest());
+//            config.setSharedVariable("_baseurl",new SimpleScalar(url));
+//            setSharedVariables(config,url,id);
+//            setVariables(config);
+//            setBaseUrlVariables(config,url);
+//            templateConfigMap.put(id+"",config);
+//        }
+//        return config;
+    }
+    public Configuration getConfiguration(HttpServletRequest request,Object id) throws IOException, TemplateException {
         Configuration config= templateConfigMap.get(id+"");
         if(config==null){
             config=createTemplateConfig((long)id);
             config.setSharedVariable("_siteid",new SimpleNumber((long)id));
-            String url= Utils.getBaseUrl(message);
+            String url= Utils.getBaseUrl(request);
             config.setSharedVariable("_baseurl",new SimpleScalar(url));
             setSharedVariables(config,url,id);
             setVariables(config);
@@ -53,8 +68,24 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         return config;
     }
     public String getProcessedString(ServletMessage message,Object id,String viewName,Map data) throws IOException, TemplateException {
-        Configuration configuration= getConfiguration(message,id);
-        Template temp =  configuration.getTemplate(viewName+".ftl");
+
+        return getProcessedString(message.getRequest(),id,viewName,data);
+//        Template temp=getTemplate(message.getRequest(),id,viewName);
+////        Configuration configuration= getConfiguration(message,id);
+////        Template temp =  configuration.getTemplate(viewName+".ftl");
+//        StringWriter writer = new StringWriter();
+//        Map<String, Object> delegate=new HashMap();
+//        delegate.putAll(data);
+//        temp.process(delegate, writer);
+//        String content = writer.toString();
+//        writer.close();
+//        return content;
+    }
+    public String getProcessedString(HttpServletRequest request,Object id,String viewName,Map data) throws IOException, TemplateException {
+
+
+        Template temp=getTemplate(request,id,viewName);
+
         StringWriter writer = new StringWriter();
         Map<String, Object> delegate=new HashMap();
         delegate.putAll(data);
@@ -62,6 +93,14 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         String content = writer.toString();
         writer.close();
         return content;
+    }
+    public Template getTemplate(HttpServletRequest request,Object id,String viewName) throws IOException, TemplateException {
+        Configuration configuration= getConfiguration(request,id);
+        /**
+         * 如果模板不存在，返回NULL
+         */
+        Template temp =  configuration.getTemplate(viewName+".ftl",null, null, null, true, true);
+        return temp;
     }
 
 //    public   String getBaseUrl(ServletMessage message){
@@ -105,7 +144,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     public void setSharedVariables(Configuration configuration,String baseurl,Object id) throws TemplateModelException {
         loadUserConfig(configuration);
         loadOptionsConfig(configuration,baseurl,id);
-        loadThemeConfig(configuration,baseurl);
+        loadThemeConfig(configuration,baseurl,id);
     }
     public void setVariables(Configuration configuration){
 
@@ -120,7 +159,13 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         configuration.setSharedVariable("toolTag", applicationContext.getBean(ToolTagDirective.class));
     }
     private void loadUserConfig(Configuration configuration) throws TemplateModelException {
-        configuration.setSharedVariable("user", userService.getCurrentUser().orElse(null));
+        try {
+            configuration.setSharedVariable("user", userService.getCurrentUser().orElse(null));
+        } catch (java.lang.Throwable e) {
+            e.printStackTrace();
+            configuration.setSharedVariable("user",null);
+
+        }
     }
 
     private void loadOptionsConfig(Configuration configuration,String baseurl,Object id) throws TemplateModelException {
@@ -175,12 +220,13 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
 
         configuration.setSharedVariable("theme_base", themeBasePath);
     }
-    private void loadThemeConfig(Configuration configuration,String baseurl) throws TemplateModelException {
+
+    private void loadThemeConfig(Configuration configuration,String baseurl,Object id) throws TemplateModelException {
 
         // Get current activated theme.
 //        ThemeProperty activatedTheme = themeService.getActivatedTheme();
-        String themeName=siteThemeService.getActiveThemeName(Utils.getSiteId());
-       Map activatedTheme= siteThemeService.getThemeInfo(Utils.getSiteId(),themeName);
+        String themeName=siteThemeService.getActiveThemeName(id);
+       Map activatedTheme= siteThemeService.getThemeInfo(id,themeName);
 //        String themeBasePath = (optionService.isEnabledAbsolutePath() ? baseurl : "") + "/themes/" + activatedTheme.getFolderName();
         String themeBasePath= "/themes";
         configuration.setSharedVariable("theme", activatedTheme);
@@ -190,7 +236,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         configuration.setSharedVariable("theme_base", themeBasePath);
         //getSettingWithValue
 //        Object obj= siteThemeService.getSettingWithValue(Utils.getSiteId(),themeName);
-        configuration.setSharedVariable("settings", siteThemeService.getSettingWithValue(Utils.getSiteId(),themeName));
+        configuration.setSharedVariable("settings", siteThemeService.getSettingWithValue(id,themeName));
 
 //        configuration.setSharedVariable("settings", themeSettingService.listAsMapBy(themeService.getActivatedThemeId()));
     }
