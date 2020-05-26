@@ -1,7 +1,14 @@
+![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)
+
+
 # dpress
 基于多域名的博客系统
 
 基于Halo 博客系统改造
+
+## 简介：
+
+​	基于dactor和SpringBoot系统构建。为了方便对不同类型的博客分别管理，想用多域名进行管理，市面上面的博客找了一下，未发现基于Java的多域名博客，所以才开发了此系统。
 
 ## dpress1.0 beta版本
 1：支持多域名  
