@@ -1,4 +1,4 @@
-![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)  ![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)  ![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)  [![Build Status](https://travis-ci.com/allon2/dpress.svg?branch=master)](https://travis-ci.com/allon2/dpress)
+![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)  ![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)  ![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)  ![Dactor](https://img.shields.io/badge/Dactor-1.1.1-green.svg)  ![SpringBoot](https://img.shields.io/badge/SpringBoot-2.3.0.RELEASE-green.svg)  ![Vue](https://img.shields.io/badge/Vue-2.6.11-green.svg)  [![Build Status](https://travis-ci.com/allon2/dpress.svg?branch=master)](https://travis-ci.com/allon2/dpress)
 
 
 # dpress
