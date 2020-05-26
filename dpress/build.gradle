@@ -1,7 +1,7 @@
 plugins {
     id 'org.springframework.boot' version '2.3.0.RELEASE'
     id 'io.spring.dependency-management' version '1.0.9.RELEASE'
-    id 'checkstyle'
+//    id 'checkstyle'
     id 'java'
     id 'com.github.johnrengelman.shadow' version '5.2.0'
     id 'war'
@@ -13,7 +13,7 @@ version = '1.0.0-beta.1'
 description = 'Dpress, An excellent open source blog publishing application.'
 
 java {
-    archivesBaseName = 'halo'
+    archivesBaseName = 'dpress'
     sourceCompatibility = JavaVersion.VERSION_1_8
 }
 

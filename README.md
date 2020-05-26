@@ -1,4 +1,4 @@
-![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)  ![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)  ![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)
+![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)  ![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)  ![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)  [![Build Status](https://travis-ci.com/allon2/dpress.svg?branch=master)](https://travis-ci.com/allon2/dpress)
 
 
 # dpress
@@ -71,19 +71,19 @@ gradle clean build
 ### 下载最新的 Dpress 安装包
 
 ```bash
-curl -L https://github.com/allon2/dpress/releases/download/v1.2.0/dpress-latest.jar --output dpress-latest.war
+curl -L $(curl -s https://api.github.com/repos/allon2/dpress/releases/latest | grep 'browser_' | cut -d\" -f4)  --output dpress.war
 ```
 
 或者
 
 ```bash
-wget https://github.com//allon2/dpress/releases/download/v1.2.0/dpress-latest.jar -O dpress-latest.war
+wget $(curl -s https://api.github.com/repos/allon2/dpress/releases/latest | grep 'browser_' | cut -d\" -f4) -O dpress.war
 ```
 
 ### 启动 Dpress
 
 ```bash
-java -jar dpress-latest.war
+java -jar dpress.war
 ```
 
 

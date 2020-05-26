@@ -2,7 +2,6 @@ package run.halo.app;
 
 import cn.ymotel.dactor.ActorUtils;
 import cn.ymotel.dactor.core.ActorChainCfg;
-import cn.ymotel.dpress.error.Error404Filter;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
 import com.alicp.jetcache.anno.config.EnableMethodCache;
 import org.springframework.beans.factory.annotation.Autowired;
