@@ -341,7 +341,7 @@ public class AdminServiceImpl implements AdminService {
             Map assetMap = (Map) assets.stream()
                 .filter(assetPredicate())
                 .findFirst()
-                .orElseThrow(() -> new ServiceException("Halo admin 最新版暂无资源文件，请稍后再试"));
+                .orElseThrow(() -> new ServiceException("Dpress admin 最新版暂无资源文件，请稍后再试"));
 
             Object browserDownloadUrl = assetMap.getOrDefault("browser_download_url", "");
             // Download the assets

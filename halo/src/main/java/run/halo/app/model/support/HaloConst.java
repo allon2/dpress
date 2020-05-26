@@ -105,7 +105,7 @@ public class HaloConst {
     /**
      * Github Api url for halo-admin release.
      */
-    public final static String HALO_ADMIN_RELEASES_LATEST = "https://api.github.com/repos/halo-dev/halo-admin/releases/latest";
+    public final static String HALO_ADMIN_RELEASES_LATEST = "https://api.github.com/repos/allon2/dpress/releases/latest";
     /**
      * Halo admin version regex.
      */
@@ -145,7 +145,7 @@ public class HaloConst {
 
     static {
         // Set version
-        HALO_VERSION="1.3.0";
+        HALO_VERSION="1.0.0-beta.1";
 //        HALO_VERSION = HaloConst.class.getPackage().getImplementationVersion();
     }
 }

@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/api/admin/installations")
+@ActorCfg(urlPatterns = "/api/admin/installations",chain = "publicchain")
 public class InstallSiteActor implements Actor<ServletMessage> {
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
@@ -51,6 +51,11 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         createDefaultMenu(siteid);
         InstallDefaultThemes(siteid);
         System.out.println("安装完成！");
+        message.getResponse().setContentType("text/html; charset=UTF-8");
+        message.getResponse().getWriter().write("安装完成！");
+        message.getResponse().getWriter().flush();
+        message.getAsyncContext().complete();
+
         return "安装完成！";
     }
     public void InstallDbScript(Map params) throws IOException {
@@ -169,9 +174,9 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         map.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
         map.put("type","0");
         map.put("author","Halo");
-        map.put("author_url","https://halo.run");
+        map.put("author_url","https://github.com/allon2/dpress");
         map.put("content","欢迎使用 Halo，这是你的第一条评论，头像来自 [Gravatar](https://cn.gravatar.com)，你也可以通过注册 [Gravatar](https://cn.gravatar.com) 来显示自己的头像。");
-        map.put("email","hi@halo.run");
+        map.put("email","hi@dpress.com");
         map.put("status","1");
         map.put("post_id",postid);
         sqlSession.insert("comments.i",map);

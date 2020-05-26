@@ -28,7 +28,6 @@ import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 import org.springframework.scheduling.annotation.EnableAsync;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.web.servlet.DispatcherServlet;
-import run.halo.app.filter.DemoServlet;
 import run.halo.app.repository.base.BaseRepositoryImpl;
 
 import javax.servlet.DispatcherType;
@@ -85,7 +84,7 @@ public class Application extends SpringBootServletInitializer {
 //    }
     @Bean(name="publicchain")
     public ActorChainCfg creatDefaultChain(){
-        return  ActorUtils.creatDefaultChain(applicationContext,"publicchain",null);
+        return  ActorUtils.creatDefaultChain(applicationContext,"publicchain","TransportResponseViewActor");
     }
     @Bean(name="errorchain")
     public ActorChainCfg creatErrorChain(){

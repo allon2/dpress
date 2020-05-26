@@ -4,6 +4,7 @@ import org.apache.commons.lang3.StringUtils;
 import org.springframework.core.Ordered;
 import org.springframework.core.annotation.Order;
 import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.stereotype.Component;
 import org.springframework.web.cors.CorsUtils;
 import org.springframework.web.filter.GenericFilterBean;
@@ -44,6 +45,7 @@ public class CorsFilter extends GenericFilterBean {
         httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_METHODS, "GET, POST, PUT, DELETE, OPTIONS");
         httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_ALLOW_CREDENTIALS, "true");
         httpServletResponse.setHeader(HttpHeaders.ACCESS_CONTROL_MAX_AGE, "3600");
+//        System.out.println(HttpMethod.OPTIONS.matches(httpServletRequest.getMethod())+"----"+httpServletRequest.getRequestURI());
 
         if (!CorsUtils.isPreFlightRequest(httpServletRequest)) {
             chain.doFilter(httpServletRequest, httpServletResponse);

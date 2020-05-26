@@ -5,7 +5,7 @@ import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import org.springframework.beans.factory.annotation.Autowired;
 
-@ActorCfg(urlPatterns = "/api/admin/siteinstall")
+@ActorCfg(urlPatterns = "/api/admin/siteinstall",chain = "publicchain")
 public class AdminInstallSiteActor  implements Actor<ServletMessage> {
     @Autowired
     private InstallSiteActor installSiteActor;

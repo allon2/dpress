@@ -16,7 +16,7 @@ import java.util.Map;
 /**
  * 因为图片中已经包含siteid，可以对siteid进行match，后面做
  */
-@ActorCfg(urlPatterns = "/upload/**",view = "img:")
+@ActorCfg(urlPatterns = {"/upload/**","/admin/upload/**"},view = "img:")
 public class ThumbleImageActor implements Actor<ServletMessage> {
     @Autowired
     private SqlSession sqlSession;
