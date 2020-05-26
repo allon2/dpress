@@ -1,4 +1,4 @@
-![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)
+![JDK](https://img.shields.io/badge/JDK-1.8-green.svg)  ![Gradle](https://img.shields.io/badge/Gradle-6.2.2-green.svg)  ![MySQL](https://img.shields.io/badge/MySQL-8.0.20-green.svg)
 
 
 # dpress
@@ -18,6 +18,7 @@
 5：兼容halo模板
 6:支持一键安装，在线配置数据库地址  
 7:支持瞬时高并发  
+8:支持war方式和Jar方式部署  
 
 **如果喜欢，请多多分享！！多多Star！！**
 
