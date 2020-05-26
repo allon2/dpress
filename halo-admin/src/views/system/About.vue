@@ -176,7 +176,7 @@ User Agent：${navigator.userAgent}`
       this.contributorsLoading = true
       const _this = this
       axios
-        .get('https://api.github.com/repos/halo-dev/halo/contributors')
+        .get('https://api.github.com/repos/allon2/dpress/contributors')
         .then(response => {
           _this.contributors = response.data
           this.contributorsLoading = false
@@ -189,7 +189,7 @@ User Agent：${navigator.userAgent}`
       const _this = this
       this.checking = true
       axios
-        .get('https://api.github.com/repos/halo-dev/halo/releases/latest')
+        .get('https://api.github.com/repos/allon2/dpress/releases/latest')
         .then(response => {
           const data = response.data
           _this.latestData = data
@@ -204,7 +204,7 @@ User Agent：${navigator.userAgent}`
           }
           _this.isLatest = false
           const title = '新版本提醒'
-          const content = '检测到 Halo 新版本：' + data.name + '，点击下方按钮查看最新版本。'
+          const content = '检测到 Dpress 新版本：' + data.name + '，点击下方按钮查看最新版本。'
           const url = data.html_url
           this.$notification.open({
             message: title,
