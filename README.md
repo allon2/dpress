@@ -9,7 +9,7 @@
 
 ## 简介：
 
-​	基于dactor和SpringBoot系统构建。为了方便对不同类型的博客分别管理，想用多域名进行管理，市面上面的博客找了一下，未发现基于Java的多域名博客，所以才开发了此系统。
+​	基于dactor和SpringBoot系统构建。为了方便对不同类型的博客分别管理，想用多域名进行管理，市面上面的博客找了一下，未发现基于Java的多域名博客，所以才开发了此系统。代码正在进行快速迭代，有问题，请及时提出。
 
 ## dpress1.0 beta版本
 1：支持多域名  
@@ -91,13 +91,13 @@ java -jar dpress.war
 ## 安装步骤
 1:浏览器中输入http://localhost:8090  
 2:填写数据库信息  
-![1590030875.png](https://i.loli.net/2020/05/21/AekuDhgwTpP1vlB.png)   
+![1590572139.png](https://i.loli.net/2020/05/27/zQOeJDT2wj4uvVR.png)  
 3:填写个人信息  
-![1590031992.png](https://i.loli.net/2020/05/21/OVu7CXRm4FzAgDh.png)     
+![1590572097.png](https://i.loli.net/2020/05/27/4r7ban16vsQUjyf.png)  
 4:填写博客信息  
-![1590032029.png](https://i.loli.net/2020/05/21/MKZc7vSHNUFVxzl.png)     
+![1590572123.png](https://i.loli.net/2020/05/27/s6r7Jkujx9YTv8o.png)    
 5:安装完成后，会自动跳转到管理端页面。
-![1590032559.png](https://i.loli.net/2020/05/21/hqsX6URQLafYJey.png)      
+![1590572315.png](https://i.loli.net/2020/05/27/WnI5KM3Dh9J62kN.png)     
 6:管理端首页  
 ![1590032806.png](https://i.loli.net/2020/05/21/sltjYrxIEbJZpa4.png)    
 
