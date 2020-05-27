@@ -32,7 +32,7 @@ public class isLoginBeforeChain implements Actor<ServletMessage> {
                 "/api/admin/password/reset",
                 "/api/admin/login/precheck",
                 "/api/admin/logout"
-        },null);
+        },null,null);
         patternMatcher.setPathMatcher(antPathMatcher);
     }
 
