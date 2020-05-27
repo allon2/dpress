@@ -91,7 +91,7 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
            List ls= sqlSession.selectList("posts.qpostslimit", map);
             Map<Integer,List> yearMap=new HashMap();
             List archives=new ArrayList();
-
+            String archive=optionsService.getArchives(Utils.getSiteId());
            for(int i=0;i<ls.size();i++){
                Map tMap=(Map)ls.get(i);
 
@@ -100,7 +100,7 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
                ttMap.put("postid",tMap.get("id"));
                tMap.put("tags",sqlSession.selectList("posttag.qtagbypostid",ttMap));
                tMap.put("summary",generateSummary((String)tMap.get("format_content")));
-               tMap.put("fullPath","/archives/"+tMap.get("slug"));
+               tMap.put("fullPath","/"+archive+"/"+tMap.get("slug"));
                java.util.Date date=(java.util.Date)tMap.get("createTime");
                Calendar calendar=Calendar.getInstance();
                calendar.setTime(date);

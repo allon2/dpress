@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="posts" >
 	<select id="qbyslug" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-		select id , create_time as createTime, siteid , update_time , disallow_comment , edit_time , editor_type , format_content as formatContent  , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail , title , top_priority, url , visits
+		select id , create_time as createTime, siteid , update_time , disallow_comment as disallowComment, edit_time , editor_type , format_content as formatContent  , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail , title , top_priority, url , visits
 		from posts
 		where type=0 and slug=#{slug} and siteid=#{siteid}
 	</select>
@@ -20,9 +20,10 @@
 		select  slug,  title from posts where siteid=#{siteid} and id>#{postid}  limit 1
 	</select>
 	<select id="qpostslimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-			select id , create_time  as createTime  , siteid , update_time , disallow_comment , edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+			select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
 			 top_priority , url , visits from posts
-			where type=0 and status=#{status} and siteid=#{siteid} order by top_priority desc, create_time desc, id desc limit #{start},10
+			where type=0 and status=#{status} and siteid=#{siteid}
+			order by top_priority desc, create_time desc, id desc limit  #{start}, 10
 	</select>
 	<select id="qpostscount" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select count(id) as ct from posts  where type=0 and status=#{status} and siteid=#{siteid}
@@ -166,5 +167,13 @@ delete from posts where id=#{id} and siteid=#{siteid}
 
 		order by top_priority desc, create_time desc limit #{start},#{size}
 
+	</select>
+
+	<select id="qcountbynormal" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from posts  where type=0  and siteid=#{siteid} and status=#{status}
+	</select>
+	<select id="qlimitbynormal" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+			select create_time,slug from posts  where type=0  and siteid=#{siteid} and status=#{status}
+			 order by create_time asc  limit #{start},100
 	</select>
 </mapper>

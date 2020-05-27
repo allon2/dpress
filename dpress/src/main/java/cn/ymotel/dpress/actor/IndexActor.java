@@ -42,11 +42,8 @@ public class IndexActor extends  FreemarkerActor {
 
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
-        String  spage=message.getContextData("page");
-        Integer p=new Integer(1);
-        if(spage!=null){
-            p=Integer.parseInt(spage);
-        }
+        Integer p=message.getContextData("page",1);
+
         String token=message.getContextData("token");
         PostPermalinkType permalinkType = optionService.getPostPermalinkType();
 

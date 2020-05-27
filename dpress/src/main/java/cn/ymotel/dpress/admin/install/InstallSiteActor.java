@@ -23,7 +23,7 @@ import java.net.URL;
 import java.util.HashMap;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/api/admin/installations",chain = "publicchain")
+@ActorCfg(urlPatterns = "/api/admin/installations",chain = "publicchain",timeout = 60000)
 public class InstallSiteActor implements Actor<ServletMessage> {
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
@@ -51,9 +51,9 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         createDefaultMenu(siteid);
         InstallDefaultThemes(siteid);
         System.out.println("安装完成！");
-        message.getResponse().setContentType("text/html; charset=UTF-8");
-        message.getResponse().getWriter().write("安装完成！");
-        message.getResponse().getWriter().flush();
+        message.getAsyncContext().getResponse().setContentType("text/html; charset=UTF-8");
+        message.getAsyncContext().getResponse().getWriter().write("安装完成！");
+        message.getAsyncContext().getResponse().getWriter().flush();
         message.getAsyncContext().complete();
 
         return "安装完成！";
@@ -82,7 +82,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
                 .getResourcePatternResolver(new DefaultResourceLoader()).getResources(path);
         for(int i=0;i<rs.length;i++){
             Map map=ThemeZipUtils.installTheme(sqlSession,rs[i].getInputStream(),siteid);
-            if(map.get("id").equals("caicai_anatole")){
+            if(map.get("id").equals("codelunatic_simple")){
                 //
                 Map settingMap=new HashMap();
                 settingMap.put("siteid",siteid);
@@ -91,7 +91,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
                 settingMap.put("type","0");
                 {
                     settingMap.put("option_key","theme");
-                    settingMap.put("option_value","caicai_anatole");
+                    settingMap.put("option_value","codelunatic_simple");
                     sqlSession.insert("options.ioption",settingMap);
                 }
             }

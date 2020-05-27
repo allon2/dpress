@@ -1,8 +1,10 @@
-package cn.ymotel.dpress.actor;
+package cn.ymotel.dpress.actor.sitemap;
 
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.actor.FreemarkerActor;
+import cn.ymotel.dpress.actor.ViewData;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.support.BindingAwareModelMap;
@@ -12,7 +14,7 @@ import java.util.List;
 import java.util.Map;
 
 @ActorCfg(urlPatterns = "/sitemap.html",chain = "publicchain")
-public class SiteMapHtmlActor extends  FreemarkerActor {
+public class SiteMapHtmlActor extends FreemarkerActor {
     @Autowired
     private SqlSession sqlSession;
     @Override

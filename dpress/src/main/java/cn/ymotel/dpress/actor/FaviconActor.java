@@ -20,6 +20,7 @@ public class FaviconActor  implements Actor<ServletMessage> {
         if (StringUtils.isNotEmpty(favicon)) {
             return "redirect:"+favicon;
         }
+        message.getAsyncContext().complete();
         return null;
     }
 }

@@ -12,8 +12,8 @@ import run.halo.app.model.support.ThemeFile;
 
 import java.util.*;
 
-@ActorCfg(urlPatterns = "/api/admin/themes/activation/files.json")
-public class FileListActor implements Actor<ServletMessage> {
+@ActorCfg(urlPatterns = {"/api/admin/themes/activation/files.json","/api/admin/themes/{themeId}/files"})
+public class ActivationFileListActor implements Actor<ServletMessage> {
     private static String[] CAN_EDIT_SUFFIX = {".ftl", ".css", ".js", ".yaml", ".yml", ".properties"};
     @Autowired
     private SqlSession sqlSession;
@@ -30,7 +30,13 @@ public class FileListActor implements Actor<ServletMessage> {
     public Object Execute(ServletMessage message) throws Throwable {
         Map ttmap=new HashMap();
         ttmap.put("siteid", Utils.getSiteIdFromMessage(message));
-        ttmap.put("theme",getActiveTheme(message));
+        String themeId=message.getContextData("themeId");
+        if(themeId==null) {
+            ttmap.put("theme", getActiveTheme(message));
+        }else {
+            ttmap.put("theme", themeId);
+
+        }
         List ls=sqlSession.selectList("dpress.qalltemplate",ttmap);
         ThemeFile root=new ThemeFile();
         for(int i=0;i<ls.size();i++){
@@ -39,10 +45,12 @@ public class FileListActor implements Actor<ServletMessage> {
             FillNodes((String)tMap.get("path"),"",root);
 
         }
+        if(themeId!=null){
+            return root.getNode();
+        }
         Map rtnMap=new HashMap();
         rtnMap.put("data",root.getNode());
         message.getResponse().setContentType("");
-        System.out.println(root);
         return rtnMap;
     }
 
