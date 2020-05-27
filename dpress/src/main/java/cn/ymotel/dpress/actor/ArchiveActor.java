@@ -94,10 +94,15 @@ public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern
     @Autowired
    private  OptionsService optionsService;
     @Override
-    public String[] getPatterns(HttpServletRequest request) {
-        if(!Utils.isInstall()){
-            return null;
+    public boolean ignore() {
+        if(Utils.isInstall()){
+            return false;
         }
+        return true;
+    }
+    @Override
+    public String[] getPatterns(HttpServletRequest request) {
+      
         Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getArchives(siteid);
 

@@ -23,13 +23,19 @@ import java.util.regex.Pattern;
 
 @ActorCfg(chain = "publicchain")
 public class SheetActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
+    @Override
+    public boolean ignore() {
+        if(Utils.isInstall()){
+            return false;
+        }
+        return true;
+    }
+
     @Autowired
     OptionsService optionsService;
     @Override
     public String[] getPatterns(HttpServletRequest request) {
-        if(!Utils.isInstall()){
-            return null;
-        }
+
         Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getSheet(siteid);
 

@@ -30,12 +30,17 @@ import java.util.regex.Pattern;
 
 @ActorCfg(chain = "publicchain")
 public class CategoryActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
+    @Override
+    public boolean ignore() {
+        if(Utils.isInstall()){
+            return false;
+        }
+        return true;
+    }
 
     @Override
     public String[] getPatterns(HttpServletRequest request) {
-        if(!Utils.isInstall()){
-            return null;
-        }
+
         Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getCategories(siteid);
 
