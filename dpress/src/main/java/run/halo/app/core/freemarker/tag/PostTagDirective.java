@@ -1,7 +1,9 @@
 package run.halo.app.core.freemarker.tag;
 
+import cn.ymotel.dpress.service.PostsService;
 import freemarker.core.Environment;
 import freemarker.template.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import run.halo.app.model.entity.Post;
 import run.halo.app.model.enums.PostStatus;
@@ -51,7 +53,9 @@ public class PostTagDirective implements TemplateDirectiveModel {
                     env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postService.listLatest(top))));
                     break;
                 case "count":
-                    env.setVariable("count", builder.build().wrap(postService.countByStatus(PostStatus.PUBLISHED)));
+
+                env.setVariable("count", builder.build().wrap(postsService.count(siteid,PostStatus.PUBLISHED.getValue())));
+//                    env.setVariable("count", builder.build().wrap(postService.countByStatus(PostStatus.PUBLISHED)));
                     break;
                 case "archiveYear":
                     env.setVariable("archives", builder.build().wrap(postService.listYearArchives()));
@@ -86,5 +90,6 @@ public class PostTagDirective implements TemplateDirectiveModel {
         }
         body.render(env.getOut());
     }
-
+    @Autowired
+    private PostsService postsService;
 }

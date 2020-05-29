@@ -1,5 +1,6 @@
 package cn.ymotel.dpress.template;
 
+import freemarker.cache.NullCacheStorage;
 import freemarker.cache.TemplateLoader;
 import freemarker.core.TemplateClassResolver;
 import freemarker.template.Configuration;
@@ -104,6 +105,10 @@ import static freemarker.template.Configuration.AUTO_DETECT_TAG_SYNTAX;
         templateConfig.setTimeFormat("HH:mm:ss");
         templateConfig.setDateTimeFormat("yyyy-MM-dd HH:mm:ss");
         templateConfig.setNumberFormat("#");
+        /**
+         * 不缓存
+         */
+        templateConfig.setCacheStorage(NullCacheStorage.INSTANCE);
 //        templateConfig.setClassicCompatible(true);
 //        templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 

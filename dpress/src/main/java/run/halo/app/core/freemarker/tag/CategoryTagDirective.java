@@ -1,6 +1,7 @@
 package run.halo.app.core.freemarker.tag;
 
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.CategorysService;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
@@ -31,6 +32,8 @@ public class CategoryTagDirective implements TemplateDirectiveModel {
     private SqlSession sqlSession;
     private final CategoryService categoryService;
 
+    @Autowired
+    private CategorysService categorysService;
     private final PostCategoryService postCategoryService;
 
     public CategoryTagDirective(Configuration configuration,
@@ -72,7 +75,9 @@ public class CategoryTagDirective implements TemplateDirectiveModel {
                     env.setVariable("categories", builder.build().wrap(categoryService.convertTo(categories)));
                     break;
                 case "count":
-                    env.setVariable("count", builder.build().wrap(categoryService.count()));
+
+                    env.setVariable("count", builder.build().wrap(categorysService.count(siteid)));
+//                    env.setVariable("count", builder.build().wrap(categoryService.count()));
                     break;
                 default:
                     break;

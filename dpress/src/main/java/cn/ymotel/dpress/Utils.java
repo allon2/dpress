@@ -227,4 +227,30 @@ public class Utils {
 //        System.out.println("path----"+path);
 //        return false;
     }
+    public static String buildURL(String root,String suffix,String... path){
+        StringBuilder sb=new StringBuilder();
+        sb.append(root);
+        if(root.endsWith("/")){
+
+        }else{
+            sb.append("/");
+        }
+        for(int i=0;i<path.length;i++){
+            if(path[i]==null){
+                continue;
+            }
+            sb.append(path[i]);
+
+            //最后一个不
+            if(i!=path.length-1){
+                if(!path[i].endsWith("/")){
+                    sb.append("/");
+                }
+            }
+
+        }
+
+        sb.append(suffix);
+        return  sb.toString();
+    }
 }

@@ -26,16 +26,13 @@ public class OptionsService {
     public static String CATEGORIES_PREFIX="categories_prefix";
     public static String TAGS_PREFIX="tags_prefix";
     public static String SEO_SPIDER_DISABLED="seo_spider_disabled";
+    public static String PATH_SUFFIX="path_suffix";
 
     @Autowired
     private SqlSession sqlSession;
 
-    /**
-     *  60秒过期
-     * @param id
-     * @return
-     */
-    @Cached(expire = 60)
+
+    @Cached
     public Map getOptions(Object id){
         Map rtnMap=new HashMap();
         Map map=new HashMap();
@@ -51,31 +48,45 @@ public class OptionsService {
        }
        return rtnMap;
     }
-    @Cached(expire = 60)
+    @Cached
     public  <T> T getOption(Object id,Object key,T defaultValue){
         return (T)getOptions(id).getOrDefault(key,defaultValue);
     }
 
-    @Cached(expire = 60)
+    @Cached
     public Boolean getBooleanOption(Object id,Object key,Boolean defaultValue){
         String ss=getOptions(id).getOrDefault(key,defaultValue).toString();
         return Boolean.valueOf(ss);
     }
-    @Cached(expire = 60)
+    @Cached
     public String getArchives(Object id){
 //        return getOption(id,ARCHIVES_PREFIX,"archivesabcedfafd");
 
         return getOption(id,ARCHIVES_PREFIX,"archives");
     }
-    @Cached(expire = 60)
+    @Cached
     public String getCategories(Object id){
         return getOption(id,CATEGORIES_PREFIX,"categories");
     }
-    @Cached(expire = 60)
+    @Cached
     public String getTags(Object id){
         return getOption(id,TAGS_PREFIX,"tags");
     }
+    @Cached
     public  String getSheet(Object id){
         return  getOption(id,SHEET_PREFIX,"s");
+    }
+
+    @Cached
+    public   String getPathSuffix(Object id){
+        return  getOption(id,PATH_SUFFIX,"");
+    }
+    @Cached
+    public String getPhotosPrefix(Object id){
+        return  getOption(id,PHOTOS_PREFIX,"photos");
+    }
+    @Cached
+    public String getJournalsPrefix(Object id){
+        return getOption(id,JOURNALS_PREFIX,"journals");
     }
 }

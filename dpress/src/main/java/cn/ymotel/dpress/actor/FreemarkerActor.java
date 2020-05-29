@@ -20,7 +20,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class FreemarkerActor implements Actor<ServletMessage> {
-    public final static ThreadLocal<Object> CONTEXT_HOLDER = new ThreadLocal<>();
     @Autowired
     private MultiDomainFreeMarkerView multiDomainFreeMarkerView;
 //    @Autowired
@@ -61,9 +60,12 @@ public class FreemarkerActor implements Actor<ServletMessage> {
 //        Map siteMap= getSiteId(message);
 
         ;
+        long begin=System.currentTimeMillis();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(message.getRequest(),message.getResponse()),false);
         try {
             Object obj = Execute(message);
+            long end=System.currentTimeMillis();
+            System.out.println("count time--"+(end-begin)/1000);
             if(obj==null){
                 return message;
             }
@@ -92,6 +94,10 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                 e.printStackTrace();
             message.setException(e);
         }finally {
+            long end=System.currentTimeMillis();
+
+            System.out.println("final time--"+(end-begin)/1000);
+
         }
         return message;
     }

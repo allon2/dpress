@@ -1,8 +1,12 @@
 package run.halo.app.core.freemarker.tag;
 
 import cn.hutool.core.util.PageUtil;
+import cn.ymotel.dpress.service.OptionsService;
 import freemarker.core.Environment;
+import freemarker.ext.beans.StringModel;
 import freemarker.template.*;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.PageImpl;
 import org.springframework.stereotype.Component;
 import run.halo.app.model.support.HaloConst;
 import run.halo.app.model.support.Pagination;
@@ -30,15 +34,38 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
         this.optionService = optionService;
         configuration.setSharedVariable("paginationTag", this);
     }
+    public Object findPageId(Environment env) throws TemplateModelException {
+        TemplateHashModel datamodel = env.getDataModel();
+        TemplateModel pageKey= datamodel.get("_pageKey");
+        if(pageKey==null){
+            return  null;
+        }
 
+        StringModel templateModel = (StringModel) datamodel.get(((SimpleScalar)pageKey).getAsString());
+        if (templateModel == null) {
+            return null;
+        }
+        PageImpl page = (PageImpl) templateModel.getWrappedObject();
+       List list= page.getContent();
+       if(list==null||list.size()==0){
+           return null;
+       }
+       Map map=(Map)list.get(0);
+       return map.get("id");
+    }
+    @Autowired
+    private OptionsService optionsService;
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
-        Object siteid=null;
+        Object siteid = null;
         try {
-            siteid= ((SimpleNumber)env.getVariable("_siteid")).getAsNumber();
+            siteid = ((SimpleNumber) env.getVariable("_siteid")).getAsNumber();
         } catch (java.lang.Throwable e) {
             e.printStackTrace();
-        }        final DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
+        }
+        Object elementid=findPageId(env);
+
+        final DefaultObjectWrapperBuilder builder = new DefaultObjectWrapperBuilder(Configuration.VERSION_2_3_25);
         if (params.containsKey(HaloConst.METHOD_KEY)) {
 
             // Get params
@@ -54,34 +81,34 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
             StringBuilder nextPageFullPath = new StringBuilder();
             StringBuilder prevPageFullPath = new StringBuilder();
 
-            if (optionService.isEnabledAbsolutePath()) {
-                nextPageFullPath.append(optionService.getBlogBaseUrl());
-                prevPageFullPath.append(optionService.getBlogBaseUrl());
-            }
+//            if (optionService.isEnabledAbsolutePath()) {
+//                nextPageFullPath.append(optionService.getBlogBaseUrl());
+//                prevPageFullPath.append(optionService.getBlogBaseUrl());
+//            }
 
             int[] rainbow = PageUtil.rainbow(page + 1, total, display);
 
             List<RainbowPage> rainbowPages = new ArrayList<>();
             StringBuilder fullPath = new StringBuilder();
 
-            if (optionService.isEnabledAbsolutePath()) {
-                fullPath.append(optionService.getBlogBaseUrl());
-            }
+//            if (optionService.isEnabledAbsolutePath()) {
+//                fullPath.append(optionService.getBlogBaseUrl());
+//            }
 
-            String pathSuffix = optionService.getPathSuffix();
-
+//            String pathSuffix = optionService.getPathSuffix();
+             String  pathSuffix=optionsService.getPathSuffix(siteid);
             switch (method) {
                 case "index":
 
                     nextPageFullPath.append("/page/")
-                        .append(page + 2)
+                        .append(page + 2).append("/").append(elementid).append("/").append(page+1)
                         .append(pathSuffix);
 
                     if (page == 1) {
                         prevPageFullPath.append(URL_SEPARATOR);
                     } else {
                         prevPageFullPath.append("/page/")
-                            .append(page)
+                            .append(page).append("/").append(elementid).append("/").append(page+1)
                             .append(pathSuffix);
                     }
 
@@ -90,7 +117,7 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     for (int current : rainbow) {
                         RainbowPage rainbowPage = new RainbowPage();
                         rainbowPage.setPage(current);
-                        rainbowPage.setFullPath(fullPath.toString() + current + pathSuffix);
+                        rainbowPage.setFullPath(fullPath.toString() + current +"/"+elementid+"/"+(page+1)+ pathSuffix);
                         rainbowPage.setIsCurrent(page + 1 == current);
                         rainbowPages.add(rainbowPage);
                     }
@@ -98,12 +125,13 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                 case "archives":
 
                     nextPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getArchivesPrefix());
+//                        .append(optionService.getArchivesPrefix());
+                        .append(optionsService.getArchives(siteid));
                     prevPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getArchivesPrefix());
-
+//                        .append(optionService.getArchivesPrefix());
+                          .append(optionsService.getArchives(siteid));
                     nextPageFullPath.append("/page/")
-                        .append(page + 2)
+                        .append(page + 2).append("/").append(elementid).append("/").append(page+1)
                         .append(pathSuffix);
 
                     if (page == 1) {
@@ -111,19 +139,20 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                             append(pathSuffix);
                     } else {
                         prevPageFullPath.append("/page/")
-                            .append(page)
+                            .append(page).append("/").append(elementid).append("/").append(page+1)
                             .append(pathSuffix);
                     }
 
                     fullPath.append(URL_SEPARATOR)
-                        .append(optionService.getArchivesPrefix());
+//                        .append(optionService.getArchivesPrefix());
+                          .append(optionsService.getArchives(siteid));
 
                     fullPath.append("/page/");
 
                     for (int current : rainbow) {
                         RainbowPage rainbowPage = new RainbowPage();
                         rainbowPage.setPage(current);
-                        rainbowPage.setFullPath(fullPath.toString() + current + pathSuffix);
+                        rainbowPage.setFullPath(fullPath.toString()  + current +"/"+elementid+"/"+(page+1) + pathSuffix);
                         rainbowPage.setIsCurrent(page + 1 == current);
                         rainbowPages.add(rainbowPage);
                     }
@@ -171,12 +200,15 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     String tagSlug = params.get("slug").toString();
 
                     nextPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getTagsPrefix())
+//                        .append(optionService.getTagsPrefix())
+                            .append(optionsService.getTags(siteid))
                         .append(URL_SEPARATOR)
                         .append(tagSlug);
                     prevPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getTagsPrefix())
-                        .append(URL_SEPARATOR)
+//                        .append(optionService.getTagsPrefix())
+                            .append(optionsService.getTags(siteid))
+
+                            .append(URL_SEPARATOR)
                         .append(tagSlug);
 
                     nextPageFullPath.append("/page/")
@@ -192,8 +224,10 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     }
 
                     fullPath.append(URL_SEPARATOR)
-                        .append(optionService.getTagsPrefix())
-                        .append(URL_SEPARATOR)
+//                        .append(optionService.getTagsPrefix())
+                            .append(optionsService.getTags(siteid))
+
+                            .append(URL_SEPARATOR)
                         .append(tagSlug);
 
                     fullPath.append("/page/");
@@ -210,18 +244,19 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     String categorySlug = params.get("slug").toString();
 
                     nextPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getCategoriesPrefix())
+//                        .append(optionService.getCategoriesPrefix())
+                            .append(optionsService.getCategories(siteid))
                         .append(URL_SEPARATOR)
                         .append(categorySlug);
                     prevPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getCategoriesPrefix())
-                        .append(URL_SEPARATOR)
+//                        .append(optionService.getCategoriesPrefix())
+                            .append(optionsService.getCategories(siteid))
+                            .append(URL_SEPARATOR)
                         .append(categorySlug);
 
                     nextPageFullPath.append("/page/")
                         .append(page + 2)
                         .append(pathSuffix);
-
                     if (page == 1) {
                         prevPageFullPath.append(pathSuffix);
                     } else {
@@ -231,7 +266,8 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     }
 
                     fullPath.append(URL_SEPARATOR)
-                        .append(optionService.getCategoriesPrefix())
+                            .append(optionsService.getCategories(siteid))
+//                            .append(optionService.getCategoriesPrefix())
                         .append(URL_SEPARATOR)
                         .append(categorySlug);
 
@@ -248,9 +284,11 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                 case "photos":
 
                     nextPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getPhotosPrefix());
+//                        .append(optionService.getPhotosPrefix());
+                    .append(optionsService.getPhotosPrefix(siteid));
                     prevPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getPhotosPrefix());
+//                        .append(optionService.getPhotosPrefix());
+                    .append(optionsService.getPhotosPrefix(siteid));
 
                     nextPageFullPath.append("/page/")
                         .append(page + 2)
@@ -265,7 +303,8 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     }
 
                     fullPath.append(URL_SEPARATOR)
-                        .append(optionService.getPhotosPrefix());
+//                        .append(optionService.getPhotosPrefix());
+                    .append(optionsService.getPhotosPrefix(siteid));
 
                     fullPath.append("/page/");
 
@@ -280,9 +319,11 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                 case "journals":
 
                     nextPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getJournalsPrefix());
+//                        .append(optionService.getJournalsPrefix());
+                            .append(optionsService.getJournalsPrefix(siteid));
                     prevPageFullPath.append(URL_SEPARATOR)
-                        .append(optionService.getJournalsPrefix());
+//                        .append(optionService.getJournalsPrefix());
+                            .append(optionsService.getJournalsPrefix(siteid));
 
                     nextPageFullPath.append("/page/")
                         .append(page + 2)
@@ -297,7 +338,8 @@ public class PaginationTagDirective implements TemplateDirectiveModel {
                     }
 
                     fullPath.append(URL_SEPARATOR)
-                        .append(optionService.getJournalsPrefix());
+//                        .append(optionService.getJournalsPrefix());
+                            .append(optionsService.getJournalsPrefix(siteid));
 
                     fullPath.append("/page/");
 

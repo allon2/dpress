@@ -5,6 +5,7 @@ import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.service.OptionsService;
+import cn.ymotel.dpress.service.PostsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,7 +30,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 //@ActorCfg(urlPatterns = {"/archives","/archives/","/archives/page/{page}"})
-@ActorCfg(chain = "publicchain")
+@ActorCfg(chain = "publicchain",timeout = 60*1000)
 public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern<HttpServletRequest> {
     @Override
     public boolean ignore() {
@@ -38,13 +39,92 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
         }
         return true;
     }
+    public Object getMaxStartId(){
+        Map data=new HashMap();
+        data.put("status",0);
+        data.put("type",0);
+        data.put("siteid",Utils.getSiteId());
+        return sqlSession.selectOne("posts.qmaxid",data);
+    }
+    public Object getSubtId(int id,int offset){
+        Map data=new HashMap();
+        data.put("status",0);
+        data.put("type",0);
+        data.put("siteid",Utils.getSiteId());
+        data.put("id",id);
+        data.put("offset",offset);
+        List list= sqlSession.selectList("posts.qprevPost1",data);
+        if(list==null||list.size()==0){
+            return  null;
+        }
+        return list.get(list.size()-1);
+    }
+    public Object getStartId(Object startid){
+        if(startid==null){
+            return  getMaxStartId();
+        }
+        return  startid;
+    }
+    public List getSubList(List list,int size,int pagesize){
+        List rtnList=new ArrayList();
+        int tt=size-pagesize;
+        for(int i=0;i<list.size();i++){
+            if(i<tt){
+                continue;
+            }
+            rtnList.add(list.get(i));
+        }
+        return  rtnList;
+    }
 
+    /**
+     * 一次最多请求10页
+     * @param requestPage
+     * @param prePage
+     * @param startId
+     * @param pagesize
+     * @return
+     */
+    public Object[] getOffsetAndStartId(Integer requestPage,Integer prePage,Integer startId,int pagesize){
+        if(requestPage==null||requestPage<1){
+            requestPage=1;
+        }
+        if(prePage==null||prePage<1){
+            prePage=1;
+        }
+        if(Math.abs(requestPage-prePage)>10){
+            if(requestPage>prePage){
+                requestPage=prePage+10;
+            }else{
+                requestPage=prePage-10;
+            }
+        }
+
+        Object startid;
+        int offset;
+        if(requestPage>=prePage){
+            //下几页，
+            startid=getStartId(startId);
+            offset=(requestPage-prePage)*pagesize+pagesize;
+        }else{
+            //上几页
+            offset=(prePage-requestPage)*pagesize;
+            startid= getSubtId(startId,offset);
+            offset=pagesize;
+        }
+
+        Object[] obs=new Object[3];
+        obs[0]=offset;
+        obs[1]=startid;
+        obs[2]=requestPage;
+        return  obs;
+    }
     @Override
     public String[] getPatterns(HttpServletRequest request) {
-
+        //"/page/{page}/{startid}/{prePage}
         Object siteid=Utils.getFrontSiteId(request);
         String archives=optionsService.getArchives(siteid);
-        return new String[]{"/"+archives,"/"+archives+"/","/"+archives+"/page/{page}"};
+        return new String[]{"/"+archives,"/"+archives+"/","/"+archives+"/page/{page}/{startid}/{prePage}"};
     }
     @Autowired
     private  PostService postService;
@@ -61,13 +141,12 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
 
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
-        String  spage=message.getContextData("page");
-        Integer p=new Integer(1);
-        if(spage!=null){
-            p=Integer.parseInt(spage);
-        }
-        String token=message.getContextData("token");
-        PostPermalinkType permalinkType = optionService.getPostPermalinkType();
+        Integer p=message.getContextData("page",1);
+        int pagesize=10;
+        Object[] objs=getOffsetAndStartId(p,message.getContextData("prePage",1),message.getContextData("startid",Integer.class),pagesize);
+        p=(Integer) objs[2];
+//        String token=message.getContextData("token");
+//        PostPermalinkType permalinkType = optionService.getPostPermalinkType();
 
         ViewData viewData=new ViewData();
 
@@ -88,7 +167,11 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
             map.put("status", "0");
             map.put("siteid", Utils.getSiteId());
             map.put("start", pageable.getOffset());
+            map.put("startid",objs[1]);
+            map.put("size", objs[0]);
+
            List ls= sqlSession.selectList("posts.qpostslimit", map);
+            ls=getSubList(ls,(Integer) objs[0],pagesize);
             Map<Integer,List> yearMap=new HashMap();
             List archives=new ArrayList();
             String archive=optionsService.getArchives(Utils.getSiteId());
@@ -120,16 +203,18 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
                 }
             });
 
+//            Map ctMap=sqlSession.selectOne("posts.qpostscount",map);
+//            long total=Long.parseLong(ctMap.get("ct").toString());
+            long total=postsService.count(Utils.getSiteId(),0);
 
-
-            Map ctMap=sqlSession.selectOne("posts.qpostscount",map);
-            long total=Long.parseLong(ctMap.get("ct").toString());
             Page page=new PageImpl(ls,pageable,total);
             model.addAttribute("is_archives", true);
             model.addAttribute("posts", page);
             model.addAttribute("archives", archives);
             model.addAttribute("meta_keywords", optionsService.getOption(Utils.getSiteId(),OptionsService.KEY_WORDS,""));
             model.addAttribute("meta_description",  optionsService.getOption(Utils.getSiteId(),OptionsService.DESCRIPTION,""));
+            model.addAttribute("_pageKey","posts");
+            model.addAttribute("_pageNumber",p);
         }
         viewData.setViewName("archives");
         return viewData;
@@ -150,6 +235,8 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
 
         return StringUtils.substring(text, 0, summaryLength);
     }
+    @Autowired
+    PostsService postsService;
     public String index(Model model,
                          Integer page) {
         return postModel.list(page, model);

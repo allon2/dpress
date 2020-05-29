@@ -71,11 +71,13 @@ public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern
         model.put("metas", Collections.EMPTY_LIST);
         Map prevMap=this.sqlSession.selectOne("posts.qprevPost",categoriesMap);
         Map nextMap=this.sqlSession.selectOne("posts.qnextPost",categoriesMap);
+        String archives=optionsService.getArchives(Utils.getSiteId());
+
         if(prevMap!=null){
-            prevMap.put("fullPath","/archives/"+prevMap.get("slug"));
+            prevMap.put("fullPath","/"+archives+"/"+prevMap.get("slug"));
         }
         if(nextMap!=null){
-            nextMap.put("fullPath","/archives/"+nextMap.get("slug"));
+            nextMap.put("fullPath","/"+archives+"/"+nextMap.get("slug"));
         }
         model.put("nextPost",nextMap);
         model.put("prevPost",prevMap);

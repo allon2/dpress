@@ -89,6 +89,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         StringWriter writer = new StringWriter();
         Map<String, Object> delegate=new HashMap();
         delegate.putAll(data);
+//        SimpleHash simpleHash=new SimpleHash(data,null);
         temp.process(delegate, writer);
         String content = writer.toString();
         writer.close();

@@ -83,6 +83,8 @@ management:
         include: ['httptrace', 'metrics','env','logfile','health']
 mybatis-plus:
   mapper-locations: classpath*:/mybatis/mapper/*.xml
+  configuration:
+    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:
 #    root: TRACE
@@ -103,8 +105,11 @@ jetcache:
     default:
       type: linkedhashmap
       keyConvertor: fastjson
+      expireAfterWriteInMillis: 120000
+#全局本地超时时间 2分钟
   remote:
     default:
       type: mock
+
 #dactor:
 #  enabled: false

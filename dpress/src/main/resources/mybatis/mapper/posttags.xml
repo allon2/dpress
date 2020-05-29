@@ -46,6 +46,8 @@ post_id =#{post_id}
 
 		)
 	</insert>
-
+	<select id="qcount"  resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from post_tags where siteid=#{siteid}
+	</select>
 
 </mapper>

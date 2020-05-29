@@ -1,6 +1,7 @@
 package run.halo.app.core.freemarker.tag;
 
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.service.TagTagsService;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
@@ -66,7 +67,8 @@ public class TagTagDirective implements TemplateDirectiveModel {
                     env.setVariable("tags", builder.build().wrap(tagService.convertTo(tags)));
                     break;
                 case "count":
-                    env.setVariable("count", builder.build().wrap(tagService.count()));
+                    env.setVariable("count", builder.build().wrap(tagTagsService.count(siteid)));
+//                    env.setVariable("count", builder.build().wrap(tagService.count()));
                     break;
                 default:
                     break;
@@ -74,6 +76,8 @@ public class TagTagDirective implements TemplateDirectiveModel {
         }
         body.render(env.getOut());
     }
+    @Autowired
+    private TagTagsService tagTagsService;
     public List getList(String baseurl){
         Map map=new HashMap();
         map.put("siteid", Utils.getSiteId());

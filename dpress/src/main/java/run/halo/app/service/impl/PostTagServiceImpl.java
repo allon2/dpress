@@ -103,7 +103,8 @@ public class PostTagServiceImpl extends AbstractCrudService<PostTag, Integer> im
 
     @Override
     public Map<Integer, List<Tag>> listTagListMapBy(Collection<Integer> postIds) {
-        Object siteid= Utils.getSiteId();
+        Object siteid= 1265697263137615872L;
+//        Utils.getSiteId();
         if (CollectionUtils.isEmpty(postIds)) {
             return Collections.emptyMap();
         }
