@@ -19,7 +19,7 @@ public class MenuDelActor implements Actor<ServletMessage> {
     public Map Execute(ServletMessage message) throws Throwable {
         Map map=message.getContext();
         map.put("siteid", Utils.getSiteId());
-        map.put("parent_id", map.get("id"));
+        map.put("parent_id", message.getContextData("id",Integer.class));
         sqlSession.delete("menus.dbyparentid",map);
         sqlSession.delete("menus.d",map);
         return new HashMap();

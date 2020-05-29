@@ -33,5 +33,8 @@ select count(1) as ct from dpress_siteinfo
 		id,create_time,update_time,avatar,description,email,expire_time,nickname,password,username,siteid
 		from users where email =#{username} or nickname=#{username}
 	</select>
+	<select id="qall" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id,create_time as createTime,update_time as updateTime ,avatar,description,email,expire_time as expireTime,nickname,username from users
+	</select>
 
 </mapper>

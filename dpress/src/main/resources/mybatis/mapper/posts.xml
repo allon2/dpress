@@ -190,4 +190,29 @@ delete from posts where id=#{id} and siteid=#{siteid}
 		select  id from posts where siteid=#{siteid} and id >#{id}  and type=#{type} and status=#{status} order by id asc limit #{offset}
 		]]>
 	</select>
+
+
+	<select id="qsearchpostslimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+		top_priority , url , visits from posts
+		where type=0 and status=#{status} and siteid=#{siteid}
+		and (title like #{keyword} or original_content like #{keyword})
+
+		order by  create_time desc, id desc limit #{start}, #{size}
+	</select>
+	<select id="qsearchcountbynormal" resultType="java.lang.Long" parameterType="java.util.HashMap">
+			select count(id) as ct from posts  where type=0  and siteid=#{siteid} and status=#{status} and id >=0
+			and (title like #{keyword} or original_content like #{keyword})
+	</select>
+	<select id="qsearchmaxid" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select max(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}
+		and (title like #{keyword} or original_content like #{keyword})
+	</select>
+	<select id="qsearchprevPost1" resultType="java.lang.Long"  parameterType="java.util.HashMap">
+		<![CDATA[
+		select  id from posts where siteid=#{siteid} and id >#{id}  and type=#{type} and status=#{status}
+		and (title like #{keyword} or original_content like #{keyword})
+		order by id asc limit #{offset}
+		]]>
+	</select>
 </mapper>

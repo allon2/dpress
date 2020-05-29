@@ -13,7 +13,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import java.util.HashMap;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/api/admin/statistics/user",methods = RequestMethod.GET)
+@ActorCfg(urlPatterns = "/api/admin/statistics/user",methods = RequestMethod.GET,timeout = 60*1000)
 public class UserActor implements Actor<Message> {
     @Autowired
     private SqlSession sqlSession;

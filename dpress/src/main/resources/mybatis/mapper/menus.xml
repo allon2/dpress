@@ -38,10 +38,10 @@
 			where siteid=#{siteid} and id=#{id}
 	</update>
 <delete id="d" parameterType="java.util.HashMap">
-	delete menus where siteid=#{siteid} and id=#{id}
+	delete from  menus where siteid=#{siteid} and id=#{id}
 </delete>
 	<delete id="dbyparentid" parameterType="java.util.HashMap">
-	delete menus where siteid=#{siteid} and parent_id=#{parent_id}
+	delete from  menus where siteid=#{siteid} and parent_id=#{parent_id}
 </delete>
 
 </mapper>

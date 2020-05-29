@@ -22,6 +22,7 @@ import javax.servlet.http.HttpServletRequest;
 import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 @Component
@@ -160,13 +161,21 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         configuration.setSharedVariable("toolTag", applicationContext.getBean(ToolTagDirective.class));
     }
     private void loadUserConfig(Configuration configuration) throws TemplateModelException {
-        try {
-            configuration.setSharedVariable("user", userService.getCurrentUser().orElse(null));
-        } catch (java.lang.Throwable e) {
-            e.printStackTrace();
-            configuration.setSharedVariable("user",null);
+        List list=sqlSession.selectList("users.qall");
+        if(list==null||list.size()==0) {
+            configuration.setSharedVariable("user", null);
+        }else{
+            Map map=(Map)list.get(0);
+            configuration.setSharedVariable("user", map);
 
         }
+//        try {
+//            configuration.setSharedVariable("user", userService.getCurrentUser().orElse(null));
+//        } catch (java.lang.Throwable e) {
+//            e.printStackTrace();
+//            configuration.setSharedVariable("user",null);
+//
+//        }
     }
 
     private void loadOptionsConfig(Configuration configuration,String baseurl,Object id) throws TemplateModelException {

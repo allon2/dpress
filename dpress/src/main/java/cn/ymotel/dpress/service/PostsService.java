@@ -20,4 +20,13 @@ public class PostsService {
         data.put("status",status);
         return sqlSession.selectOne("posts.qcountbynormal",data);
     }
+    @Cached
+    public Long count(Object siteid,Object status,String keyword){
+        Map data=new HashMap<>();
+        data.put("siteid",siteid);
+        data.put("status",status);
+        data.put("keyword","%"+keyword+"%");
+
+        return sqlSession.selectOne("posts.qsearchcountbynormal",data);
+    }
 }
