@@ -1,7 +1,9 @@
 package run.halo.app.core.freemarker.tag;
 
+import cn.ymotel.dpress.service.LinksServices;
 import freemarker.core.Environment;
 import freemarker.template.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Component;
 import run.halo.app.model.support.HaloConst;
@@ -22,7 +24,8 @@ import static org.springframework.data.domain.Sort.Direction.DESC;
 public class LinkTagDirective implements TemplateDirectiveModel {
 
     private final LinkService linkService;
-
+    @Autowired
+    private LinksServices linksServices;
     public LinkTagDirective(Configuration configuration, LinkService linkService) {
         this.linkService = linkService;
         configuration.setSharedVariable("linkTag", this);
@@ -43,7 +46,9 @@ public class LinkTagDirective implements TemplateDirectiveModel {
                     env.setVariable("teams", builder.build().wrap(linkService.listTeamVos(Sort.by(DESC, "createTime"))));
                     break;
                 case "count":
-                    env.setVariable("count", builder.build().wrap(linkService.count()));
+                    env.setVariable("count", builder.build().wrap(linksServices.count(siteid)));
+
+//                    env.setVariable("count", builder.build().wrap(linkService.count()));
                     break;
                 default:
                     break;

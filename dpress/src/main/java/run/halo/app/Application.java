@@ -46,7 +46,7 @@ import javax.servlet.DispatcherType;
 @EnableMethodCache(basePackages ={"run.halo.app","cn.ymotel.dpress"})
 @EnableCreateCacheAnnotation
 //@PropertySource(value = {"classpath*:/conf/**.properties","classpath*:/conf/**.yml", "classpath*:/conf/**.yaml"},factory = CompositePropertySourceFactory.class)
-@Lazy
+//@Lazy
 public class Application extends SpringBootServletInitializer {
 
     private static ConfigurableApplicationContext CONTEXT;

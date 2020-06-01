@@ -22,6 +22,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.util.NestedServletException;
+import org.springframework.web.util.UrlPathHelper;
 import run.halo.app.exception.AbstractHaloException;
 import run.halo.app.exception.NotFoundException;
 import run.halo.app.service.OptionService;
@@ -76,6 +77,8 @@ public class CommonController extends AbstractErrorController {
     }
     @Autowired
     private SqlSession sqlSession;
+    private final UrlPathHelper urlPathHelper = new UrlPathHelper();
+
     /**
      * Handle error
      *
@@ -91,9 +94,17 @@ public class CommonController extends AbstractErrorController {
             request.getMethod(),
             ServletUtil.getClientIP(request));
 
+
         handleCustomException(request);
 
         Map<String, Object> errorDetail = Collections.unmodifiableMap(getErrorAttributes(request, isIncludeStackTrace(request)));
+        {
+            String path=(String)errorDetail.get("path");
+            path=path.toLowerCase();
+            if(path.endsWith(".jpg")||path.endsWith(".png")||path.endsWith(".js")||path.endsWith(".css")){
+                return "";
+            }
+        }
         model.addAttribute("error", errorDetail);
         model.addAttribute("meta_keywords", optionService.getSeoKeywords());
         model.addAttribute("meta_description", optionService.getSeoDescription());

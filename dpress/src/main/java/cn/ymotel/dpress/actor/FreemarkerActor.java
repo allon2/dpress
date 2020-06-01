@@ -65,7 +65,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
         try {
             Object obj = Execute(message);
             long end=System.currentTimeMillis();
-            System.out.println("count time--"+(end-begin)/1000);
+//            System.out.println("count time--"+(end-begin)/1000);
             if(obj==null){
                 return message;
             }
@@ -96,7 +96,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
         }finally {
             long end=System.currentTimeMillis();
 
-            System.out.println("final time--"+(end-begin)/1000);
+//            System.out.println("final time--"+(end-begin)/1000);
 
         }
         return message;

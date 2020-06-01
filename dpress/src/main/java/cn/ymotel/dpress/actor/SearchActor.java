@@ -16,6 +16,7 @@ import org.springframework.lang.NonNull;
 import org.springframework.util.Assert;
 import org.springframework.validation.support.BindingAwareModelMap;
 import run.halo.app.utils.HaloUtils;
+import run.halo.app.utils.MarkdownUtils;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -154,11 +155,20 @@ public class SearchActor  extends  FreemarkerActor {
 //            ls=getSubList(ls,(Integer) objs[0],pagesize);
             for(int i=0;i<ls.size();i++){
                 Map tMap=(Map)ls.get(i);
+
+                String formatContent="";
+                if(tMap.get("editor_type").equals("0")){
+                    formatContent= MarkdownUtils.renderHtml((String)tMap.get("original_content"));
+                }else{
+                    formatContent=(String)tMap.get("original_content");
+                }
+
+
                 Map ttMap=new HashMap();
                 ttMap.put("siteid",Utils.getSiteId());
                 ttMap.put("postid",tMap.get("id"));
                 tMap.put("tags",sqlSession.selectList("posttag.qtagbypostid",ttMap));
-                tMap.put("summary",generateSummary((String)tMap.get("format_content")));
+                tMap.put("summary",generateSummary(formatContent));
                 tMap.put("fullPath","/"+optionsService.getArchives(Utils.getSiteId())+"/"+tMap.get("slug"));
             }
 

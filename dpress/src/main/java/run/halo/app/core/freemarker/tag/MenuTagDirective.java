@@ -1,5 +1,6 @@
 package run.halo.app.core.freemarker.tag;
 
+import cn.ymotel.dpress.service.MenusService;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
@@ -36,6 +37,7 @@ public class MenuTagDirective implements TemplateDirectiveModel {
         configuration.setSharedVariable("menuTag", this);
     }
 
+    private MenusService menusService;
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         Object siteid=null;
@@ -49,29 +51,46 @@ public class MenuTagDirective implements TemplateDirectiveModel {
         if (params.containsKey(HaloConst.METHOD_KEY)) {
             String method = params.get(HaloConst.METHOD_KEY).toString();
             switch (method) {
-                case "list":
+                case "list": {
 //                    env.setVariable("menus", builder.build().wrap(menuService.findBySiteid()));
-                    Map map=new HashMap();
-                    map.put("siteid",siteid);
-                    List ls=sqlSession.selectList("menus.qall",map);
+                    Map map = new HashMap();
+                    map.put("siteid", siteid);
+                    List ls = sqlSession.selectList("menus.qall", map);
                     env.setVariable("menus", builder.build().wrap(ls));
+                }
                     break;
                 case "tree":
-                    env.setVariable("menus", builder.build().wrap(menuService.listAsTree(Sort.by(DESC, "priority"))));
+//                    env.setVariable("menus", builder.build().wrap(menuService.listAsTree(Sort.by(DESC, "priority"))));
+                    env.setVariable("menus", builder.build().wrap(menusService.listAsTree(siteid)));
                     break;
-                case "listTeams":
-                    env.setVariable("teams", builder.build().wrap(menuService.listTeamVos(Sort.by(DESC, "priority"))));
-                    break;
-                case "listByTeam":
+                case "listTeams": {
+
+                    ;
+                    env.setVariable("teams", builder.build().wrap(menusService.listTeams(siteid)));
+//                    env.setVariable("teams", builder.build().wrap(menuService.listTeamVos(Sort.by(DESC, "priority"))));
+                }
+                break;
+                case "listByTeam": {
                     String team = params.get("team").toString();
-                    env.setVariable("menus", builder.build().wrap(menuService.listByTeam(team, Sort.by(DESC, "priority"))));
-                    break;
+                    Map map=new HashMap();
+                    map.put("team",team);
+                    map.put("siteid",siteid);
+                    List list=sqlSession.selectList("menus.qbyteam",map);
+                    env.setVariable("menus", builder.build().wrap(list));
+//                    env.setVariable("menus", builder.build().wrap(menuService.listByTeam(team, Sort.by(DESC, "priority"))));
+                }
+                break;
                 case "treeByTeam":
                     String treeTeam = params.get("team").toString();
-                    env.setVariable("menus", builder.build().wrap(menuService.listByTeamAsTree(treeTeam, Sort.by(DESC, "priority"))));
+//                    env.setVariable("menus", builder.build().wrap(menuService.listByTeamAsTree(treeTeam, Sort.by(DESC, "priority"))));
+                    env.setVariable("menus", builder.build().wrap(menusService.treebyteam(siteid,treeTeam)));
                     break;
-                case "count":
-                    env.setVariable("count", builder.build().wrap(menuService.count()));
+                case "count": {
+                    Map map = new HashMap();
+                    map.put("siteid", siteid);
+                    Long count=sqlSession.selectOne("menus.count",map);
+                    env.setVariable("count", builder.build().wrap(count));
+                }
                     break;
                 default:
                     break;

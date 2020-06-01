@@ -18,6 +18,7 @@ import run.halo.app.model.properties.PostProperties;
 import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
+import run.halo.app.utils.MarkdownUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -51,8 +52,13 @@ public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern
         tMap.put("slug",message.getContext().get("slug"));
         tMap.put("siteid", Utils.getSiteId());
        Map postData= sqlSession.selectOne("posts.qbyslug",tMap);
-
-
+       String formatContent="";
+        if(postData.get("editor_type").equals("0")){
+            formatContent= MarkdownUtils.renderHtml((String)postData.get("original_content"));
+        }else{
+            formatContent=(String)postData.get("original_content");
+        }
+        postData.put("formatContent",formatContent);
         ViewData viewData=new ViewData();
 
         BindingAwareModelMap model=new BindingAwareModelMap();

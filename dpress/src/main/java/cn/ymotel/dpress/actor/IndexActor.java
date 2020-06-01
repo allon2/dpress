@@ -8,25 +8,26 @@ import cn.ymotel.dpress.service.PostsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageImpl;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.*;
 import org.springframework.lang.NonNull;
 import org.springframework.ui.Model;
 import org.springframework.util.Assert;
 import org.springframework.validation.support.BindingAwareModelMap;
 import run.halo.app.controller.content.model.PostModel;
 import run.halo.app.model.enums.PostPermalinkType;
+import run.halo.app.service.MenuService;
 import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
+import run.halo.app.utils.MarkdownUtils;
 
 import java.util.*;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg(urlPatterns = {"/","/page/{page}/{startid}/{prePage}"},chain = "publicchain")
+import static org.springframework.data.domain.Sort.Direction.DESC;
+
+@ActorCfg(urlPatterns = {"/","/page/{page}/{startid}/{prePage}"},chain = "publicchain",timeout = 60*1000)
 public class IndexActor extends  FreemarkerActor {
     @Autowired
     private  PostService postService;
@@ -132,8 +133,14 @@ public class IndexActor extends  FreemarkerActor {
         obs[2]=requestPage;
         return  obs;
     }
+    @Autowired
+    private  MenuService menuService;
+
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
+
+
+
         Integer p=message.getContextData("page",1);
         int pagesize=10;
 
@@ -180,8 +187,20 @@ public class IndexActor extends  FreemarkerActor {
                Map ttMap=new HashMap();
                ttMap.put("siteid",Utils.getSiteId());
                ttMap.put("postid",tMap.get("id"));
+
+
+
+               String formatContent="";
+               if(tMap.get("editor_type").equals("0")){
+                   formatContent= MarkdownUtils.renderHtml((String)tMap.get("original_content"));
+               }else{
+                   formatContent=(String)tMap.get("original_content");
+               }
+
+
+
                tMap.put("tags",sqlSession.selectList("posttag.qtagbypostid",ttMap));
-               tMap.put("summary",generateSummary((String)tMap.get("format_content")));
+               tMap.put("summary",generateSummary(formatContent));
                tMap.put("fullPath","/"+optionsService.getArchives(Utils.getSiteId())+"/"+tMap.get("slug"));
            }
 

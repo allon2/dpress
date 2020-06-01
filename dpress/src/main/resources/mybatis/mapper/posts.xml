@@ -29,7 +29,7 @@
 			and id<=#{startid}
 			  ]]>
 		</if>
-			order by top_priority desc, create_time desc, id desc limit  #{size}
+			order by  create_time desc, id desc limit  #{size}
 	</select>
 	<select id="qpostscount" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select count(id) as ct from posts  where type=0 and status=#{status} and siteid=#{siteid} and id >=0

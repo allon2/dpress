@@ -43,5 +43,16 @@
 	<delete id="dbyparentid" parameterType="java.util.HashMap">
 	delete from  menus where siteid=#{siteid} and parent_id=#{parent_id}
 </delete>
-
+	<select id="count" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(*) from menus
+		 where siteid=#{siteid}
+	</select>
+	<select id="qbyteam" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		select id , create_time , siteid , update_time , icon , name , parent_id , priority , target, team , url from menus
+		 where siteid=#{siteid} and team=#{team} order by priority desc
+	</select>
+	<select id="qallorderpriority" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
+		select id , create_time , siteid , update_time , icon , name , parent_id , priority , target, team , url from menus
+		 where siteid=#{siteid} order by priority desc
+	</select>
 </mapper>

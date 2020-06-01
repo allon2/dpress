@@ -32,6 +32,7 @@ public class TagTagDirective implements TemplateDirectiveModel {
     private SqlSession sqlSession;
     private final TagService tagService;
 
+
     private final PostTagService postTagService;
 
     public TagTagDirective(Configuration configuration,
@@ -62,9 +63,10 @@ public class TagTagDirective implements TemplateDirectiveModel {
 //                    env.setVariable("tags", builder.build().wrap(postTagService.listTagWithCountDtos(Sort.by(DESC, "createTime"))));
                     break;
                 case "listByPostId":
-                    Integer postId = Integer.parseInt(params.get("postId").toString());
-                    List<Tag> tags = postTagService.listTagsBy(postId);
-                    env.setVariable("tags", builder.build().wrap(tagService.convertTo(tags)));
+//                    Integer postId = Integer.parseInt(params.get("postId").toString());
+//                    List<Tag> tags = postTagService.listTagsBy(postId);
+//                    env.setVariable("tags", builder.build().wrap(tagService.convertTo(tags)));
+                    env.setVariable("tags", builder.build().wrap(tagTagsService.getTagsByPostId(siteid,params.get("postId"))));
                     break;
                 case "count":
                     env.setVariable("count", builder.build().wrap(tagTagsService.count(siteid)));

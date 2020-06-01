@@ -84,10 +84,11 @@ management:
 mybatis-plus:
   mapper-locations: classpath*:/mybatis/mapper/*.xml
   configuration:
-    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
+    log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+#    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:
-#    root: TRACE
+#    root: DEBUG
     com.apache.ibatis: DEBUG
     java.sql.Connection: DEBUG
     java.sql.Statement: DEBUG

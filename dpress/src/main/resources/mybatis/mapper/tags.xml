@@ -18,6 +18,10 @@
 
 		and siteid=#{siteid}
 	</select>
+	<select id="qtagsbypostid" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select a.slug,a.id,a.create_time,a.update_time,a.name,a.slug,a.slug_name,thumbnail from tags a ,post_tags b
+		 where a.id=b.tag_id and  b.post_id=#{postid} and siteid=#{siteid}
+	</select>
 	<insert id="i"  parameterType="java.util.HashMap">
 		insert into tags (
 		create_time,update_time,name,slug,slug_name,siteid,thumbnail

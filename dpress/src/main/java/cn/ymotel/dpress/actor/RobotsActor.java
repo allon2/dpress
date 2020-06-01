@@ -17,7 +17,7 @@ import java.util.Map;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-@ActorCfg(urlPatterns = "robots.txt",chain = "publicchain")
+@ActorCfg(urlPatterns = "/robots.txt",chain = "publicchain")
 public class RobotsActor extends  FreemarkerActor {
 
     @Override
@@ -28,7 +28,7 @@ public class RobotsActor extends  FreemarkerActor {
         viewData.setData(model);
 
 
-        viewData.setViewName("common/web/robots.ftl");
+        viewData.setViewName("common/web/robots");
         return viewData;
     }
 

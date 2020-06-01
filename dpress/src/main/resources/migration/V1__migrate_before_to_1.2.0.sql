@@ -304,7 +304,7 @@ CREATE TABLE posts  (
   siteid bigint(20) NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
   UNIQUE INDEX UK_qmmso8qxjpbxwegdtp0l90390(slug,siteid) USING BTREE,
-  INDEX posts_type_status(type, status) USING BTREE,
+  INDEX posts_type_status_siteid(type, status,siteid) USING BTREE,
   INDEX posts_create_time(create_time) USING BTREE
 ) ;
 
