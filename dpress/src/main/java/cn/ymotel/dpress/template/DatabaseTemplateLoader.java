@@ -108,16 +108,16 @@ import static freemarker.template.Configuration.AUTO_DETECT_TAG_SYNTAX;
         /**
          * 不缓存
          */
-        templateConfig.setCacheStorage(NullCacheStorage.INSTANCE);
+//        templateConfig.setCacheStorage(NullCacheStorage.INSTANCE);
 //        templateConfig.setClassicCompatible(true);
 //        templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.HTML_DEBUG_HANDLER);
 
 //        templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
         templateConfig.setTemplateExceptionHandler(TemplateExceptionHandler.RETHROW_HANDLER);
 
-        templateConfig.setTemplateUpdateDelayMilliseconds(0);
+//        templateConfig.setTemplateUpdateDelayMilliseconds(0);
 
-//        templateConfig.setTemplateUpdateDelayMilliseconds(60*1000);
+        templateConfig.setTemplateUpdateDelayMilliseconds(60*1000);
         templateConfig.setTagSyntax(AUTO_DETECT_TAG_SYNTAX);
         return templateConfig;
 
