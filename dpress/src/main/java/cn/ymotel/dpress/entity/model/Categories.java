@@ -1,6 +1,7 @@
 package cn.ymotel.dpress.entity.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,14 +13,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Categories extends Model<Categories> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -29,7 +30,7 @@ public class Categories extends Model<Categories> {
 
     private String name;
 
-    private String parentId;
+    private Integer parentId;
 
     private String slug;
 
@@ -37,11 +38,23 @@ public class Categories extends Model<Categories> {
 
     private String thumbnail;
 
-    public String getId() {
+    private Long siteid;
+    @TableField(exist = false)
+    private  String fullPath;
+
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
+    public Integer getId() {
         return id;
     }
 
-    public Categories setId(String id) {
+    public Categories setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -77,11 +90,11 @@ public class Categories extends Model<Categories> {
         this.name = name;
         return this;
     }
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public Categories setParentId(String parentId) {
+    public Categories setParentId(Integer parentId) {
         this.parentId = parentId;
         return this;
     }
@@ -109,6 +122,14 @@ public class Categories extends Model<Categories> {
         this.thumbnail = thumbnail;
         return this;
     }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Categories setSiteid(Long siteid) {
+        this.siteid = siteid;
+        return this;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -127,6 +148,7 @@ public class Categories extends Model<Categories> {
             ", slug=" + slug +
             ", slugName=" + slugName +
             ", thumbnail=" + thumbnail +
+            ", siteid=" + siteid +
         "}";
     }
 }

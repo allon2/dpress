@@ -4,7 +4,7 @@
     "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="dpress" >
 	<select id="qtemplate" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
-		select content,bcontent,lastModified,variable from dpress_template where
+		select content,bcontent,lastModified,variable,encoding,mediatype from dpress_template where
 		siteid=#{siteid} and path=#{path} and theme=#{theme}
 	</select>
 	<update id="utemplatecontent" parameterType="java.util.HashMap">
@@ -37,8 +37,8 @@
 		delete from dpress_siteinfo where id=#{id}
 	</delete>
 	<insert id="itemplate" parameterType="java.util.HashMap">
-        insert into dpress_template(content,bcontent,lastModified,siteid,path,cifseq,theme ) values(
-        #{content},#{bcontent},#{lastModified},#{siteid},#{path},#{cifseq},#{theme}
+        insert into dpress_template(content,bcontent,lastModified,siteid,path,cifseq,theme,encoding,mediatype ) values(
+        #{content},#{bcontent},#{lastModified},#{siteid},#{path},#{cifseq},#{theme},#{encoding},#{mediatype}
         )
     </insert>
 	<delete id="dtemplatebytheme"  parameterType="java.util.HashMap">

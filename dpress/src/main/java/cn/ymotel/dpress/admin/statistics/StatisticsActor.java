@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 
 @ActorCfg(urlPatterns = "/api/admin/statistics",methods = RequestMethod.GET)
 public class StatisticsActor implements Actor<ServletMessage> {
@@ -22,17 +23,53 @@ public class StatisticsActor implements Actor<ServletMessage> {
     @Override
     public Map Execute(ServletMessage message) throws Throwable {
         Map rtnMap=new HashMap();
-        Map map=new HashMap();
+        Map map=new java.util.concurrent.ConcurrentHashMap<>();
         map.put("siteid", Utils.getSiteId());
-        rtnMap.put("postCount",sqlSession.selectOne("posts.qcount",map));
-        rtnMap.put("commentCount",sqlSession.selectOne("comments.qcount",map));
-        rtnMap.put("categoryCount",sqlSession.selectOne("categories.qcount",map));
-        rtnMap.put("attachmentCount",sqlSession.selectOne("attachmentfiles.qcount",map));
-        rtnMap.put("tagCount",sqlSession.selectOne("tags.qcount",map));
-        rtnMap.put("journalCount",sqlSession.selectOne("journals.qcount",map));
-        rtnMap.put("linkCount",sqlSession.selectOne("links.qcount",map));
+        CompletableFuture future1= CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("postCount",sqlSession.selectOne("posts.qcount",map));
+            }
+        });
+        CompletableFuture future2= CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("commentCount",sqlSession.selectOne("comments.qcount",map));
+            }
+        });
+        CompletableFuture future3=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("categoryCount",sqlSession.selectOne("categories.qcount",map));
+            }
+        });
+        CompletableFuture future4= CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("attachmentCount",sqlSession.selectOne("attachmentfiles.qcount",map));
+            }
+        });
+        CompletableFuture future5=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("tagCount",sqlSession.selectOne("tags.qcount",map));
+            }
+        });
+        CompletableFuture future6=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("journalCount",sqlSession.selectOne("journals.qcount",map));
+            }
+        });
+        CompletableFuture future7= CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+                rtnMap.put("linkCount",sqlSession.selectOne("links.qcount",map));
+            }
+        });
 
         {
+
             map.put("type",0);
             long count=sqlSession.selectOne("posts.qsumvisit", map);
 
@@ -53,6 +90,10 @@ public class StatisticsActor implements Actor<ServletMessage> {
         long days = (System.currentTimeMillis() - lbirthday) / (1000 * 24 * 3600);
         rtnMap.put("birthday",lbirthday);
         rtnMap.put("establishDays",days);
+        // Wait until they are all done
+        CompletableFuture.allOf(future1,future2,future3,future4,future5,future6,future7).join();
+
+
         return rtnMap;
     }
 }

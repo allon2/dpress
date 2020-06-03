@@ -222,7 +222,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     }
 
     private void setBaseUrlVariables(Configuration configuration , String baseUrl) throws TemplateModelException {
-        String themeBasePath= baseUrl +"/themes/";
+        String themeBasePath= baseUrl +"/themes";
 
 //        String themeBasePath = baseUrl + "/themes/" + activatedTheme.getFolderName();
 

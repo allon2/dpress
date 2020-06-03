@@ -59,6 +59,18 @@ public class SiteThemeService {
        return map.get("bcontent");
 
     }
+    public Object getContent(Map themeMap,String path){
+        Map map= themeMap;
+        if(map==null){
+            return null;
+        }
+        if(istext(path)){
+            return   map.get("content");
+        }
+        return map.get("bcontent");
+
+    }
+
     public Map getThemeInfo(Object siteid,String theme){
          Map map= getThemeInfo(siteid,theme,"theme.yaml");
         if(map==null||map.isEmpty()){

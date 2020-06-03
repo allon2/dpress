@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Links extends Model<Links> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -31,17 +31,19 @@ public class Links extends Model<Links> {
 
     private String name;
 
-    private String priority;
+    private Integer priority;
 
     private String team;
 
     private String url;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public Links setId(String id) {
+    public Links setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -85,11 +87,11 @@ public class Links extends Model<Links> {
         this.name = name;
         return this;
     }
-    public String getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public Links setPriority(String priority) {
+    public Links setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -107,6 +109,14 @@ public class Links extends Model<Links> {
 
     public Links setUrl(String url) {
         this.url = url;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Links setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -127,6 +137,7 @@ public class Links extends Model<Links> {
             ", priority=" + priority +
             ", team=" + team +
             ", url=" + url +
+            ", siteid=" + siteid +
         "}";
     }
 }

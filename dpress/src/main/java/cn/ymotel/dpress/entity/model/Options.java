@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Options extends Model<Options> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -27,15 +27,17 @@ public class Options extends Model<Options> {
 
     private String optionKey;
 
-    private String type;
+    private Integer type;
 
     private String optionValue;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public Options setId(String id) {
+    public Options setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -63,11 +65,11 @@ public class Options extends Model<Options> {
         this.optionKey = optionKey;
         return this;
     }
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public Options setType(String type) {
+    public Options setType(Integer type) {
         this.type = type;
         return this;
     }
@@ -77,6 +79,14 @@ public class Options extends Model<Options> {
 
     public Options setOptionValue(String optionValue) {
         this.optionValue = optionValue;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Options setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -94,6 +104,7 @@ public class Options extends Model<Options> {
             ", optionKey=" + optionKey +
             ", type=" + type +
             ", optionValue=" + optionValue +
+            ", siteid=" + siteid +
         "}";
     }
 }

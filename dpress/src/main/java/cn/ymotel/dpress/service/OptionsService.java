@@ -27,7 +27,9 @@ public class OptionsService {
     public static String TAGS_PREFIX="tags_prefix";
     public static String SEO_SPIDER_DISABLED="seo_spider_disabled";
     public static String PATH_SUFFIX="path_suffix";
-
+    public static String NEW_NEED_CHECK="comment_new_need_check";
+    public static String GRAVATAR_DEFAULT="comment_gravatar_default";
+    public  static  String CONTENT_PLACEHOLDER="comment_content_placeholder";
     @Autowired
     private SqlSession sqlSession;
 
@@ -89,4 +91,16 @@ public class OptionsService {
     public String getJournalsPrefix(Object id){
         return getOption(id,JOURNALS_PREFIX,"journals");
     }
+
+    @Cached
+    public Boolean getNEW_NEED_CHECK(Object id){
+        return getBooleanOption(id,NEW_NEED_CHECK,true);
+    }
+    public String getGRAVATAR_DEFAULT(Object id){
+        return  getOption(id,GRAVATAR_DEFAULT,"mm");
+    }
+    public String getCONTENT_PLACEHOLDER(Object id){
+        return  getOption(id,CONTENT_PLACEHOLDER,"");
+    }
+
 }

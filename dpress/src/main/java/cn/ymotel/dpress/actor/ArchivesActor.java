@@ -22,6 +22,7 @@ import run.halo.app.model.enums.PostPermalinkType;
 import run.halo.app.service.OptionService;
 import run.halo.app.service.PostService;
 import run.halo.app.utils.HaloUtils;
+import run.halo.app.utils.MarkdownUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
@@ -182,7 +183,16 @@ public class ArchivesActor extends  FreemarkerActor implements DyanmicUrlPattern
                ttMap.put("siteid",Utils.getSiteId());
                ttMap.put("postid",tMap.get("id"));
                tMap.put("tags",sqlSession.selectList("posttag.qtagbypostid",ttMap));
-               tMap.put("summary",generateSummary((String)tMap.get("format_content")));
+
+
+               String formatContent="";
+               if(tMap.get("editor_type").equals(0)){
+                   formatContent= MarkdownUtils.renderHtml((String)tMap.get("original_content"));
+               }else{
+                   formatContent=(String)tMap.get("original_content");
+               }
+
+               tMap.put("summary",generateSummary(formatContent));
                tMap.put("fullPath","/"+archive+"/"+tMap.get("slug"));
                java.util.Date date=(java.util.Date)tMap.get("createTime");
                Calendar calendar=Calendar.getInstance();

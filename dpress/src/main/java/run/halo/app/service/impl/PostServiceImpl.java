@@ -23,6 +23,7 @@ import run.halo.app.model.dto.post.BasePostMinimalDTO;
 import run.halo.app.model.dto.post.BasePostSimpleDTO;
 import run.halo.app.model.entity.*;
 import run.halo.app.model.enums.LogType;
+import run.halo.app.model.enums.PostEditorType;
 import run.halo.app.model.enums.PostPermalinkType;
 import run.halo.app.model.enums.PostStatus;
 import run.halo.app.model.params.PostParam;
@@ -588,7 +589,13 @@ public class PostServiceImpl extends BasePostServiceImpl<Post> implements PostSe
             PostListVO postListVO = new PostListVO().convertFrom(post);
 
             if (StringUtils.isBlank(postListVO.getSummary())) {
-                postListVO.setSummary(generateSummary(post.getFormatContent()));
+                String formContent=null;
+                if(post.getEditorType().getValue()== PostEditorType.MARKDOWN.getValue()) {
+                    formContent= MarkdownUtils.renderHtml(post.getOriginalContent());
+                }else{
+                    formContent=post.getFormatContent();
+                }
+                postListVO.setSummary(generateSummary(formContent));
             }
 
             Optional.ofNullable(tagListMap.get(post.getId())).orElseGet(LinkedList::new);

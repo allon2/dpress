@@ -50,7 +50,8 @@ public class PostTagDirective implements TemplateDirectiveModel {
             switch (method) {
                 case "latest":
                     int top = Integer.parseInt(params.get("top").toString());
-                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postService.listLatest(top))));
+                    env.setVariable("posts", builder.build().wrap(postsService.listLatest(siteid,top)));
+//                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postService.listLatest(top))));
                     break;
                 case "count":
 
@@ -58,31 +59,40 @@ public class PostTagDirective implements TemplateDirectiveModel {
 //                    env.setVariable("count", builder.build().wrap(postService.countByStatus(PostStatus.PUBLISHED)));
                     break;
                 case "archiveYear":
-                    env.setVariable("archives", builder.build().wrap(postService.listYearArchives()));
+                    env.setVariable("archives", builder.build().wrap(postsService.listYearArchives(siteid)));
+//                    env.setVariable("archives", builder.build().wrap(postService.listYearArchives()));
                     break;
                 case "archiveMonth":
-                    env.setVariable("archives", builder.build().wrap(postService.listMonthArchives()));
+                    env.setVariable("archives", builder.build().wrap(postsService.listMonthArchives(siteid)));
+//                    env.setVariable("archives", builder.build().wrap(postService.listMonthArchives()));
                     break;
                 case "archive":
                     String type = params.get("type").toString();
-                    env.setVariable("archives", builder.build().wrap("year".equals(type) ? postService.listYearArchives() : postService.listMonthArchives()));
+                    env.setVariable("archives", builder.build().wrap("year".equals(type) ? postsService.listYearArchives(siteid) : postsService.listMonthArchives(siteid)));
+//                    env.setVariable("archives", builder.build().wrap("year".equals(type) ? postService.listYearArchives() : postService.listMonthArchives()));
                     break;
                 case "listByCategoryId":
                     Integer categoryId = Integer.parseInt(params.get("categoryId").toString());
-                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postCategoryService.listPostBy(categoryId, PostStatus.PUBLISHED))));
+//                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postCategoryService.listPostBy(categoryId, PostStatus.PUBLISHED))));
+                    env.setVariable("posts", builder.build().wrap(postsService.getPostsByPostCategoriesId(siteid,categoryId,0)));
                     break;
                 case "listByCategorySlug":
                     String categorySlug = params.get("categorySlug").toString();
-                    List<Post> posts = postCategoryService.listPostBy(categorySlug, PostStatus.PUBLISHED);
-                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(posts)));
+//                    List<Post> posts = postCategoryService.listPostBy(categorySlug, PostStatus.PUBLISHED);
+//                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(posts)));
+                    env.setVariable("posts", builder.build().wrap(postsService.getPostsByCategorieSlug(siteid,categorySlug,0)));
                     break;
                 case "listByTagId":
                     Integer tagId = Integer.parseInt(params.get("tagId").toString());
-                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postTagService.listPostsBy(tagId, PostStatus.PUBLISHED))));
+//                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postTagService.listPostsBy(tagId, PostStatus.PUBLISHED))));
+                    env.setVariable("posts", builder.build().wrap(postsService.getPostsByPostTagId(siteid,tagId,0)));
                     break;
                 case "listByTagSlug":
                     String tagSlug = params.get("tagSlug").toString();
-                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postTagService.listPostsBy(tagSlug, PostStatus.PUBLISHED))));
+                    //getPostsByTagSlug
+//                    env.setVariable("posts", builder.build().wrap(postService.convertToListVo(postTagService.listPostsBy(tagSlug, PostStatus.PUBLISHED))));
+
+                    env.setVariable("posts", builder.build().wrap(postsService.getPostsByTagSlug(siteid,tagSlug,0)));
                     break;
                 default:
                     break;

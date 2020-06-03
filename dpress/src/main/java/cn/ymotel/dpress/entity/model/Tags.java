@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Tags extends Model<Tags> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -33,11 +33,13 @@ public class Tags extends Model<Tags> {
 
     private String thumbnail;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public Tags setId(String id) {
+    public Tags setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -89,6 +91,14 @@ public class Tags extends Model<Tags> {
         this.thumbnail = thumbnail;
         return this;
     }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Tags setSiteid(Long siteid) {
+        this.siteid = siteid;
+        return this;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -105,6 +115,7 @@ public class Tags extends Model<Tags> {
             ", slug=" + slug +
             ", slugName=" + slugName +
             ", thumbnail=" + thumbnail +
+            ", siteid=" + siteid +
         "}";
     }
 }

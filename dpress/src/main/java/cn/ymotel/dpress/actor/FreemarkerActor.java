@@ -5,6 +5,7 @@ import cn.ymotel.dactor.action.Actor;
 import cn.ymotel.dactor.message.Message;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.filter.RecordHttpResponseWrapper;
 import cn.ymotel.dpress.template.MultiDomainFreeMarkerView;
 import freemarker.template.Configuration;
 import freemarker.template.Template;
@@ -12,9 +13,15 @@ import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
+import org.springframework.web.util.ContentCachingResponseWrapper;
+import org.springframework.web.util.WebUtils;
 
+import javax.servlet.AsyncEvent;
+import javax.servlet.AsyncListener;
+import javax.servlet.ServletResponse;
 import javax.servlet.http.HttpServletRequest;
 import javax.swing.text.View;
+import java.io.IOException;
 import java.io.StringWriter;
 import java.util.HashMap;
 import java.util.Map;
@@ -94,6 +101,7 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                 e.printStackTrace();
             message.setException(e);
         }finally {
+
             long end=System.currentTimeMillis();
 
 //            System.out.println("final time--"+(end-begin)/1000);

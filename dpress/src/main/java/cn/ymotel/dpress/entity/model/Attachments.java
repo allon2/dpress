@@ -4,6 +4,7 @@ import com.baomidou.mybatisplus.annotation.IdType;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
+import java.sql.Blob;
 import java.io.Serializable;
 
 /**
@@ -12,14 +13,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Attachments extends Model<Attachments> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -27,7 +28,7 @@ public class Attachments extends Model<Attachments> {
 
     private String fileKey;
 
-    private String height;
+    private Integer height;
 
     private String mediaType;
 
@@ -35,21 +36,27 @@ public class Attachments extends Model<Attachments> {
 
     private String path;
 
-    private String size;
+    private Long size;
 
     private String suffix;
 
     private String thumbPath;
 
-    private String type;
+    private Integer type;
 
-    private String width;
+    private Integer width;
 
-    public String getId() {
+    private Long siteid;
+
+    private Blob content;
+
+    private Blob thumbnailcontent;
+
+    public Integer getId() {
         return id;
     }
 
-    public Attachments setId(String id) {
+    public Attachments setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -77,11 +84,11 @@ public class Attachments extends Model<Attachments> {
         this.fileKey = fileKey;
         return this;
     }
-    public String getHeight() {
+    public Integer getHeight() {
         return height;
     }
 
-    public Attachments setHeight(String height) {
+    public Attachments setHeight(Integer height) {
         this.height = height;
         return this;
     }
@@ -109,11 +116,11 @@ public class Attachments extends Model<Attachments> {
         this.path = path;
         return this;
     }
-    public String getSize() {
+    public Long getSize() {
         return size;
     }
 
-    public Attachments setSize(String size) {
+    public Attachments setSize(Long size) {
         this.size = size;
         return this;
     }
@@ -133,20 +140,44 @@ public class Attachments extends Model<Attachments> {
         this.thumbPath = thumbPath;
         return this;
     }
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public Attachments setType(String type) {
+    public Attachments setType(Integer type) {
         this.type = type;
         return this;
     }
-    public String getWidth() {
+    public Integer getWidth() {
         return width;
     }
 
-    public Attachments setWidth(String width) {
+    public Attachments setWidth(Integer width) {
         this.width = width;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Attachments setSiteid(Long siteid) {
+        this.siteid = siteid;
+        return this;
+    }
+    public Blob getContent() {
+        return content;
+    }
+
+    public Attachments setContent(Blob content) {
+        this.content = content;
+        return this;
+    }
+    public Blob getThumbnailcontent() {
+        return thumbnailcontent;
+    }
+
+    public Attachments setThumbnailcontent(Blob thumbnailcontent) {
+        this.thumbnailcontent = thumbnailcontent;
         return this;
     }
 
@@ -171,6 +202,9 @@ public class Attachments extends Model<Attachments> {
             ", thumbPath=" + thumbPath +
             ", type=" + type +
             ", width=" + width +
+            ", siteid=" + siteid +
+            ", content=" + content +
+            ", thumbnailcontent=" + thumbnailcontent +
         "}";
     }
 }

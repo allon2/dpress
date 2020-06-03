@@ -12,28 +12,30 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class PostCategories extends Model<PostCategories> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private String categoryId;
+    private Integer categoryId;
 
-    private String postId;
+    private Integer postId;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public PostCategories setId(String id) {
+    public PostCategories setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -53,20 +55,28 @@ public class PostCategories extends Model<PostCategories> {
         this.updateTime = updateTime;
         return this;
     }
-    public String getCategoryId() {
+    public Integer getCategoryId() {
         return categoryId;
     }
 
-    public PostCategories setCategoryId(String categoryId) {
+    public PostCategories setCategoryId(Integer categoryId) {
         this.categoryId = categoryId;
         return this;
     }
-    public String getPostId() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public PostCategories setPostId(String postId) {
+    public PostCategories setPostId(Integer postId) {
         this.postId = postId;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public PostCategories setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -83,6 +93,7 @@ public class PostCategories extends Model<PostCategories> {
             ", updateTime=" + updateTime +
             ", categoryId=" + categoryId +
             ", postId=" + postId +
+            ", siteid=" + siteid +
         "}";
     }
 }

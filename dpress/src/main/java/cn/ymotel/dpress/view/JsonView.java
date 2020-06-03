@@ -94,9 +94,18 @@ public class JsonView  implements CustomHttpView<ServletMessage> {
     }
 
     @Override
-    public String getUrlPattern() {
-        return "/api/admin/**";
+    public List<String> getUrlPatterns() {
+        List rtnList=new ArrayList();
+        rtnList.add("/api/content/posts/**");
+        rtnList.add("/api/content/options/comment");
+        rtnList.add("/api/admin/**");
+        return rtnList;
     }
+
+//    @Override
+//    public String getUrlPattern() {
+//        return "/api/admin/**";
+//    }
 
     @Override
     public String getExcludeUrlPattern() {

@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Logs extends Model<Logs> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     private Date createTime;
 
@@ -31,13 +31,15 @@ public class Logs extends Model<Logs> {
 
     private String logKey;
 
-    private String type;
+    private Integer type;
 
-    public String getId() {
+    private Long siteid;
+
+    public Long getId() {
         return id;
     }
 
-    public Logs setId(String id) {
+    public Logs setId(Long id) {
         this.id = id;
         return this;
     }
@@ -81,12 +83,20 @@ public class Logs extends Model<Logs> {
         this.logKey = logKey;
         return this;
     }
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public Logs setType(String type) {
+    public Logs setType(Integer type) {
         this.type = type;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Logs setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -105,6 +115,7 @@ public class Logs extends Model<Logs> {
             ", ipAddress=" + ipAddress +
             ", logKey=" + logKey +
             ", type=" + type +
+            ", siteid=" + siteid +
         "}";
     }
 }

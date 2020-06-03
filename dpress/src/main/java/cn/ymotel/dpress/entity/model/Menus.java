@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Menus extends Model<Menus> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -29,9 +29,9 @@ public class Menus extends Model<Menus> {
 
     private String name;
 
-    private String parentId;
+    private Integer parentId;
 
-    private String priority;
+    private Integer priority;
 
     private String target;
 
@@ -39,11 +39,13 @@ public class Menus extends Model<Menus> {
 
     private String url;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public Menus setId(String id) {
+    public Menus setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -79,19 +81,19 @@ public class Menus extends Model<Menus> {
         this.name = name;
         return this;
     }
-    public String getParentId() {
+    public Integer getParentId() {
         return parentId;
     }
 
-    public Menus setParentId(String parentId) {
+    public Menus setParentId(Integer parentId) {
         this.parentId = parentId;
         return this;
     }
-    public String getPriority() {
+    public Integer getPriority() {
         return priority;
     }
 
-    public Menus setPriority(String priority) {
+    public Menus setPriority(Integer priority) {
         this.priority = priority;
         return this;
     }
@@ -119,6 +121,14 @@ public class Menus extends Model<Menus> {
         this.url = url;
         return this;
     }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Menus setSiteid(Long siteid) {
+        this.siteid = siteid;
+        return this;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -138,6 +148,7 @@ public class Menus extends Model<Menus> {
             ", target=" + target +
             ", team=" + team +
             ", url=" + url +
+            ", siteid=" + siteid +
         "}";
     }
 }

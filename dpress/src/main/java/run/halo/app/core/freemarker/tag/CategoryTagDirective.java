@@ -2,6 +2,7 @@ package run.halo.app.core.freemarker.tag;
 
 import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.service.CategorysService;
+import cn.ymotel.dpress.service.OptionsService;
 import freemarker.core.Environment;
 import freemarker.template.*;
 import org.apache.ibatis.session.SqlSession;
@@ -43,7 +44,6 @@ public class CategoryTagDirective implements TemplateDirectiveModel {
         this.postCategoryService = postCategoryService;
         configuration.setSharedVariable("categoryTag", this);
     }
-
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
 
@@ -63,16 +63,19 @@ public class CategoryTagDirective implements TemplateDirectiveModel {
             String method = params.get(HaloConst.METHOD_KEY).toString();
             switch (method) {
                 case "list":
-                    env.setVariable("categories", builder.build().wrap(getList(baseurl)));
+                    env.setVariable("categories", builder.build().wrap(getList(baseurl,siteid)));
 //                    env.setVariable("categories", builder.build().wrap(postCategoryService.listCategoryWithPostCountDto(Sort.by(DESC, "createTime"))));
                     break;
                 case "tree":
-                    env.setVariable("categories", builder.build().wrap(categoryService.listAsTree(Sort.by(DESC, "createTime"))));
+                    env.setVariable("categories", builder.build().wrap(categorysService.listAsTree(siteid,"create_time")));
+//                    env.setVariable("categories", builder.build().wrap(categoryService.listAsTree(Sort.by(DESC, "createTime"))));
                     break;
                 case "listByPostId":
                     Integer postId = Integer.parseInt(params.get("postId").toString());
-                    List<Category> categories = postCategoryService.listCategoriesBy(postId);
-                    env.setVariable("categories", builder.build().wrap(categoryService.convertTo(categories)));
+//                    List<Category> categories = postCategoryService.listCategoriesBy(postId);
+//                    env.setVariable("categories", builder.build().wrap(categoryService.convertTo(categories)));
+
+                     env.setVariable("categories", builder.build().wrap(categorysService.listCategoriesbyPostId(siteid,postId)));
                     break;
                 case "count":
 
@@ -85,13 +88,15 @@ public class CategoryTagDirective implements TemplateDirectiveModel {
         }
         body.render(env.getOut());
     }
-    public List getList(String baseurl){
+    @Autowired
+    OptionsService optionsService;
+    public List getList(String baseurl,Object siteid){
         Map map=new HashMap();
         map.put("siteid", Utils.getSiteId());
         List ls=  sqlSession.selectList("categories.qall",map);
         for(int i=0;i<ls.size();i++){
             Map tMap=(Map)ls.get(i);
-            tMap.put("fullPath",baseurl+"/categories/"+tMap.get("slug"));
+            tMap.put("fullPath",baseurl+"/"+optionsService.getCategories(siteid)+"/"+tMap.get("slug"));
         }
         return ls;
     }

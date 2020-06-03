@@ -22,6 +22,7 @@ import run.halo.app.utils.MarkdownUtils;
 
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -47,13 +48,12 @@ public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern
 
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
-
         Map tMap=new HashMap();
         tMap.put("slug",message.getContext().get("slug"));
         tMap.put("siteid", Utils.getSiteId());
        Map postData= sqlSession.selectOne("posts.qbyslug",tMap);
        String formatContent="";
-        if(postData.get("editor_type").equals("0")){
+        if(postData.get("editor_type").equals(0)){
             formatContent= MarkdownUtils.renderHtml((String)postData.get("original_content"));
         }else{
             formatContent=(String)postData.get("original_content");
@@ -67,27 +67,43 @@ public class ArchiveActor extends  FreemarkerActor implements  DyanmicUrlPattern
         model.put("meta_description",postData.get("meta_description"));
         model.put("is_post",true);
         model.put("post",postData);
-        Map categoriesMap=new HashMap();
-        categoriesMap.put("postid",postData.get("id"));
-        categoriesMap.put("siteid",Utils.getSiteId());
-        sqlSession.update("posts.uvisit",categoriesMap);
-        List categoriesList=sqlSession.selectList("post_categories.qbypostid",categoriesMap);
-        model.put("categories",categoriesList);
+        Map categoriesMap = new HashMap();
+        categoriesMap.put("postid", postData.get("id"));
+        categoriesMap.put("siteid", Utils.getSiteId());
+
+
+        CompletableFuture future1=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+
+                sqlSession.update("posts.uvisit", categoriesMap);
+                List categoriesList = sqlSession.selectList("post_categories.qbypostid", categoriesMap);
+                model.put("categories", categoriesList);
+            }});
         model.put("tags", Collections.EMPTY_LIST);
         model.put("metas", Collections.EMPTY_LIST);
-        Map prevMap=this.sqlSession.selectOne("posts.qprevPost",categoriesMap);
-        Map nextMap=this.sqlSession.selectOne("posts.qnextPost",categoriesMap);
         String archives=optionsService.getArchives(Utils.getSiteId());
-
+        CompletableFuture future2=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+        Map prevMap=sqlSession.selectOne("posts.qprevPost",categoriesMap);
         if(prevMap!=null){
             prevMap.put("fullPath","/"+archives+"/"+prevMap.get("slug"));
         }
+        model.put("prevPost",prevMap);
+            }});
+        CompletableFuture future3=CompletableFuture.runAsync(new Runnable() {
+            @Override
+            public void run() {
+        Map nextMap=sqlSession.selectOne("posts.qnextPost",categoriesMap);
+
+
         if(nextMap!=null){
             nextMap.put("fullPath","/"+archives+"/"+nextMap.get("slug"));
         }
         model.put("nextPost",nextMap);
-        model.put("prevPost",prevMap);
-
+            }});
+        CompletableFuture.allOf(future1,future2,future3).join();
 
 //
 //        if (PostPermalinkType.ID.equals(permalinkType) && !Objects.isNull(p)) {

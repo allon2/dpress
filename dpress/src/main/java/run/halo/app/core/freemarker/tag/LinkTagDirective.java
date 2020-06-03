@@ -40,10 +40,12 @@ public class LinkTagDirective implements TemplateDirectiveModel {
             String method = params.get(HaloConst.METHOD_KEY).toString();
             switch (method) {
                 case "list":
-                    env.setVariable("links", builder.build().wrap(linkService.listAll()));
+                    env.setVariable("links", builder.build().wrap(linksServices.listAll(siteid)));
+//                    env.setVariable("links", builder.build().wrap(linkService.listAll()));
                     break;
                 case "listTeams":
-                    env.setVariable("teams", builder.build().wrap(linkService.listTeamVos(Sort.by(DESC, "createTime"))));
+                    env.setVariable("teams", builder.build().wrap(linksServices.listTeams(siteid,"create_time")));
+//                    env.setVariable("teams", builder.build().wrap(linkService.listTeamVos(Sort.by(DESC, "createTime"))));
                     break;
                 case "count":
                     env.setVariable("count", builder.build().wrap(linksServices.count(siteid)));

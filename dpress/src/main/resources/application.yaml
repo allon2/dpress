@@ -85,6 +85,7 @@ mybatis-plus:
   mapper-locations: classpath*:/mybatis/mapper/*.xml
   configuration:
     log-impl: org.apache.ibatis.logging.slf4j.Slf4jImpl
+#  type-aliases-package: cn.ymotel.dpress.entity
 #    log-impl: org.apache.ibatis.logging.stdout.StdOutImpl
 logging:
   level:

@@ -4,6 +4,7 @@ import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.Utils;
 import cn.ymotel.dpress.service.OptionsService;
+import cn.ymotel.dpress.service.PostCategorysService;
 import cn.ymotel.dpress.service.PostsService;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
@@ -42,6 +43,9 @@ public class IndexActor extends  FreemarkerActor {
     @Autowired
     OptionsService optionsService;
 
+
+    @Autowired
+    PostCategorysService postCategorysService;
     /**
      * 下一页比上一页大
      * @param page
@@ -139,7 +143,7 @@ public class IndexActor extends  FreemarkerActor {
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
 
-
+//        postCategorysService.findPostIdsBycategoryId(Utils.getSiteId(),0);
 
         Integer p=message.getContextData("page",1);
         int pagesize=10;
@@ -191,7 +195,7 @@ public class IndexActor extends  FreemarkerActor {
 
 
                String formatContent="";
-               if(tMap.get("editor_type").equals("0")){
+               if(tMap.get("editor_type").equals(0)){
                    formatContent= MarkdownUtils.renderHtml((String)tMap.get("original_content"));
                }else{
                    formatContent=(String)tMap.get("original_content");

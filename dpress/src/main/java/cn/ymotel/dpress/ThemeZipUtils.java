@@ -1,16 +1,26 @@
 package cn.ymotel.dpress;
 
 import cn.ymotel.dpress.service.SiteThemeService;
+import org.apache.any23.encoding.TikaEncodingDetector;
+import org.apache.commons.io.FileUtils;
 import org.apache.ibatis.session.SqlSession;
+import org.apache.tika.Tika;
+import org.apache.tika.detect.AutoDetectReader;
+import org.apache.tika.exception.TikaException;
+import org.apache.tika.metadata.Metadata;
+import org.apache.tika.parser.txt.CharsetDetector;
+import org.apache.tika.parser.txt.CharsetMatch;
+import org.apache.tika.parser.txt.UniversalEncodingDetector;
+import org.springframework.http.MediaType;
+import org.springframework.http.MediaTypeFactory;
 import org.yaml.snakeyaml.Yaml;
 import run.halo.app.exception.AlreadyExistsException;
 
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
+import java.io.*;
+import java.nio.charset.Charset;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.function.BiConsumer;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -54,23 +64,54 @@ public class ThemeZipUtils {
             }
         }
 
-
-        for(java.util.Iterator iter=zipMap.entrySet().iterator();iter.hasNext();){
-            Map.Entry entry=(Map.Entry)iter.next();
-            String path=(String)entry.getKey();
-            byte[] bytes=(byte[])entry.getValue();
+        zipMap.forEach((BiConsumer<String, byte[]>) (path, bytes) -> {
             Map paramMap=new HashMap();
+            String mediaType=getMediaType(bytes,path);
+
+            paramMap.put("mediatype",mediaType);
+
             if(SiteThemeService.istext(path)){
-                paramMap.put("content",new String(bytes,"UTF-8"));
+                try {
+                    String encoding=getEncoding(bytes,"UTF-8");
+                    paramMap.put("encoding",encoding);
+                    paramMap.put("content",new String(bytes,encoding));
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
             }else{
                 paramMap.put("bcontent",bytes);
             }
+            paramMap.put("path",path);
+
             paramMap.put("lastModified",new java.sql.Timestamp(System.currentTimeMillis()));
             paramMap.put("path",path);
             paramMap.put("theme",themeName);
             paramMap.put("siteid", siteid);
             sqlsession.insert("dpress.itemplate",paramMap);
-        }
+        });
+//        for(java.util.Iterator iter=zipMap.entrySet().iterator();iter.hasNext();){
+//            Map.Entry entry=(Map.Entry)iter.next();
+//            String path=(String)entry.getKey();
+//            byte[] bytes=(byte[])entry.getValue();
+//            Map paramMap=new HashMap();
+//            String mediaType=getMediaType(bytes,path);
+//            String encoding=getEncoding(bytes,"UTF-8");
+//            paramMap.put("encoding",encoding);
+//            paramMap.put("mediatype",mediaType);
+//
+//            if(SiteThemeService.istext(path)){
+//                paramMap.put("content",new String(bytes,encoding));
+//            }else{
+//                paramMap.put("bcontent",bytes);
+//            }
+//            paramMap.put("path",path);
+//
+//            paramMap.put("lastModified",new java.sql.Timestamp(System.currentTimeMillis()));
+//            paramMap.put("path",path);
+//            paramMap.put("theme",themeName);
+//            paramMap.put("siteid", siteid);
+//            sqlsession.insert("dpress.itemplate",paramMap);
+//        }
         return map;
 
     }
@@ -99,7 +140,14 @@ public class ThemeZipUtils {
 
         return rtnMap;
     }
-
+    public static String getMediaType(byte[] bs,String fileName){
+        MediaType mediaType=null;
+        mediaType = MediaTypeFactory.getMediaType(fileName).orElse(null);
+        if(mediaType==null){
+            return  null;
+        }
+       return mediaType.toString();
+    }
 
     public static Map getDataFromBytes(InputStream in) throws IOException {
         Map rtnMap=new HashMap();
@@ -114,6 +162,46 @@ public class ThemeZipUtils {
             rtnMap.put(entry.getName(),data);
         }
         return rtnMap;
+    }
+    public static String getEncoding(byte[] bs,String defaultCharset)  {
+        TikaEncodingDetector detector = new TikaEncodingDetector();
+        try {
+            String guessEncoding = detector.guessEncoding(new BufferedInputStream(new ByteArrayInputStream(bs)));
+            return  guessEncoding;
+        } catch (java.lang.Throwable e) {
+            e.printStackTrace();
+            return defaultCharset;
+        }
+
+    }
+    public static void main(String[] args) throws IOException, TikaException {
+        System.out.println(getMediaType(null,"a.jpg"));
+////        FileInputStream fileInputStream=new FileInputStream();
+//        byte[] bs=FileUtils.readFileToByteArray(new File("F:\\tmp\\ftl\\source\\plugins\\prism\\prism.css"));
+////        Tika tika=new Tika();
+////        System.out.println(tika.detect(fileInputStream,"q1.sql").);
+//
+//
+//        {
+//            TikaEncodingDetector detector = new TikaEncodingDetector();
+//            String guessEncoding = detector.guessEncoding(new BufferedInputStream(new ByteArrayInputStream(bs)));
+//            System.out.println(guessEncoding);
+//        }
+//        {
+//            CharsetDetector detector = new CharsetDetector();
+//            detector.setText(new ByteArrayInputStream(bs));
+//
+//            CharsetMatch cm = detector.detect();
+//            System.out.println(cm.getName());
+//        }
+//
+////        UniversalEncodingDetector detector=new UniversalEncodingDetector();
+////        System.out.println(detector.detect(new BufferedInputStream(new ByteArrayInputStream(bs)),new Metadata()));
+//
+////        System.out.println(detector.detect(new BufferedInputStream(fileInputStream),new Metadata()));
+//        System.out.println();
+////        AutoDetectReader autoDetectReader=new AutoDetectReader(fileInputStream) ;
+////        System.out.println(autoDetectReader.getCharset());
     }
     /**
      * 获取条目byte[]字节

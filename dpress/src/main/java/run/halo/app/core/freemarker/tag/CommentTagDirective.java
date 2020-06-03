@@ -1,7 +1,9 @@
 package run.halo.app.core.freemarker.tag;
 
+import cn.ymotel.dpress.service.CommentsService;
 import freemarker.core.Environment;
 import freemarker.template.*;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.stereotype.Component;
 import run.halo.app.model.entity.PostComment;
@@ -27,7 +29,8 @@ public class CommentTagDirective implements TemplateDirectiveModel {
         this.postCommentService = postCommentService;
         configuration.setSharedVariable("commentTag", this);
     }
-
+    @Autowired
+    private CommentsService commentsService;
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
         long siteid=((SimpleNumber)env.getVariable("_siteid")).getAsNumber().longValue();
@@ -38,11 +41,13 @@ public class CommentTagDirective implements TemplateDirectiveModel {
             switch (method) {
                 case "latest":
                     int top = Integer.parseInt(params.get("top").toString());
-                    Page<PostComment> postComments = postCommentService.pageLatest(top, CommentStatus.PUBLISHED);
-                    env.setVariable("comments", builder.build().wrap(postCommentService.convertToWithPostVo(postComments)));
+//                    Page<PostComment> postComments = postCommentService.pageLatest(top, CommentStatus.PUBLISHED);
+//                    env.setVariable("comments", builder.build().wrap(postCommentService.convertToWithPostVo(postComments)));
+                    env.setVariable("comments", builder.build().wrap(commentsService.Latest(siteid,top,0)));
                     break;
                 case "count":
-                    env.setVariable("count", builder.build().wrap(postCommentService.count()));
+                    env.setVariable("count", builder.build().wrap(commentsService.count(siteid)));
+//                    env.setVariable("count", builder.build().wrap(postCommentService.count()));
                     break;
                 default:
                     break;

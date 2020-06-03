@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class CommentBlackList extends Model<CommentBlackList> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     private Date createTime;
 
@@ -29,11 +29,13 @@ public class CommentBlackList extends Model<CommentBlackList> {
 
     private String ipAddress;
 
-    public String getId() {
+    private Long siteid;
+
+    public Long getId() {
         return id;
     }
 
-    public CommentBlackList setId(String id) {
+    public CommentBlackList setId(Long id) {
         this.id = id;
         return this;
     }
@@ -69,6 +71,14 @@ public class CommentBlackList extends Model<CommentBlackList> {
         this.ipAddress = ipAddress;
         return this;
     }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public CommentBlackList setSiteid(Long siteid) {
+        this.siteid = siteid;
+        return this;
+    }
 
     @Override
     protected Serializable pkVal() {
@@ -83,6 +93,7 @@ public class CommentBlackList extends Model<CommentBlackList> {
             ", updateTime=" + updateTime +
             ", banTime=" + banTime +
             ", ipAddress=" + ipAddress +
+            ", siteid=" + siteid +
         "}";
     }
 }

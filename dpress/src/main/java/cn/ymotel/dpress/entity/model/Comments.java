@@ -1,6 +1,7 @@
 package cn.ymotel.dpress.entity.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,22 +13,22 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Comments extends Model<Comments> {
 
     private static final long serialVersionUID = 1L;
 
-    private String type;
+    private Integer type;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private String allowNotification;
+    private Boolean allowNotification;
 
     private String author;
 
@@ -41,31 +42,43 @@ public class Comments extends Model<Comments> {
 
     private String ipAddress;
 
-    private String isAdmin;
+    private Boolean isAdmin;
 
-    private String parentId;
+    private Long parentId;
 
-    private String postId;
+    private Integer postId;
 
-    private String status;
+    private Integer status;
 
-    private String topPriority;
+    private Integer topPriority;
 
     private String userAgent;
 
-    public String getType() {
+    private Long siteid;
+    @TableField(exist = false)
+    public String fullPath;
+
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
+    public Integer getType() {
         return type;
     }
 
-    public Comments setType(String type) {
+    public Comments setType(Integer type) {
         this.type = type;
         return this;
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public Comments setId(String id) {
+    public Comments setId(Long id) {
         this.id = id;
         return this;
     }
@@ -85,11 +98,11 @@ public class Comments extends Model<Comments> {
         this.updateTime = updateTime;
         return this;
     }
-    public String getAllowNotification() {
+    public Boolean getAllowNotification() {
         return allowNotification;
     }
 
-    public Comments setAllowNotification(String allowNotification) {
+    public Comments setAllowNotification(Boolean allowNotification) {
         this.allowNotification = allowNotification;
         return this;
     }
@@ -141,43 +154,43 @@ public class Comments extends Model<Comments> {
         this.ipAddress = ipAddress;
         return this;
     }
-    public String getIsAdmin() {
+    public Boolean getAdmin() {
         return isAdmin;
     }
 
-    public Comments setIsAdmin(String isAdmin) {
+    public Comments setAdmin(Boolean isAdmin) {
         this.isAdmin = isAdmin;
         return this;
     }
-    public String getParentId() {
+    public Long getParentId() {
         return parentId;
     }
 
-    public Comments setParentId(String parentId) {
+    public Comments setParentId(Long parentId) {
         this.parentId = parentId;
         return this;
     }
-    public String getPostId() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public Comments setPostId(String postId) {
+    public Comments setPostId(Integer postId) {
         this.postId = postId;
         return this;
     }
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public Comments setStatus(String status) {
+    public Comments setStatus(Integer status) {
         this.status = status;
         return this;
     }
-    public String getTopPriority() {
+    public Integer getTopPriority() {
         return topPriority;
     }
 
-    public Comments setTopPriority(String topPriority) {
+    public Comments setTopPriority(Integer topPriority) {
         this.topPriority = topPriority;
         return this;
     }
@@ -187,6 +200,14 @@ public class Comments extends Model<Comments> {
 
     public Comments setUserAgent(String userAgent) {
         this.userAgent = userAgent;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Comments setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -215,6 +236,7 @@ public class Comments extends Model<Comments> {
             ", status=" + status +
             ", topPriority=" + topPriority +
             ", userAgent=" + userAgent +
+            ", siteid=" + siteid +
         "}";
     }
 }

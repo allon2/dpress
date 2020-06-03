@@ -12,16 +12,16 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Metas extends Model<Metas> {
 
     private static final long serialVersionUID = 1L;
 
-    private String type;
+    private Integer type;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Long id;
 
     private Date createTime;
 
@@ -29,23 +29,25 @@ public class Metas extends Model<Metas> {
 
     private String metaKey;
 
-    private String postId;
+    private Integer postId;
 
     private String metaValue;
 
-    public String getType() {
+    private Long siteid;
+
+    public Integer getType() {
         return type;
     }
 
-    public Metas setType(String type) {
+    public Metas setType(Integer type) {
         this.type = type;
         return this;
     }
-    public String getId() {
+    public Long getId() {
         return id;
     }
 
-    public Metas setId(String id) {
+    public Metas setId(Long id) {
         this.id = id;
         return this;
     }
@@ -73,11 +75,11 @@ public class Metas extends Model<Metas> {
         this.metaKey = metaKey;
         return this;
     }
-    public String getPostId() {
+    public Integer getPostId() {
         return postId;
     }
 
-    public Metas setPostId(String postId) {
+    public Metas setPostId(Integer postId) {
         this.postId = postId;
         return this;
     }
@@ -87,6 +89,14 @@ public class Metas extends Model<Metas> {
 
     public Metas setMetaValue(String metaValue) {
         this.metaValue = metaValue;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Metas setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -105,6 +115,7 @@ public class Metas extends Model<Metas> {
             ", metaKey=" + metaKey +
             ", postId=" + postId +
             ", metaValue=" + metaValue +
+            ", siteid=" + siteid +
         "}";
     }
 }

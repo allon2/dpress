@@ -13,11 +13,11 @@
 	</update>
 	<select id="qprevPost" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
 		<![CDATA[
-		select  slug  ,title from posts where siteid=#{siteid} and id < #{postid}  order by id desc limit 1
+		select  slug  ,title from posts where siteid=#{siteid}  and type=0 and status=0 and id < #{postid}  order by id desc limit 1
 		]]>
 	</select>
 	<select id="qnextPost" resultType="java.util.HashMap"  parameterType="java.util.HashMap">
-		select  slug,  title from posts where siteid=#{siteid} and id>#{postid}  limit 1
+		select  slug,  title from posts where siteid=#{siteid} and type=0 and status=0 and id>#{postid}  limit 1
 	</select>
 	<select id="qpostslimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
@@ -214,5 +214,12 @@ delete from posts where id=#{id} and siteid=#{siteid}
 		and (title like #{keyword} or original_content like #{keyword})
 		order by id asc limit #{offset}
 		]]>
+	</select>
+	<select id="qorderbycreate_time" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime  , siteid , update_time as updateTime , disallow_comment , edit_time , editor_type as editorType , format_content , likes , meta_description as metaDescription , meta_keywords  as metaKeywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+			 top_priority , url , visits from posts where siteid=#{siteid} and status=#{status} and type=#{type} order by create_time desc
+		<if test="step != null">
+			limit #{step}
+		</if>
 	</select>
 </mapper>

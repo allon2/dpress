@@ -2,8 +2,10 @@ package run.halo.app;
 
 import cn.ymotel.dactor.ActorUtils;
 import cn.ymotel.dactor.core.ActorChainCfg;
+import cn.ymotel.dpress.filter.CacheFilter;
 import com.alicp.jetcache.anno.config.EnableCreateCacheAnnotation;
 import com.alicp.jetcache.anno.config.EnableMethodCache;
+import org.mybatis.spring.annotation.MapperScan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.SpringApplication;
@@ -45,6 +47,8 @@ import javax.servlet.DispatcherType;
 @EnableJpaRepositories(basePackages = "run.halo.app.repository", repositoryBaseClass = BaseRepositoryImpl.class)
 @EnableMethodCache(basePackages ={"run.halo.app","cn.ymotel.dpress"})
 @EnableCreateCacheAnnotation
+@MapperScan("cn.ymotel.dpress.entity.mapper")
+
 //@PropertySource(value = {"classpath*:/conf/**.properties","classpath*:/conf/**.yml", "classpath*:/conf/**.yaml"},factory = CompositePropertySourceFactory.class)
 //@Lazy
 public class Application extends SpringBootServletInitializer {
@@ -71,11 +75,15 @@ public class Application extends SpringBootServletInitializer {
 //        return servletRegistrationBean;
 //    }
 //    @Bean
-//    public FilterRegistrationBean create404Filer(){
-//        Error404Filter filter=new Error404Filter();
+//    public CacheFilter cacheFilter(){
+//        CacheFilter filter=new CacheFilter();
+//        return filter;
+//    }
+//    @Bean
+//    public FilterRegistrationBean create404Filer(CacheFilter cacheFilter){
 //        FilterRegistrationBean filterRegistrationBean=new FilterRegistrationBean();
-//        filterRegistrationBean.setFilter(filter);
-//        filterRegistrationBean.setDispatcherTypes(DispatcherType.ERROR);
+//        filterRegistrationBean.setFilter(cacheFilter);
+////        filterRegistrationBean.setDispatcherTypes(DispatcherType.ERROR);
 //        filterRegistrationBean.addUrlPatterns("/*");
 //        filterRegistrationBean.setOrder(100);
 ////        filterRegistrationBean.setAsyncSupported(true);
@@ -97,6 +105,7 @@ public class Application extends SpringBootServletInitializer {
         System.setProperty("spring.config.additional-location", "file:${user.home}/.halo/,file:${user.home}/halo-dev/,file:"+parent);
 
     }
+
 //    @Bean
 //    public ServletRegistrationBean servletRegistrationBean(final DispatcherServlet dispatcherServlet) {
 //        final ServletRegistrationBean servletRegistrationBean = new ServletRegistrationBean(dispatcherServlet);

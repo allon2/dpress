@@ -24,6 +24,14 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 	delete from comments where siteid=#{siteid}
 			and parent_id=#{parent_id}
 	</delete>
+	<select id="qcountbypostidAndparentId" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from comments where
+		siteid=#{siteid} and post_id=#{post_id} and parent_id=#{parent_id}
+		<if test="status != null">
+			and
+			status=#{status}
+		</if>
+	</select>
 	<select id="qcountbypostid" resultType="java.lang.Long" parameterType="java.util.HashMap">
 		select count(1) from comments where
 		siteid=#{siteid} and post_id=#{post_id}
@@ -34,6 +42,12 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 		<if test="status != null">
 		and
 		status=#{status}
+		</if>
+		<if test="parent_id != null">
+			and parent_id=#{parent_id}
+		</if>
+		<if test="post_id != null">
+			and post_id=#{post_id}
 		</if>
 		<if test="keyword1 != null">
 
@@ -55,6 +69,13 @@ type,create_time,update_time,allow_notification,author,author_url,content,email,
 			and
 			status=#{status}
 		</if>
+		<if test="parent_id != null">
+			and parent_id=#{parent_id}
+		</if>
+		<if test="post_id != null">
+			and post_id=#{post_id}
+		</if>
+
 		<if test="keyword1 != null">
 
 			and
@@ -90,4 +111,5 @@ select id,type,create_time as createTime,update_time as updateTime,allow_notific
 				siteid=#{siteid}
 		and type=#{type} and post_id=#{post_id}
 	</select>
+
 </mapper>

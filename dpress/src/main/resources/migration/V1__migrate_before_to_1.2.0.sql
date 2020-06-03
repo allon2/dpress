@@ -113,7 +113,9 @@ CREATE TABLE dpress_template  (
   bcontent longblob NULL,
   lastModified timestamp(0) NULL DEFAULT NULL,
   siteid bigint(20) NULL DEFAULT NULL,
-  path varchar(255)   NULL DEFAULT NULL,
+  encoding varchar(255)   NULL DEFAULT NULL,
+   mediatype varchar(255)   NULL DEFAULT NULL,
+path varchar(255)   NULL DEFAULT NULL,
   cifseq bigint(255) NULL DEFAULT NULL,
   theme varchar(255)   NULL DEFAULT NULL
 ) ;

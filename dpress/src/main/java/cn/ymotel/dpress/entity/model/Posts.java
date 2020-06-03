@@ -1,6 +1,7 @@
 package cn.ymotel.dpress.entity.model;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.extension.activerecord.Model;
 import java.util.Date;
 import com.baomidou.mybatisplus.annotation.TableId;
@@ -12,30 +13,30 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Posts extends Model<Posts> {
 
     private static final long serialVersionUID = 1L;
 
-    private String type;
+    private Integer type;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
     private Date updateTime;
 
-    private String disallowComment;
+    private Boolean disallowComment;
 
     private Date editTime;
 
-    private String editorType;
+    private Integer editorType;
 
     private String formatContent;
 
-    private String likes;
+    private Long likes;
 
     private String metaDescription;
 
@@ -47,7 +48,7 @@ public class Posts extends Model<Posts> {
 
     private String slug;
 
-    private String status;
+    private Integer status;
 
     private String summary;
 
@@ -57,27 +58,37 @@ public class Posts extends Model<Posts> {
 
     private String title;
 
-    private String topPriority;
+    private Integer topPriority;
 
     private String url;
 
-    private String visits;
+    private Long visits;
 
-    private String siteid;
+    private Long siteid;
 
-    public String getType() {
+    public String getFullPath() {
+        return fullPath;
+    }
+
+    public void setFullPath(String fullPath) {
+        this.fullPath = fullPath;
+    }
+
+    @TableField(exist = false)
+    private  String fullPath;
+    public Integer getType() {
         return type;
     }
 
-    public Posts setType(String type) {
+    public Posts setType(Integer type) {
         this.type = type;
         return this;
     }
-    public String getId() {
+    public Integer getId() {
         return id;
     }
 
-    public Posts setId(String id) {
+    public Posts setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -97,11 +108,11 @@ public class Posts extends Model<Posts> {
         this.updateTime = updateTime;
         return this;
     }
-    public String getDisallowComment() {
+    public Boolean getDisallowComment() {
         return disallowComment;
     }
 
-    public Posts setDisallowComment(String disallowComment) {
+    public Posts setDisallowComment(Boolean disallowComment) {
         this.disallowComment = disallowComment;
         return this;
     }
@@ -113,11 +124,11 @@ public class Posts extends Model<Posts> {
         this.editTime = editTime;
         return this;
     }
-    public String getEditorType() {
+    public Integer getEditorType() {
         return editorType;
     }
 
-    public Posts setEditorType(String editorType) {
+    public Posts setEditorType(Integer editorType) {
         this.editorType = editorType;
         return this;
     }
@@ -129,11 +140,11 @@ public class Posts extends Model<Posts> {
         this.formatContent = formatContent;
         return this;
     }
-    public String getLikes() {
+    public Long getLikes() {
         return likes;
     }
 
-    public Posts setLikes(String likes) {
+    public Posts setLikes(Long likes) {
         this.likes = likes;
         return this;
     }
@@ -177,11 +188,11 @@ public class Posts extends Model<Posts> {
         this.slug = slug;
         return this;
     }
-    public String getStatus() {
+    public Integer getStatus() {
         return status;
     }
 
-    public Posts setStatus(String status) {
+    public Posts setStatus(Integer status) {
         this.status = status;
         return this;
     }
@@ -217,11 +228,11 @@ public class Posts extends Model<Posts> {
         this.title = title;
         return this;
     }
-    public String getTopPriority() {
+    public Integer getTopPriority() {
         return topPriority;
     }
 
-    public Posts setTopPriority(String topPriority) {
+    public Posts setTopPriority(Integer topPriority) {
         this.topPriority = topPriority;
         return this;
     }
@@ -233,19 +244,19 @@ public class Posts extends Model<Posts> {
         this.url = url;
         return this;
     }
-    public String getVisits() {
+    public Long getVisits() {
         return visits;
     }
 
-    public Posts setVisits(String visits) {
+    public Posts setVisits(Long visits) {
         this.visits = visits;
         return this;
     }
-    public String getSiteid() {
+    public Long getSiteid() {
         return siteid;
     }
 
-    public Posts setSiteid(String siteid) {
+    public Posts setSiteid(Long siteid) {
         this.siteid = siteid;
         return this;
     }

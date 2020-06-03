@@ -12,14 +12,14 @@ import java.io.Serializable;
  * </p>
  *
  * @author dpress
- * @since 2020-03-18
+ * @since 2020-06-03
  */
 public class Journals extends Model<Journals> {
 
     private static final long serialVersionUID = 1L;
 
     @TableId(value = "id", type = IdType.AUTO)
-    private String id;
+    private Integer id;
 
     private Date createTime;
 
@@ -27,17 +27,19 @@ public class Journals extends Model<Journals> {
 
     private String content;
 
-    private String likes;
+    private Long likes;
 
     private String sourceContent;
 
-    private String type;
+    private Integer type;
 
-    public String getId() {
+    private Long siteid;
+
+    public Integer getId() {
         return id;
     }
 
-    public Journals setId(String id) {
+    public Journals setId(Integer id) {
         this.id = id;
         return this;
     }
@@ -65,11 +67,11 @@ public class Journals extends Model<Journals> {
         this.content = content;
         return this;
     }
-    public String getLikes() {
+    public Long getLikes() {
         return likes;
     }
 
-    public Journals setLikes(String likes) {
+    public Journals setLikes(Long likes) {
         this.likes = likes;
         return this;
     }
@@ -81,12 +83,20 @@ public class Journals extends Model<Journals> {
         this.sourceContent = sourceContent;
         return this;
     }
-    public String getType() {
+    public Integer getType() {
         return type;
     }
 
-    public Journals setType(String type) {
+    public Journals setType(Integer type) {
         this.type = type;
+        return this;
+    }
+    public Long getSiteid() {
+        return siteid;
+    }
+
+    public Journals setSiteid(Long siteid) {
+        this.siteid = siteid;
         return this;
     }
 
@@ -105,6 +115,7 @@ public class Journals extends Model<Journals> {
             ", likes=" + likes +
             ", sourceContent=" + sourceContent +
             ", type=" + type +
+            ", siteid=" + siteid +
         "}";
     }
 }

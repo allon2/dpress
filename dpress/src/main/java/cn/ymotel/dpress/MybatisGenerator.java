@@ -61,34 +61,34 @@ public class MybatisGenerator {
         dsc.setDriverName("com.mysql.cj.jdbc.Driver");
         dsc.setUsername("root");
         dsc.setPassword("111111");
-        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/halodb?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
-        dsc.setTypeConvert(new OracleTypeConvert() {
-            // 自定义数据库表字段类型转换【可选】
-            @Override
-            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
-                String t = fieldType.toUpperCase();
-
-                if (t.contains("NUMBER")) {
-                    if (t.matches("NUMBER")) {
-                        return DbColumnType.INTEGER;
-                    }
-                    if (t.matches("NUMBER\\(\\d\\)")) {
-                        return DbColumnType.INTEGER;
-                    }
-                    if (t.matches("NUMBER\\(\\d{2,}\\)")) {
-                        return DbColumnType.LONG;
-                    }
-                    if (t.matches("NUMBER\\(\\d+,\\d+\\)")) {
-                        return DbColumnType.BIG_DECIMAL;
-                    }
-
-                    return DbColumnType.DOUBLE;
-                }
-
-                // 注意！！processTypeConvert 存在默认类型转换，如果不是你要的效果请自定义返回、非如下直接返回。
-                return super.processTypeConvert(gc, fieldType);
-            }
-        });
+        dsc.setUrl("jdbc:mysql://127.0.0.1:3306/dpress1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
+//        dsc.setTypeConvert(new OracleTypeConvert() {
+//            // 自定义数据库表字段类型转换【可选】
+//            @Override
+//            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
+//                String t = fieldType.toUpperCase();
+//
+//                if (t.contains("NUMBER")) {
+//                    if (t.matches("NUMBER")) {
+//                        return DbColumnType.INTEGER;
+//                    }
+//                    if (t.matches("NUMBER\\(\\d\\)")) {
+//                        return DbColumnType.INTEGER;
+//                    }
+//                    if (t.matches("NUMBER\\(\\d{2,}\\)")) {
+//                        return DbColumnType.LONG;
+//                    }
+//                    if (t.matches("NUMBER\\(\\d+,\\d+\\)")) {
+//                        return DbColumnType.BIG_DECIMAL;
+//                    }
+//
+//                    return DbColumnType.DOUBLE;
+//                }
+//
+//                // 注意！！processTypeConvert 存在默认类型转换，如果不是你要的效果请自定义返回、非如下直接返回。
+//                return super.processTypeConvert(gc, fieldType);
+//            }
+//        });
 
         // 策略配置
         StrategyConfig strategy = new StrategyConfig();
