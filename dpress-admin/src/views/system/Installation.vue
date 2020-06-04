@@ -219,7 +219,7 @@
               <a-form-item class="animated fadeInUp">
                 <a-input
                   v-model="installation.url"
-                  placeholder="博客地址"
+                  placeholder="博客预览地址"
                 >
                   <a-icon
                     slot="prefix"

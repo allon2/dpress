@@ -12,6 +12,7 @@
 	<update id="uoption"  parameterType="java.util.Map">
 	update options set  update_time=#{update_time},option_value=#{option_value}  where   siteid=#{siteid} and option_key=#{option_key}
 	</update>
+
 	<insert id="ioption"  parameterType="java.util.Map">
 		insert into options(
 		create_time,update_time,option_key,type,option_value,siteid

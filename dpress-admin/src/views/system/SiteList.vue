@@ -24,7 +24,19 @@
               label="站点域名"
               help="* 站点所属域名"
             >
-              <a-input v-model="menuToCreate.domain" placeholder="blog.ymotel.cn" />
+              <a-input v-model="menuToCreate.domain" placeholder="dpress.ymotel.cn" />
+            </a-form-item>
+            <a-form-item
+              label="博客标题"
+              help="* 博客标题"
+            >
+              <a-input v-model="menuToCreate.title" placeholder="dpress" />
+            </a-form-item>
+            <a-form-item
+              label="博客预览地址"
+              help="* 博客预览地址"
+            >
+              <a-input v-model="menuToCreate.url" placeholder="http://dpress.ymotel.cn" />
             </a-form-item>
             <a-form-item>
               <a-button

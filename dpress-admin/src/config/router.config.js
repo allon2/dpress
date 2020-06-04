@@ -154,12 +154,6 @@ export const asyncRouterMap = [
             name: 'Profile',
             component: () => import('@/views/user/Profile'),
             meta: { title: '个人资料', hiddenHeaderContent: false }
-          },
-          {
-            path: '/user/SiteList',
-            name: 'SiteList',
-            component: () => import('@/views/user/SiteList'),
-            meta: { title: '站点管理', hiddenHeaderContent: false }
           }
         ]
       },
@@ -178,6 +172,12 @@ export const asyncRouterMap = [
             hidden: true,
             component: () => import('@/views/system/developer/DeveloperOptions'),
             meta: { title: '开发者选项', hiddenHeaderContent: false }
+          },
+          {
+            path: '/system/SiteList',
+            name: 'SiteList',
+            component: () => import('@/views/system/SiteList'),
+            meta: { title: '站点管理', hiddenHeaderContent: false }
           },
           {
             path: '/system/options',

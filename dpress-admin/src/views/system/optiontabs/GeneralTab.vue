@@ -7,10 +7,10 @@
       <a-form-item label="博客标题：">
         <a-input v-model="options.blog_title" />
       </a-form-item>
-      <a-form-item label="博客地址：">
+      <a-form-item label="博客预览地址：">
         <a-input
           v-model="options.blog_url"
-          placeholder="如：https://halo.run"
+          placeholder="如：https://dpress.ymotel.cn"
         />
       </a-form-item>
       <a-form-item label="Logo：">
@@ -124,7 +124,7 @@ export default {
       if (!this.options.blog_url) {
         this.$notification['error']({
           message: '提示',
-          description: '博客地址不能为空！'
+          description: '博客预览地址不能为空！'
         })
         return
       }
