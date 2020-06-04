@@ -39,7 +39,7 @@ public class FileContentActor  implements Actor<ServletMessage> {
            Map context= message.getContext();
            context.put("siteid", Utils.getSiteIdFromMessage(message));
             context.put("theme",theme);
-
+            context.put("lastModified",new java.sql.Timestamp(System.currentTimeMillis()));
             sqlSession.update("dpress.utemplatecontent",context);
             Map rtnMap = new HashMap();
             rtnMap.put("data", null);

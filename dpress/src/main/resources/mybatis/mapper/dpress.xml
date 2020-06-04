@@ -8,7 +8,7 @@
 		siteid=#{siteid} and path=#{path} and theme=#{theme}
 	</select>
 	<update id="utemplatecontent" parameterType="java.util.HashMap">
-		update dpress_template set content=#{content} where siteid=#{siteid} and path=#{path} and theme=#{theme}
+		update dpress_template set content=#{content},lastModified=#{lastModified} where siteid=#{siteid} and path=#{path} and theme=#{theme}
 	</update>
 	<select id="qalltemplate" resultType="org.apache.commons.collections4.map.CaseInsensitiveMap" parameterType="java.util.HashMap">
 		select path,content,bcontent,lastModified,variable from dpress_template
