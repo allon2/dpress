@@ -84,10 +84,10 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         String path="classpath:/themes/*.zip";
            Resource[] rs = ResourcePatternUtils
                 .getResourcePatternResolver(new DefaultResourceLoader()).getResources(path);
-         List<CompletableFuture>  futureList=new ArrayList<>();
+//         List<CompletableFuture>  futureList=new ArrayList<>();
         for(int i=0;i<rs.length;i++){
            final Resource t=rs[i];
-            CompletableFuture future1= CompletableFuture.runAsync(() -> {
+//            CompletableFuture future1= CompletableFuture.runAsync(() -> {
                 Map map= null;
                 try {
                     map = ThemeZipUtils.installTheme(sqlSession,t.getInputStream(),siteid);
@@ -108,10 +108,10 @@ public class InstallSiteActor implements Actor<ServletMessage> {
                 sqlSession.insert("options.ioption",settingMap);
             }
         }
-            });
-            futureList.add(future1);
+//            });
+//            futureList.add(future1);
         }
-        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+//        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
     }
     public  String getServerName(String url) throws MalformedURLException {
 
