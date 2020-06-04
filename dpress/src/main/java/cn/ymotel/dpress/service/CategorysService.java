@@ -58,6 +58,7 @@ public class CategorysService {
         });
         return rtnList;
     }
+    @Cached
     public List<Categories> listAll(Object siteid,String sort){
         QueryWrapper queryWrapper=new QueryWrapper();
         Map map=new HashMap();
@@ -66,6 +67,7 @@ public class CategorysService {
         queryWrapper.orderByDesc(sort);
       return   categoriesMapper.selectList(queryWrapper);
     }
+    @Cached
     public List<Map> listAsTree(Object siteid,String sort){
         List<Categories> listall=listAll(siteid,sort);
         List<Map> listMap=new ArrayList<>();

@@ -2,6 +2,7 @@ package cn.ymotel.dpress.service;
 
 import cn.ymotel.dpress.entity.mapper.PhotosMapper;
 import cn.ymotel.dpress.entity.model.Photos;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import org.springframework.stereotype.Component;
 
@@ -13,6 +14,7 @@ import java.util.function.Consumer;
 public class PhotosService {
     @Resource
     PhotosMapper photosMapper;
+    @Cached
     public List<Photos> listbyTeam(Object siteid,String team,String sort){
         Map map=new HashMap<>();
         map.put("siteid",siteid);
@@ -23,6 +25,7 @@ public class PhotosService {
         List<Photos> list= photosMapper.selectList(queryWrapper);
         return  list;
     }
+    @Cached
     public List listbyTeams(Object siteid,String sort){
         Map map=new HashMap<>();
         map.put("siteid",siteid);
@@ -48,6 +51,7 @@ public class PhotosService {
         });
         return rtnList;
     }
+    @Cached
     public List<Photos> listAll(Object siteid){
         Map map=new HashMap<>();
         map.put("siteid",siteid);
@@ -55,6 +59,7 @@ public class PhotosService {
         queryWrapper.allEq(map);
        return photosMapper.selectList(queryWrapper);
     }
+    @Cached
     public long count(Object siteid){
         Map map=new HashMap<>();
         map.put("siteid",siteid);

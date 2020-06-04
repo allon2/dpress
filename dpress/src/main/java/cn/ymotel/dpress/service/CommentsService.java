@@ -2,6 +2,7 @@ package cn.ymotel.dpress.service;
 
 import cn.ymotel.dpress.entity.mapper.CommentsMapper;
 import cn.ymotel.dpress.entity.model.Comments;
+import com.alicp.jetcache.anno.Cached;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,6 +24,7 @@ public class CommentsService {
    private OptionsService optionsService;
     @Resource
     private  CommentsMapper commentsMapper;
+    @Cached
     public long count(Object siteid){
         Map map=new HashMap<>();
         map.put("siteid",siteid);
@@ -32,6 +34,7 @@ public class CommentsService {
     }
     @Autowired
     private PostsService postsService;
+    @Cached
     public PageImpl Latest(Object siteid,int topN,int status){
         Map map=new HashMap<>();
         map.put("siteid",siteid);

@@ -50,6 +50,7 @@ public class PostsService {
     public String buildFullPath(Object siteid,String slug){
         return "/"+optionsService.getArchives(siteid)+"/"+slug+optionsService.getPathSuffix(siteid);
      }
+     @Cached
      public List listLatest(Object siteid,int step){
          Map map=new HashMap();
          map.put("siteid",siteid);
@@ -144,7 +145,7 @@ public class PostsService {
         queryWrapper.allEq(map);
         return postsMapper.selectOne(queryWrapper);
     }
-
+@Cached
      public List listYearArchives(Object siteid){
          Map map=new HashMap();
          map.put("siteid",siteid);
@@ -176,6 +177,7 @@ public class PostsService {
          }
          return rtnList;
      }
+     @Cached
     public List listMonthArchives(Object siteid){
         Map map=new HashMap();
         map.put("siteid",siteid);
