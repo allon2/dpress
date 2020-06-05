@@ -21,6 +21,7 @@
 7：支持瞬时高并发  
 8：支持war方式和Jar方式部署  
 9：支持MarkDown和Html编辑模式  
+10：内置20多套主题，总有一套适合你
 
 **如果喜欢，请多多分享！！多多Star！！**
 
@@ -117,3 +118,6 @@ java -jar dpress.war
 ![1591339660.png](https://i.loli.net/2020/06/05/uAqVWafJPXEjmI1.png)
 ![1591339571.png](https://i.loli.net/2020/06/05/gSQjDdhBiaG3Irs.png)
 ![1591339639.png](https://i.loli.net/2020/06/05/l8N5CjUZeAGgoah.png)
+![1591346562.png](https://i.loli.net/2020/06/05/CBp2fjiSnuePz65.png)
+![1591346632.png](https://i.loli.net/2020/06/05/hDm1deP6RVv3XfT.png)
+![1591346611.png](https://i.loli.net/2020/06/05/VDUFagq8Pfo5H1m.png)
