@@ -19,6 +19,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.CompletableFuture;
 import java.util.zip.InflaterInputStream;
 import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
@@ -39,25 +40,37 @@ public class ThemesActor implements Actor<ServletMessage> {
         java.util.Map themeMap=sqlSession.selectOne("options.qoption",map);
         String activeTheme=(String)themeMap.get("option_value");
         String[] athemes=themes.split(",");
-        List rtnList=new ArrayList<>();
+        List rtnList=java.util.Collections.synchronizedList(new ArrayList<>());
+        List<CompletableFuture> futureList=new ArrayList();
         for(int i=0;i<athemes.length;i++){
-            map.put("path","theme.yaml");
-            map.put("theme",athemes[i]);
-           Map  tmpthemeMap= sqlSession.selectOne("dpress.qtemplate",map);
-           if(tmpthemeMap==null){
-               continue;
-           }
-           String content=(String) tmpthemeMap.get("content");
-            Yaml yaml = new Yaml();
-            Map yamlmap =  yaml.load(content);
-            if(yamlmap.get("id").equals(activeTheme)){
-                yamlmap.put("activated",true);
-            }else{
-                yamlmap.put("activated",false);
-            }
-            yamlmap.put("screenshots","/themes/"+yamlmap.get("id")+"/screenshot");
-            rtnList.add(yamlmap);
+            final  String theme1=athemes[i];
+            CompletableFuture future=  java.util.concurrent.CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    Map tMap=new HashMap();
+                    tMap.putAll(map);
+                    tMap.put("path","theme.yaml");
+                    tMap.put("theme",theme1);
+                    Map  tmpthemeMap= sqlSession.selectOne("dpress.qtemplate",tMap);
+                    if(tmpthemeMap==null){
+                        return;
+                    }
+                    String content=(String) tmpthemeMap.get("content");
+                    Yaml yaml = new Yaml();
+                    Map yamlmap =  yaml.load(content);
+                    if(yamlmap.get("id").equals(activeTheme)){
+                        yamlmap.put("activated",true);
+                    }else{
+                        yamlmap.put("activated",false);
+                    }
+                    yamlmap.put("screenshots","/themes/"+yamlmap.get("id")+"/screenshot");
+                    rtnList.add(yamlmap);
+                }
+            })
+           ;
+            futureList.add(future);
         }
+        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0] )).join();
         return rtnList;
 
     }
