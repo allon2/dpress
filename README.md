@@ -20,6 +20,7 @@
 6:支持一键安装，在线配置数据库地址  
 7:支持瞬时高并发  
 8:支持war方式和Jar方式部署  
+9:支持MarkDown和Html编辑模式  
 
 **如果喜欢，请多多分享！！多多Star！！**
 
@@ -99,7 +100,20 @@ java -jar dpress.war
 ![1590572315.png](https://i.loli.net/2020/05/27/WnI5KM3Dh9J62kN.png)     
 6:管理端首页  
 ![1590032806.png](https://i.loli.net/2020/05/21/sltjYrxIEbJZpa4.png)    
-
-
-
-
+7:管理端功能
+![1591339027.png](https://i.loli.net/2020/06/05/UuFkXRe8GMKr6vq.png)    
+![1591338969.png](https://i.loli.net/2020/06/05/5ri2z7ohal8Ews3.png)    
+![1591339049.png](https://i.loli.net/2020/06/05/aonBtweGXEDRCru.png)    
+![1591339072.png](https://i.loli.net/2020/06/05/5TB6X41YsEgatbP.png)    
+![1591339102.png](https://i.loli.net/2020/06/05/efBUO9Gkgz5Il3A.png)
+![1591339123.png](https://i.loli.net/2020/06/05/JY4WkBwvenhGxFo.png)
+![1591339145.png](https://i.loli.net/2020/06/05/WieMbRgSxIt5dKy.png)
+![1591339182.png](https://i.loli.net/2020/06/05/MxPVERtvpY7aINC.png)
+![1591339203.png](https://i.loli.net/2020/06/05/nzL8N2MiofJs51y.png)
+![1591339496.png](https://i.loli.net/2020/06/05/OxKL1SjrDtV5a7U.png)
+![1591339253.png](https://i.loli.net/2020/06/05/8oJ5Cmkrhe7IgYM.png)
+![1591339541.png](https://i.loli.net/2020/06/05/KDioxcdjEkrnmqI.png)
+![1591339693.png](https://i.loli.net/2020/06/05/Knm2zyNk3jFUtE5.png)
+![1591339660.png](https://i.loli.net/2020/06/05/uAqVWafJPXEjmI1.png)
+![1591339571.png](https://i.loli.net/2020/06/05/gSQjDdhBiaG3Irs.png)
+![1591339639.png](https://i.loli.net/2020/06/05/l8N5CjUZeAGgoah.png)
