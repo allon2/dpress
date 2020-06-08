@@ -53,23 +53,6 @@ public class SiteMapUrlPageActor implements Actor<ServletMessage>, InitializingB
             batchhelp.addData(data);
         }
 
-//        {
-//            Map data=new HashMap();
-//            data.put("siteid",Utils.getSiteId());
-//            data.put("status",0);
-//            data.put("start",message.getContextData("page",0)*10000);
-//           List list= sqlSession.selectList("qlimitbynormal",data);
-//            for(int i=0;i<list.size();i++){
-//                Map tMap=(Map)list.get(i);
-//                String url=baseUrl+"/"+archives+"/"+tMap.get("slug");
-//                writer.write(getnewslinkxml(url,(java.util.Date)tMap.get("create_time")));
-//                if(i%1000==0) {
-//                    writer.flush();
-//                }
-//            }
-//
-//
-//        }
         batchhelp.end();
 
         String end="</sitemapindex>\n";

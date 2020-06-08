@@ -124,7 +124,7 @@ public class CommonController extends AbstractErrorController {
                 Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
                 Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),"404");
                 if(template!=null){
-                    String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),"404",new HashMap());
+                    String content= multiDomainFreeMarkerView.getProcessedString(request,null,rtnMap.get("id"),"404",new HashMap());
 
                     return content;
                 }
@@ -144,7 +144,7 @@ public class CommonController extends AbstractErrorController {
                 Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
                 Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),"404");
                 if(template!=null){
-                   String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),"404",new HashMap());
+                   String content= multiDomainFreeMarkerView.getProcessedString(request,null,rtnMap.get("id"),"404",new HashMap());
 
                     return content;
                 }
@@ -153,7 +153,7 @@ public class CommonController extends AbstractErrorController {
                 e.printStackTrace();
             }
         }
-        String content= defaultErrorContent(request,model.asMap());
+        String content= defaultErrorContent(request,response,model.asMap());
         return content;
 
     }
@@ -194,7 +194,7 @@ public class CommonController extends AbstractErrorController {
 
         return defaultErrorHandler();
     }
-    private String defaultErrorContent(HttpServletRequest request,Map params){
+    private String defaultErrorContent(HttpServletRequest request,HttpServletResponse response,Map params){
         try {
             String domain=request.getServerName();
             /**
@@ -205,7 +205,7 @@ public class CommonController extends AbstractErrorController {
             Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
             Template template= multiDomainFreeMarkerView.getTemplate(request,rtnMap.get("id"),DEFAULT_ERROR_PATH);
             if(template!=null){
-                String content= multiDomainFreeMarkerView.getProcessedString(request,rtnMap.get("id"),DEFAULT_ERROR_PATH,params);
+                String content= multiDomainFreeMarkerView.getProcessedString(request,null,rtnMap.get("id"),DEFAULT_ERROR_PATH,params);
 
                 return content;
             }

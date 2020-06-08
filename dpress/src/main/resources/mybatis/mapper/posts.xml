@@ -179,11 +179,22 @@ delete from posts where id=#{id} and siteid=#{siteid}
 			select count(id) as ct from posts  where type=0  and siteid=#{siteid} and status=#{status} and id >=0
 	</select>
 	<select id="qlimitbynormal" resultType="java.util.HashMap" parameterType="java.util.HashMap">
-			select create_time,slug from posts  where type=0  and siteid=#{siteid} and status=#{status}
+			select create_time,slug,title from posts  where type=0  and siteid=#{siteid} and status=#{status}
 			 order by create_time asc  limit #{start},100
 	</select>
 	<select id="qmaxid" resultType="java.lang.Long" parameterType="java.util.HashMap">
 		select max(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}
+	</select>
+	<select id="qminid" resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select min(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}
+	</select>
+	<select id="qbetweenids" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+				<![CDATA[
+	select create_time,slug,title from posts  where type=0  and siteid=#{siteid} and status=#{status}
+		and id >=#{min} and id<#{max}
+
+	]]>
+
 	</select>
 	<select id="qprevPost1" resultType="java.lang.Long"  parameterType="java.util.HashMap">
 		<![CDATA[

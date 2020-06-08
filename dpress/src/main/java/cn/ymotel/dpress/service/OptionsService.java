@@ -1,11 +1,15 @@
 package cn.ymotel.dpress.service;
 
+import cn.ymotel.dpress.Utils;
 import com.alicp.jetcache.anno.Cached;
 import com.alicp.jetcache.anno.CreateCache;
+import org.apache.commons.lang3.StringUtils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
+import run.halo.app.model.properties.PropertyEnum;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -33,22 +37,59 @@ public class OptionsService {
     @Autowired
     private SqlSession sqlSession;
 
+    private   Map<String, PropertyEnum> propertyEnumMap= Collections.unmodifiableMap(PropertyEnum.getValuePropertyEnumMap());
 
     @Cached
     public Map getOptions(Object id){
-        Map rtnMap=new HashMap();
-        Map map=new HashMap();
-        map.put("siteid",id);
-       List ls= sqlSession.selectList("options.qall",map);
-       for(int i=0;i<ls.size();i++){
-           Map tMap=(Map)ls.get(i);
-           String value=(String)tMap.get("option_value");
-            if(value!=null){
 
+        Map<String, Object> result = new HashMap<>();
+
+        // Add default property
+        propertyEnumMap.keySet()
+                .stream()
+                .forEach(key -> {
+                    PropertyEnum propertyEnum = propertyEnumMap.get(key);
+
+                    if (StringUtils.isBlank(propertyEnum.defaultValue())) {
+                        return;
+                    }
+
+                    result.put(key, PropertyEnum.convertTo(propertyEnum.defaultValue(), propertyEnum));
+                });
+
+        Map map=new HashMap();
+        map.put("siteid", id);
+        List list= sqlSession.selectList("options.qall",map);
+//        Map rtnMap=new HashMap();
+        for(int i=0;i<list.size();i++){
+            Map tMap=(Map)list.get(i);
+            String value=(String)tMap.get("option_value");
+            if (StringUtils.isBlank(value)) {
+                continue;
             }
-           rtnMap.put(tMap.get("option_key"),value);
-       }
-       return rtnMap;
+            String key=(String)tMap.get("option_key");
+            PropertyEnum propertyEnum = propertyEnumMap.get(key);
+            if(propertyEnum==null){
+                continue;
+            }
+            result.put(key, PropertyEnum.convertTo(value, propertyEnum));
+//            rtnMap.put(key,value);
+//            OptionClassConvert.StringConvert(key,rtnMap);
+        }
+        return result;
+//        Map rtnMap=new HashMap();
+//        Map map=new HashMap();
+//        map.put("siteid",id);
+//       List ls= sqlSession.selectList("options.qall",map);
+//       for(int i=0;i<ls.size();i++){
+//           Map tMap=(Map)ls.get(i);
+//           String value=(String)tMap.get("option_value");
+//            if(value!=null){
+//
+//            }
+//           rtnMap.put(tMap.get("option_key"),value);
+//       }
+//       return rtnMap;
     }
     @Cached
     public  <T> T getOption(Object id,Object key,T defaultValue){

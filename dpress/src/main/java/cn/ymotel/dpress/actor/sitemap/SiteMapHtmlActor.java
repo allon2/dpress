@@ -13,23 +13,23 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/sitemap.html",chain = "publicchain")
+@ActorCfg(urlPatterns = "/sitemap.html",chain = "publicchain",timeout = 1000*1000*60)
 public class SiteMapHtmlActor extends FreemarkerActor {
-    @Autowired
-    private SqlSession sqlSession;
+//    @Autowired
+//    private SqlSession sqlSession;
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
-        String baseUrl=Utils.getBaseUrl(message);
+//        String baseUrl=Utils.getBaseUrl(message);
         BindingAwareModelMap model=new BindingAwareModelMap();
         ViewData viewData=new ViewData();
-        Map paramsMap=new HashMap();
-        paramsMap.put("siteid", Utils.getSiteId());
-       List posts= sqlSession.selectList("posts.qall",paramsMap);
-       for(int i=0;i<posts.size();i++){
-           Map tMap=(Map)posts.get(i);
-           tMap.put("fullPath",baseUrl+"/archives/"+tMap.get("slug"));
-       }
-        model.addAttribute("posts", posts);
+//        Map paramsMap=new HashMap();
+//        paramsMap.put("siteid", Utils.getSiteId());
+//       List posts= sqlSession.selectList("posts.qall",paramsMap);
+//       for(int i=0;i<posts.size();i++){
+//           Map tMap=(Map)posts.get(i);
+//           tMap.put("fullPath",baseUrl+"/archives/"+tMap.get("slug"));
+//       }
+//        model.addAttribute("posts", posts);
         viewData.setData(model);
         viewData.setViewName("common/web/sitemap_html");
         return viewData;

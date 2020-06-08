@@ -80,8 +80,6 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                 ViewData viewData=(ViewData)obj;
                 ;
                Object id= Utils.getSiteId();
-
-                String content = multiDomainFreeMarkerView.getProcessedString(message,id,(String)viewData.getViewName(),(Map)viewData.getData());
                 if(viewData.getContentType()!=null) {
                     message.getResponse().setContentType(viewData.getContentType());
                 }else {
@@ -89,7 +87,11 @@ public class FreemarkerActor implements Actor<ServletMessage> {
 
                 }
                 message.getResponse().setCharacterEncoding("UTF-8");
-                message.getResponse().getWriter().print(content);
+
+
+                String content = multiDomainFreeMarkerView.getProcessedString(message,id,(String)viewData.getViewName(),(Map)viewData.getData());
+
+//                message.getResponse().getWriter().print(content);
                 message.getResponse().getWriter().flush();
                 message.getAsyncContext().complete();
                 return message;

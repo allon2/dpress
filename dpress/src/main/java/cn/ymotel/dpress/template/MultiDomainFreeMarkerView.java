@@ -2,6 +2,7 @@ package cn.ymotel.dpress.template;
 
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.actor.sitemap.LargePostsTagDirective;
 import cn.ymotel.dpress.service.OptionsService;
 import cn.ymotel.dpress.service.SiteThemeService;
 import freemarker.template.*;
@@ -19,8 +20,11 @@ import run.halo.app.service.ThemeSettingService;
 import run.halo.app.service.UserService;
 
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
+import java.io.PrintWriter;
 import java.io.StringWriter;
+import java.io.Writer;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -70,7 +74,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
     }
     public String getProcessedString(ServletMessage message,Object id,String viewName,Map data) throws IOException, TemplateException {
 
-        return getProcessedString(message.getRequest(),id,viewName,data);
+        return getProcessedString(message.getRequest(),message.getResponse(),id,viewName,data);
 //        Template temp=getTemplate(message.getRequest(),id,viewName);
 ////        Configuration configuration= getConfiguration(message,id);
 ////        Template temp =  configuration.getTemplate(viewName+".ftl");
@@ -82,19 +86,32 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
 //        writer.close();
 //        return content;
     }
-    public String getProcessedString(HttpServletRequest request,Object id,String viewName,Map data) throws IOException, TemplateException {
+    public String getProcessedString(HttpServletRequest request, HttpServletResponse response, Object id, String viewName, Map data) throws IOException, TemplateException {
 
 
         Template temp=getTemplate(request,id,viewName);
-
-        StringWriter writer = new StringWriter();
+        Writer writer =null;
+        if(response==null){
+            writer=new StringWriter();
+        }else{
+            writer= response.getWriter();
+        }
+//        StringWriter writer = new StringWriter();
         Map<String, Object> delegate=new HashMap();
         delegate.putAll(data);
 //        SimpleHash simpleHash=new SimpleHash(data,null);
         temp.process(delegate, writer);
-        String content = writer.toString();
+        if(writer instanceof StringWriter){
+                    String content = writer.toString();
         writer.close();
         return content;
+        }else{
+            return null;
+        }
+//        String content = writer.toString();
+//        writer.close();
+//        return content;
+//        return null;
     }
     public Template getTemplate(HttpServletRequest request,Object id,String viewName) throws IOException, TemplateException {
         Configuration configuration= getConfiguration(request,id);
@@ -159,6 +176,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         configuration.setSharedVariable("postTag", applicationContext.getBean(PostTagDirective.class));
         configuration.setSharedVariable("tagTag", applicationContext.getBean(TagTagDirective.class));
         configuration.setSharedVariable("toolTag", applicationContext.getBean(ToolTagDirective.class));
+        configuration.setSharedVariable("largetPostsTag", applicationContext.getBean(LargePostsTagDirective.class));
     }
     private void loadUserConfig(Configuration configuration) throws TemplateModelException {
         List list=sqlSession.selectList("users.qall");

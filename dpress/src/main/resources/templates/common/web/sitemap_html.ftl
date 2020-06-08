@@ -138,8 +138,9 @@ see https://gitee.com/yadong.zhang/DBlog/blob/master/blog-web/src/main/java/com/
             <div class="T4 pull-right">1</div>
         </li>
         <div class="clear"></div>
-        <#if posts?? && posts?size gt 0>
-            <#list posts as post>
+
+                                <@largetPostsTag  >
+
                 <li>
                     <div class="T1 pull-left"><a href="${post.fullPath!}" title="${post.title!}">${post.title!} | ${blog_title!}</a></div>
                     <div class="T2 pull-right">${post.createTime?string('yyyy-MM-dd')}</div>
@@ -147,8 +148,9 @@ see https://gitee.com/yadong.zhang/DBlog/blob/master/blog-web/src/main/java/com/
                     <div class="T4 pull-right">0.6</div>
                 </li>
                 <div class="clear"></div>
-            </#list>
-        </#if>
+                                </@largetPostsTag>
+
+
     </ul>
 </div>
 <div id="content">
