@@ -28,7 +28,7 @@
         <link rel="self" type="application/atom+xml" href="${atom_url!}" />
     </#if>
     <rights>Copyright © ${.now?string('yyyy')}, ${blog_title!}</rights>
-    <generator uri="https://halo.run/" version="${version!}">Halo</generator>
+    <generator uri="https://dpress.ymotel.cn/" version="${version!}">Dpress</generator>
     <#if posts?? && posts?size gt 0>
         <#list posts as post>
             <entry>

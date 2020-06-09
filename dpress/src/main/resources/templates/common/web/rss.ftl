@@ -21,7 +21,7 @@
             </#if>
         </#if>
         <language>zh-CN</language>
-        <generator>Halo ${version!}</generator>
+        <generator>Dpress ${version!}</generator>
         <#if posts?? && posts?size gt 0>
             <#list posts as post>
                 <item>
