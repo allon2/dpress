@@ -108,7 +108,7 @@ export default {
       })
     },
     loadThemes() {
-      themeApi.listAll().then(response => {
+      themeApi.listAllUserThemes().then(response => {
         this.themes = response.data.data
       })
     },

@@ -4,7 +4,9 @@ import com.baomidou.mybatisplus.annotation.DbType;
 import com.baomidou.mybatisplus.generator.AutoGenerator;
 import com.baomidou.mybatisplus.generator.InjectionConfig;
 import com.baomidou.mybatisplus.generator.config.*;
+import com.baomidou.mybatisplus.generator.config.converts.MySqlTypeConvert;
 import com.baomidou.mybatisplus.generator.config.converts.OracleTypeConvert;
+import com.baomidou.mybatisplus.generator.config.po.TableField;
 import com.baomidou.mybatisplus.generator.config.rules.DateType;
 import com.baomidou.mybatisplus.generator.config.rules.DbColumnType;
 import com.baomidou.mybatisplus.generator.config.rules.IColumnType;
@@ -42,7 +44,7 @@ public class MybatisGenerator {
         // XML 二级缓存
         gc.setEnableCache(false);
         // XML ResultMap
-        gc.setBaseResultMap(false);
+        gc.setBaseResultMap(true);
         // XML columList
         gc.setBaseColumnList(false);
         gc.setAuthor("dpress");
@@ -62,7 +64,21 @@ public class MybatisGenerator {
         dsc.setUsername("root");
         dsc.setPassword("111111");
         dsc.setUrl("jdbc:mysql://127.0.0.1:3306/dpress1?characterEncoding=utf8&useSSL=false&serverTimezone=Asia/Shanghai&allowPublicKeyRetrieval=true");
-//        dsc.setTypeConvert(new OracleTypeConvert() {
+        dsc.setTypeConvert(new MySqlTypeConvert(){
+            @Override
+            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
+                String t = fieldType.toLowerCase();
+                   if (t.contains("clob")) {
+                    return DbColumnType.STRING;
+                } else if (t.contains("blob")) {
+                    return DbColumnType.BYTE_ARRAY;
+                } else if (t.contains("binary")) {
+                       return DbColumnType.BYTE_ARRAY;
+                   }
+                return super.processTypeConvert(globalConfig, fieldType);
+            }
+        });
+ //        dsc.setTypeConvert(new OracleTypeConvert() {
 //            // 自定义数据库表字段类型转换【可选】
 //            @Override
 //            public IColumnType processTypeConvert(GlobalConfig globalConfig, String fieldType) {
@@ -100,7 +116,7 @@ public class MybatisGenerator {
         // 此处可以修改为您的表前缀
         // strategy.setTablePrefix(new String[] { "bmd_", "mp_" });
         // 需要生成的表
-//        strategy.setInclude(new String[]{"POSTS"});
+        strategy.setInclude(new String[]{"dpress_template"});
         // 排除生成的表
         // strategy.setExclude(new String[]{"test"});
 

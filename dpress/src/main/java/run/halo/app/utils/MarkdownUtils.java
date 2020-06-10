@@ -24,6 +24,8 @@ import com.vladsch.flexmark.util.data.MutableDataSet;
 import org.apache.commons.lang3.StringUtils;
 import run.halo.app.model.support.HaloConst;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
@@ -99,7 +101,10 @@ public class MarkdownUtils {
 
         return RENDERER.render(document);
     }
-
+    public static void main(String[] args) throws IOException {
+      String content= org.apache.commons.io.FileUtils.readFileToString(new File("E:\\Work\\wsl\\dactor\\README.md"),"UTF-8");
+      System.out.println(renderHtml(content));
+    }
 //    /**
 //     * Render html document to markdown document.
 //     *

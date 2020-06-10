@@ -10,6 +10,12 @@ themeApi.listAll = () => {
     method: 'get'
   })
 }
+themeApi.listAllUserThemes = () => {
+  return service({
+    url: `${baseUrl}/userthemes`,
+    method: 'get'
+  })
+}
 
 themeApi.listFilesActivated = () => {
   return service({
@@ -67,7 +73,12 @@ themeApi.delete = key => {
     method: 'delete'
   })
 }
-
+themeApi.resetSystemTheme = key => {
+  return service({
+    url: `${baseUrl}/systemreset/${key}`,
+    method: 'delete'
+  })
+}
 themeApi.fetchConfiguration = themeId => {
   return service({
     url: `${baseUrl}/${themeId}/configurations`,

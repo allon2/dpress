@@ -13,8 +13,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-@ActorCfg(urlPatterns = "/themes/{themeId}/screenshot",view = "img:")
-public class ScreenshotActor implements Actor<ServletMessage> {
+@ActorCfg(urlPatterns = "/themes/systemtheme/{themeId}/screenshot",view = "img:")
+public class SystemThemeScreenshotActor implements Actor<ServletMessage> {
     @Autowired
     private SqlSession sqlSession;
     @Override
@@ -24,7 +24,7 @@ public class ScreenshotActor implements Actor<ServletMessage> {
         map.put("path","screenshot.png");
         map.put("theme",message.getContextData("themeId"));
 
-        Map  dataMap= sqlSession.selectOne("dpress.qtemplate",map);
+        Map  dataMap= sqlSession.selectOne("system_themes.qbypathAndTheme",map);
         return dataMap.get("bcontent");
 
 

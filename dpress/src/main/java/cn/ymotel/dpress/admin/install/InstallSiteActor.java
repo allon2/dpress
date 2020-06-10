@@ -8,6 +8,10 @@ import cn.ymotel.dactor.sequence.IdWorker;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.ThemeZipUtils;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.entity.mapper.DpressTemplateMapper;
+import cn.ymotel.dpress.entity.mapper.SystemThemesMapper;
+import cn.ymotel.dpress.entity.model.DpressTemplate;
+import cn.ymotel.dpress.entity.model.SystemThemes;
 import org.apache.ibatis.session.SqlSession;
 import org.flywaydb.core.Flyway;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -15,6 +19,7 @@ import org.springframework.core.io.DefaultResourceLoader;
 import org.springframework.core.io.Resource;
 import org.springframework.core.io.support.ResourcePatternUtils;
 import org.springframework.stereotype.Component;
+import run.halo.app.exception.AlreadyExistsException;
 import run.halo.app.exception.BadRequestException;
 
 import java.io.IOException;
@@ -36,6 +41,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
 
         }else{
             InstallDbScript(message.getContext());
+            installSystemThemes();
 
         }
         if(!emptySite()){
@@ -53,8 +59,11 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         createDefaultComment(siteid,postid);
         createDefaultSheet(siteid);
         createDefaultMenu(siteid);
-        InstallDefaultThemes(siteid);
+//        InstallDefaultThemes(siteid);
+        installDefaultTheme(siteid,null);
+        activeTheme(siteid,null);
         System.out.println("安装完成！");
+
         message.getAsyncContext().getResponse().setContentType("text/html; charset=UTF-8");
         message.getAsyncContext().getResponse().getWriter().write("安装完成！");
         message.getAsyncContext().getResponse().getWriter().flush();
@@ -80,39 +89,127 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         flyway.migrate();
         Utils.WriteMysqlInfo(url,dbusername,dbpassword);
     }
-    public void InstallDefaultThemes(Object siteid) throws IOException {
+    public void installSystemThemes() throws IOException {
         String path="classpath:/themes/*.zip";
-           Resource[] rs = ResourcePatternUtils
+        Resource[] rs = ResourcePatternUtils
                 .getResourcePatternResolver(new DefaultResourceLoader()).getResources(path);
-//         List<CompletableFuture>  futureList=new ArrayList<>();
+               List<CompletableFuture>  futureList=new ArrayList<>();
         for(int i=0;i<rs.length;i++){
-           final Resource t=rs[i];
-//            CompletableFuture future1= CompletableFuture.runAsync(() -> {
-                Map map= null;
+            final Resource t=rs[i];
+            CompletableFuture future1= CompletableFuture.runAsync(() -> {
                 try {
-                    map = ThemeZipUtils.installTheme(sqlSession,t.getInputStream(),siteid);
+                    ThemeZipUtils.installSystemTheme(sqlSession,t.getInputStream());
                 } catch (IOException e) {
                     e.printStackTrace();
-                    return ;
                 }
-                if(map.get("id").equals("codelunatic_simple")){
-            //
+            });
+            futureList.add(future1);
+        }
+        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+    }
+
+    public void activeTheme(Object siteid,String themeName){
+            if(themeName==null){
+                themeName="codelunatic_simple";
+            }
             Map settingMap=new HashMap();
             settingMap.put("siteid",siteid);
             settingMap.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
             settingMap.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
             settingMap.put("type","0");
-            {
-                settingMap.put("option_key","theme");
-                settingMap.put("option_value","codelunatic_simple");
-                sqlSession.insert("options.ioption",settingMap);
+
+            settingMap.put("option_key","theme");
+            settingMap.put("option_value",themeName);
+           int count= sqlSession.update("options.uoption",settingMap);
+           if(count==0) {
+               sqlSession.insert("options.ioption", settingMap);
+           }
+    }
+    public void installDefaultTheme(Object siteid,String themeName){
+//        String themeName="codelunatic_simple";
+        if(themeName==null){
+            themeName="codelunatic_simple";
+        }
+        Map params=new HashMap();
+        params.put("theme",themeName);
+      List<SystemThemes> list=  sqlSession.getMapper(SystemThemesMapper.class).selectByMap(params);
+      for(int i=0;i<list.size();i++){
+          SystemThemes systemThemes=list.get(i);
+          DpressTemplate dpressTemplate=new DpressTemplate();
+          dpressTemplate.setBcontent(systemThemes.getBcontent());
+          dpressTemplate.setContent(systemThemes.getContent());
+          dpressTemplate.setEncoding(systemThemes.getEncoding());
+          dpressTemplate.setLastModified(new java.sql.Timestamp(System.currentTimeMillis()));
+          dpressTemplate.setMediatype(systemThemes.getMediatype());
+          dpressTemplate.setPath(systemThemes.getPath());
+          dpressTemplate.setTheme(themeName);
+          dpressTemplate.setVariable(systemThemes.getVariable());
+          dpressTemplate.setSiteid((Long)siteid);
+          sqlSession.getMapper(DpressTemplateMapper.class).insert(dpressTemplate);
+      }
+
+        {
+            Map paramMap=new HashMap();
+            paramMap.put("siteid", siteid);
+            paramMap.put("key","installthemes");
+            Map data= sqlSession.selectOne("options.qoption",paramMap);
+            if(data==null||data.isEmpty()){
+                //
+                paramMap.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
+                paramMap.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
+                paramMap.put("option_key","installthemes");
+                paramMap.put("option_value",themeName);
+                paramMap.put("type","0");
+
+                sqlSession.insert("options.ioption",paramMap);
+            }else{
+                String value=(String)data.get("option_value");
+                if(value.indexOf(themeName)>=0){
+                    //抛错错误
+                    throw new AlreadyExistsException("当前安装的主题已存在");
+                }
+                value=value+","+themeName;
+                data.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
+                data.put("option_value",value);
+                data.put("siteid",siteid);
+                data.put("option_key","installthemes");
+                sqlSession.update("options.uoption",data);
             }
         }
-//            });
-//            futureList.add(future1);
-        }
-//        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
     }
+//    public void InstallDefaultThemes(Object siteid) throws IOException {
+//        String path="classpath:/themes/*.zip";
+//           Resource[] rs = ResourcePatternUtils
+//                .getResourcePatternResolver(new DefaultResourceLoader()).getResources(path);
+////         List<CompletableFuture>  futureList=new ArrayList<>();
+//        for(int i=0;i<rs.length;i++){
+//           final Resource t=rs[i];
+////            CompletableFuture future1= CompletableFuture.runAsync(() -> {
+//                Map map= null;
+//                try {
+//                    map = ThemeZipUtils.installTheme(sqlSession,t.getInputStream(),siteid);
+//                } catch (IOException e) {
+//                    e.printStackTrace();
+//                    return ;
+//                }
+//                if(map.get("id").equals("codelunatic_simple")){
+//            //
+//            Map settingMap=new HashMap();
+//            settingMap.put("siteid",siteid);
+//            settingMap.put("create_time",new java.sql.Timestamp(System.currentTimeMillis()));
+//            settingMap.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
+//            settingMap.put("type","0");
+//            {
+//                settingMap.put("option_key","theme");
+//                settingMap.put("option_value","codelunatic_simple");
+//                sqlSession.insert("options.ioption",settingMap);
+//            }
+//        }
+////            });
+////            futureList.add(future1);
+//        }
+////        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+//    }
     public  String getServerName(String url) throws MalformedURLException {
 
         URL url2=new URL(url);
@@ -191,7 +288,7 @@ public class InstallSiteActor implements Actor<ServletMessage> {
         map.put("type","0");
         map.put("author","Halo");
         map.put("author_url","https://github.com/allon2/dpress");
-        map.put("content","欢迎使用 Halo，这是你的第一条评论，头像来自 [Gravatar](https://cn.gravatar.com)，你也可以通过注册 [Gravatar](https://cn.gravatar.com) 来显示自己的头像。");
+        map.put("content","欢迎使用 Dpress，这是你的第一条评论，头像来自 [Gravatar](https://cn.gravatar.com)，你也可以通过注册 [Gravatar](https://cn.gravatar.com) 来显示自己的头像。");
         map.put("email","hi@dpress.com");
         map.put("status","1");
         map.put("post_id",postid);

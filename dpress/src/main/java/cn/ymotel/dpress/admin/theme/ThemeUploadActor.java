@@ -6,6 +6,7 @@ import cn.ymotel.dactor.response.ResponseViewType;
 import cn.ymotel.dactor.spring.annotaion.ActorCfg;
 import cn.ymotel.dpress.ThemeZipUtils;
 import cn.ymotel.dpress.Utils;
+import cn.ymotel.dpress.admin.install.InstallSiteActor;
 import cn.ymotel.dpress.service.SiteThemeService;
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -37,13 +38,18 @@ import java.util.zip.ZipInputStream;
 public class ThemeUploadActor  implements Actor<ServletMessage> {
     @Autowired
     private SqlSession sqlSession;
+
+    @Autowired
+    InstallSiteActor installSiteActor;
+
+
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
         MultipartFile multipartFile = message.getFile("file");
         if (!StringUtils.endsWithIgnoreCase(multipartFile.getOriginalFilename(), ".zip")) {
             throw new UnsupportedMediaTypeException("不支持的文件类型: " + multipartFile.getContentType()).setErrorData(multipartFile.getOriginalFilename());
         }
-       Map map= ThemeZipUtils.installTheme(sqlSession,new ByteArrayInputStream(message.getFileBytes("file")),Utils.getSiteIdFromMessage(message));
+        Map dataMap=ThemeZipUtils.installTheme(sqlSession,new ByteArrayInputStream(message.getFileBytes("file")),Utils.getSiteIdFromMessage(message));
 //        Map zipMap = ThemeZipUtils.getDataFromBytes(message.getFileBytes("file"));
 //        zipMap = ThemeZipUtils.rmBaseMap(zipMap);
 //
@@ -103,7 +109,7 @@ public class ThemeUploadActor  implements Actor<ServletMessage> {
 //        }
 
         Map rtnMap=new HashMap();
-        rtnMap.put("data",map);
+        rtnMap.put("data",dataMap);
          return rtnMap;
     }
 

@@ -78,7 +78,7 @@ and status=#{status}
 		and (title like #{keyword} or original_content like #{keyword})
 		</if>
 
- order by top_priority desc, create_time desc limit #{start},#{size}
+ order by   create_time desc limit #{start},#{size}
 
 	</select>
 	<update id="u" parameterType="java.util.HashMap">

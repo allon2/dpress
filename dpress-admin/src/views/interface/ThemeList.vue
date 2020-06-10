@@ -48,9 +48,22 @@
                     style="margin-right:3px"
                   />启用
                 </div>
-                <div @click="handleShowThemeSetting(item)">
+                <div v-if="item.usertheme">
                   <a-icon
                     type="setting"
+                    style="margin-right:3px"
+                  />用户
+                </div>
+                <div v-else>
+                  <a-icon
+                    type="setting"
+                    style="margin-right:3px"
+                  />系统
+                </div>
+                <div @click="handleShowThemeSetting(item)" >
+                  <a-icon
+                    type="setting"
+
                     style="margin-right:3px"
                   />设置
                 </div>
@@ -72,11 +85,23 @@
                       :key="1"
                       :disabled="item.activated"
                       @click="handleConfirmDelete(item)"
+                      v-if="item.usertheme&&(!item.systemtheme)"
                     >
                       <a-icon
                         type="delete"
                         style="margin-right:3px"
                       />删除
+                    </a-menu-item>
+                    <a-menu-item
+                      :key="1"
+                      :disabled="item.activated"
+                      @click="handleConfirmThemeReset(item)"
+                      v-if="item.usertheme&&item.systemtheme"
+                    >
+                      <a-icon
+                        type="delete"
+                        style="margin-right:3px"
+                      />还原
                     </a-menu-item>
                     <a-menu-item
                       :key="2"
@@ -164,18 +189,7 @@
               @success="handleUploadSuccess"
             >
             </FilePondUpload>
-            <a-alert
-              type="info"
-              closable
-            >
-              <template slot="message">
-                更多主题请访问：
-                <a
-                  target="_blank"
-                  href="https://halo.run/s/themes"
-                >https://halo.run/s/themes</a>
-              </template>
-            </a-alert>
+
           </a-tab-pane>
           <a-tab-pane
             tab="远程拉取"
@@ -199,11 +213,6 @@
             >
               <template slot="message">
                 远程地址即主题仓库地址，使用这种方式安装的一般为开发版本，请谨慎使用。
-                <br>更多主题请访问：
-                <a
-                  target="_blank"
-                  href="https://halo.run/s/themes"
-                >https://halo.run/s/themes</a>
               </template>
             </a-alert>
           </a-tab-pane>
@@ -258,7 +267,7 @@ export default {
     sortedThemes() {
       const data = this.themes.slice(0)
       return data.sort(function(a, b) {
-        return b.activated - a.activated
+        return (b.activated - a.activated) + (b.usertheme - a.usertheme)
       })
     }
   },
@@ -309,6 +318,12 @@ export default {
         this.loadThemes()
       })
     },
+    handleResetSystemTheme(themeId) {
+      themeApi.resetSystemTheme(themeId).then(response => {
+        this.$message.success('恢复成功！')
+        this.loadThemes()
+      })
+    },
     handleUploadSuccess() {
       if (this.uploadThemeVisible) {
         this.uploadThemeVisible = false
@@ -355,6 +370,10 @@ export default {
       this.uploadNewThemeVisible = true
     },
     handleShowThemeSetting(theme) {
+      if (!theme.usertheme) {
+        this.$message.success('尚未安装！')
+        return
+      }
       this.selectedTheme = theme
       this.themeSettingVisible = true
     },
@@ -366,6 +385,18 @@ export default {
         content: '确定删除【' + item.name + '】主题？',
         onOk() {
           that.handleDeleteTheme(item.id)
+        },
+        onCancel() {}
+      })
+    },
+    handleConfirmThemeReset(item) {
+      const that = this
+      this.$confirm({
+        title: '提示',
+        maskClosable: true,
+        content: '确定还原【' + item.name + '】主题？',
+        onOk() {
+          that.handleResetSystemTheme(item.id)
         },
         onCancel() {}
       })

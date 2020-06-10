@@ -85,8 +85,8 @@ public class StatisticsActor implements Actor<ServletMessage> {
             rtnMap.put("likeCount",count);
         }
 
-       String birthday= optionsService.getOption(Utils.getSiteId(),"birthday",null);
-       Long lbirthday=Long.parseLong(birthday);
+        Long lbirthday= optionsService.getOption(Utils.getSiteId(),"birthday",null);
+//       Long lbirthday=Long.parseLong(birthday);
         long days = (System.currentTimeMillis() - lbirthday) / (1000 * 24 * 3600);
         rtnMap.put("birthday",lbirthday);
         rtnMap.put("establishDays",days);

@@ -1,5 +1,7 @@
 package cn.ymotel.dpress;
 
+import cn.ymotel.dpress.entity.mapper.SystemThemesMapper;
+import cn.ymotel.dpress.entity.model.SystemThemes;
 import cn.ymotel.dpress.service.SiteThemeService;
 import org.apache.any23.encoding.TikaEncodingDetector;
 import org.apache.commons.io.FileUtils;
@@ -26,6 +28,43 @@ import java.util.zip.ZipEntry;
 import java.util.zip.ZipInputStream;
 
 public class ThemeZipUtils {
+    public static void installSystemTheme(SqlSession sqlSession,InputStream in) throws IOException {
+        Map zipMap = ThemeZipUtils.getDataFromBytes(in);
+        zipMap = ThemeZipUtils.rmBaseMap(zipMap);
+
+        byte[] yamlbytes = (byte[]) zipMap.get("theme.yaml");
+        Yaml yaml = new Yaml();
+        Map map =  yaml.load(new ByteArrayInputStream(yamlbytes));
+        String themeName = (String) map.get("id");
+        zipMap.forEach((BiConsumer<String, byte[]>) (path, bytes) -> {
+             String mediaType=getMediaType(bytes,path);
+            SystemThemes systemThemes=new SystemThemes();
+            systemThemes.setMediatype(mediaType);
+
+            if(SiteThemeService.istext(path)){
+                try {
+                    String encoding=getEncoding(bytes,"UTF-8");
+                    systemThemes.setEncoding(encoding);
+                    systemThemes.setContent(new String(bytes,encoding));
+
+                } catch (UnsupportedEncodingException e) {
+                    e.printStackTrace();
+                }
+            }else{
+                systemThemes.setBcontent(bytes);
+            }
+            systemThemes.setPath(path);
+            systemThemes.setTheme(themeName);
+            sqlSession.getMapper(SystemThemesMapper.class).insert(systemThemes);
+//            paramMap.put("path",path);
+//
+//            paramMap.put("lastModified",new java.sql.Timestamp(System.currentTimeMillis()));
+//            paramMap.put("path",path);
+//            paramMap.put("theme",themeName);
+//            paramMap.put("siteid", siteid);
+//            sqlsession.insert("dpress.itemplate",paramMap);
+        });
+    }
     public static Map installTheme(SqlSession sqlsession, InputStream in, Object siteid) throws IOException {
         Map zipMap = ThemeZipUtils.getDataFromBytes(in);
         zipMap = ThemeZipUtils.rmBaseMap(zipMap);

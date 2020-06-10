@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8" ?>   
+<!DOCTYPE mapper   
+    PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"   
+    "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="system_themes" >
+
+
+	<select id="qbypath" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+select  theme,bcontent,content,encoding from system_themes where path=#{path}
+	</select>
+
+	<select id="qbypathAndTheme" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+select  theme,bcontent,content,encoding from system_themes where path=#{path} and theme=#{theme}
+	</select>
+	<delete id="dbyTheme" parameterType="java.util.HashMap">
+		delete from system_themes where theme=#{theme}
+	</delete>
+
+</mapper>

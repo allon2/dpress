@@ -1,6 +1,6 @@
 package cn.ymotel.dpress.entity.mapper;
 
-import cn.ymotel.dpress.entity.model.DpressTemplate;
+import cn.ymotel.dpress.entity.model.SystemThemes;
 import com.baomidou.mybatisplus.core.mapper.BaseMapper;
 
 /**
@@ -11,6 +11,6 @@ import com.baomidou.mybatisplus.core.mapper.BaseMapper;
  * @author dpress
  * @since 2020-06-09
  */
-public interface DpressTemplateMapper extends BaseMapper<DpressTemplate> {
+public interface SystemThemesMapper extends BaseMapper<SystemThemes> {
 
 }

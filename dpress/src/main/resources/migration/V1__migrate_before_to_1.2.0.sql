@@ -119,7 +119,16 @@ path varchar(255)   NULL DEFAULT NULL,
   cifseq bigint(255) NULL DEFAULT NULL,
   theme varchar(255)   NULL DEFAULT NULL
 ) ;
-
+DROP TABLE IF EXISTS system_themes;
+CREATE TABLE system_themes  (
+  variable text  NULL COMMENT 'json格式，key为返回值 value为执行方法',
+  content longtext  NULL,
+  bcontent longblob NULL,
+  encoding varchar(255)  NULL DEFAULT NULL,
+  mediatype varchar(255)   NULL DEFAULT NULL,
+  path varchar(255)   NULL DEFAULT NULL,
+  theme varchar(255)   NULL DEFAULT NULL
+);
 
 -- ----------------------------
 -- Table structure for journals

@@ -23,8 +23,10 @@ public class AdminInstallSiteActor  implements Actor<ServletMessage> {
         installSiteActor.  createDefaultComment(siteid,postid);
         installSiteActor. createDefaultSheet(siteid);
         installSiteActor.createDefaultMenu(siteid);
-        installSiteActor.InstallDefaultThemes(siteid);
+//        installSiteActor.InstallDefaultThemes(siteid);
 
+        installSiteActor.installDefaultTheme(siteid,null);
+        installSiteActor.activeTheme(siteid,null);
         return "安装完成！";
     }
 }

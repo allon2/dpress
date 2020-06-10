@@ -49,6 +49,7 @@ public class DeleteThemeActor implements Actor<ServletMessage> {
 
         map.put("theme",themeId);
         this.sqlSession.delete("dpress.dtemplatebytheme",map);
+//        this.sqlSession.delete("system_themes.dbyTheme",map);
         String[] removed = ArrayUtils.removeElement( themes.split(","), themeId);
         themes=  StringUtils.join(removed, ",");
         installthemesMap.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));

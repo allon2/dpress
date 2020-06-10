@@ -7,6 +7,7 @@
 		select content,bcontent,lastModified,variable,encoding,mediatype from dpress_template where
 		siteid=#{siteid} and path=#{path} and theme=#{theme}
 	</select>
+
 	<update id="utemplatecontent" parameterType="java.util.HashMap">
 		update dpress_template set content=#{content},lastModified=#{lastModified} where siteid=#{siteid} and path=#{path} and theme=#{theme}
 	</update>

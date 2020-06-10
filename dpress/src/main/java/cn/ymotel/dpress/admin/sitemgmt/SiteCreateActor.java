@@ -31,8 +31,9 @@ public class SiteCreateActor implements Actor {
         installSiteActor.  createDefaultComment(siteid,postid);
         installSiteActor. createDefaultSheet(siteid);
         installSiteActor.createDefaultMenu(siteid);
-        installSiteActor.InstallDefaultThemes(siteid);
-
+//        installSiteActor.InstallDefaultThemes(siteid);
+        installSiteActor.installDefaultTheme(siteid,null);
+        installSiteActor.activeTheme(siteid,null);
 
         return new HashMap<>();
     }

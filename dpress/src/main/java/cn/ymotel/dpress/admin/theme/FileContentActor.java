@@ -18,8 +18,8 @@ public class FileContentActor  implements Actor<ServletMessage> {
     @Override
     public Object Execute(ServletMessage message) throws Throwable {
         String METHOD=message.getContextData(Constants.METHOD);
-       String theme=getActiveTheme(message);
-
+//       String theme=getActiveTheme(message);
+        String theme=message.getContextData("themeId");
 
         if(METHOD.equalsIgnoreCase("GET")) {
             Map tMap = new HashMap();

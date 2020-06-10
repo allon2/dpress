@@ -1,8 +1,6 @@
 package cn.ymotel.dpress.entity.model;
 
 import com.baomidou.mybatisplus.extension.activerecord.Model;
-import java.util.Date;
-import com.baomidou.mybatisplus.annotation.TableField;
 import java.io.Serializable;
 
 /**
@@ -13,7 +11,7 @@ import java.io.Serializable;
  * @author dpress
  * @since 2020-06-09
  */
-public class DpressTemplate extends Model<DpressTemplate> {
+public class SystemThemes extends Model<SystemThemes> {
 
     private static final long serialVersionUID = 1L;
 
@@ -26,18 +24,11 @@ public class DpressTemplate extends Model<DpressTemplate> {
 
     private byte[] bcontent;
 
-    @TableField("lastModified")
-    private Date lastModified;
-
-    private Long siteid;
-
     private String encoding;
 
     private String mediatype;
 
     private String path;
-
-    private Long cifseq;
 
     private String theme;
 
@@ -45,7 +36,7 @@ public class DpressTemplate extends Model<DpressTemplate> {
         return variable;
     }
 
-    public DpressTemplate setVariable(String variable) {
+    public SystemThemes setVariable(String variable) {
         this.variable = variable;
         return this;
     }
@@ -53,7 +44,7 @@ public class DpressTemplate extends Model<DpressTemplate> {
         return content;
     }
 
-    public DpressTemplate setContent(String content) {
+    public SystemThemes setContent(String content) {
         this.content = content;
         return this;
     }
@@ -61,31 +52,15 @@ public class DpressTemplate extends Model<DpressTemplate> {
         return bcontent;
     }
 
-    public DpressTemplate setBcontent(byte[] bcontent) {
+    public SystemThemes setBcontent(byte[] bcontent) {
         this.bcontent = bcontent;
-        return this;
-    }
-    public Date getLastModified() {
-        return lastModified;
-    }
-
-    public DpressTemplate setLastModified(Date lastModified) {
-        this.lastModified = lastModified;
-        return this;
-    }
-    public Long getSiteid() {
-        return siteid;
-    }
-
-    public DpressTemplate setSiteid(Long siteid) {
-        this.siteid = siteid;
         return this;
     }
     public String getEncoding() {
         return encoding;
     }
 
-    public DpressTemplate setEncoding(String encoding) {
+    public SystemThemes setEncoding(String encoding) {
         this.encoding = encoding;
         return this;
     }
@@ -93,7 +68,7 @@ public class DpressTemplate extends Model<DpressTemplate> {
         return mediatype;
     }
 
-    public DpressTemplate setMediatype(String mediatype) {
+    public SystemThemes setMediatype(String mediatype) {
         this.mediatype = mediatype;
         return this;
     }
@@ -101,23 +76,15 @@ public class DpressTemplate extends Model<DpressTemplate> {
         return path;
     }
 
-    public DpressTemplate setPath(String path) {
+    public SystemThemes setPath(String path) {
         this.path = path;
-        return this;
-    }
-    public Long getCifseq() {
-        return cifseq;
-    }
-
-    public DpressTemplate setCifseq(Long cifseq) {
-        this.cifseq = cifseq;
         return this;
     }
     public String getTheme() {
         return theme;
     }
 
-    public DpressTemplate setTheme(String theme) {
+    public SystemThemes setTheme(String theme) {
         this.theme = theme;
         return this;
     }
@@ -129,16 +96,13 @@ public class DpressTemplate extends Model<DpressTemplate> {
 
     @Override
     public String toString() {
-        return "DpressTemplate{" +
+        return "SystemThemes{" +
             "variable=" + variable +
             ", content=" + content +
             ", bcontent=" + bcontent +
-            ", lastModified=" + lastModified +
-            ", siteid=" + siteid +
             ", encoding=" + encoding +
             ", mediatype=" + mediatype +
             ", path=" + path +
-            ", cifseq=" + cifseq +
             ", theme=" + theme +
         "}";
     }
