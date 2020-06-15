@@ -26,7 +26,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 //@Order(HIGHEST_PRECEDENCE)
 
 public class CacheFilter  implements Filter {
-    @CreateCache(cacheType = CacheType.LOCAL)
+    @CreateCache
     private Cache<String, CacheResponseEntity> responseCache;
     private UrlPathHelper urlPathHelper=new UrlPathHelper();
     private AntPathMatcher antPathMatcher=new AntPathMatcher();

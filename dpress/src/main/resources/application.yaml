@@ -105,13 +105,13 @@ jetcache:
   areaInCacheName: false
   local:
     default:
-      type: linkedhashmap
+      type: caffeine
       keyConvertor: fastjson
       expireAfterWriteInMillis: 120000
 #全局本地超时时间 2分钟
   remote:
     default:
       type: mock
-
+      expireAfterWriteInMillis: 120000
 #dactor:
 #  enabled: false
