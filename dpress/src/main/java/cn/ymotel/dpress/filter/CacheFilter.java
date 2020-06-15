@@ -2,6 +2,7 @@ package cn.ymotel.dpress.filter;
 
 import cn.ymotel.dpress.Utils;
 import com.alicp.jetcache.Cache;
+import com.alicp.jetcache.anno.CacheType;
 import com.alicp.jetcache.anno.CreateCache;
 import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Component;
@@ -25,7 +26,7 @@ import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 //@Order(HIGHEST_PRECEDENCE)
 
 public class CacheFilter  implements Filter {
-    @CreateCache
+    @CreateCache(cacheType = CacheType.LOCAL)
     private Cache<String, CacheResponseEntity> responseCache;
     private UrlPathHelper urlPathHelper=new UrlPathHelper();
     private AntPathMatcher antPathMatcher=new AntPathMatcher();
@@ -57,6 +58,7 @@ public class CacheFilter  implements Filter {
     @Override
     public void init(FilterConfig filterConfig) throws ServletException {
         list.add("/themes/**");
+        list.add("/");
         urlPathHelper.setAlwaysUseFullPath(true);
     }
 }

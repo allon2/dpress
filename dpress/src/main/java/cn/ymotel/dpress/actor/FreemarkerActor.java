@@ -65,7 +65,33 @@ public class FreemarkerActor implements Actor<ServletMessage> {
     @Override
     public Object HandleMessage(ServletMessage message) throws Throwable {
 //        Map siteMap= getSiteId(message);
+        message.getAsyncContext().addListener(new AsyncListener() {
+            @Override
+            public void onComplete(AsyncEvent event) throws IOException {
 
+                RecordHttpResponseWrapper wrapper =
+                        WebUtils.getNativeResponse(event.getAsyncContext().getResponse(), RecordHttpResponseWrapper.class);
+                if(wrapper!=null) {
+                    wrapper.putCache();
+                }
+//            System.out.println(wrapper);
+            }
+
+            @Override
+            public void onTimeout(AsyncEvent event) throws IOException {
+
+            }
+
+            @Override
+            public void onError(AsyncEvent event) throws IOException {
+
+            }
+
+            @Override
+            public void onStartAsync(AsyncEvent event) throws IOException {
+
+            }
+        });
         ;
         long begin=System.currentTimeMillis();
         RequestContextHolder.setRequestAttributes(new ServletRequestAttributes(message.getRequest(),message.getResponse()),false);
