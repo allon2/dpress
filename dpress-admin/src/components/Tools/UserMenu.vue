@@ -70,11 +70,19 @@ export default {
   created() {
     siteapi.listAll().then(response => {
       this.sitelist = response.data
-      this.selectedsite = response.data[0].sitename.toString()
-      // response.data[0].id = response.data[0].id.toString()
-      // this.selectedsite = response.data[0]
-      var data = { 'id': response.data[0].id }
-      siteapi.changesessionsite(data)
+
+      for (var index in response.data) {
+        var item = response.data[index]
+
+        if (item.check) {
+          this.selectedsite = item.sitename.toString()
+        }
+      }
+      // this.selectedsite = response.data[0].sitename.toString()
+      // // response.data[0].id = response.data[0].id.toString()
+      // // this.selectedsite = response.data[0]
+      // var data = { 'id': response.data[0].id }
+      // siteapi.changesessionsite(data)
     })
   },
   methods: {

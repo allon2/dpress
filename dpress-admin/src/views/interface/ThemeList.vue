@@ -39,8 +39,14 @@
                     style="margin-right:3px"
                   />已启用
                 </div>
+                <div v-if="!item.activated&&!item.usertheme">
+                  <a-icon
+                    type="lock"
+                    style="margin-right:3px"
+                  />初始化
+                </div>
                 <div
-                  v-else
+                  v-if="!item.activated&&item.usertheme"
                   @click="handleActivateClick(item)"
                 >
                   <a-icon
@@ -48,18 +54,7 @@
                     style="margin-right:3px"
                   />启用
                 </div>
-                <div v-if="item.usertheme">
-                  <a-icon
-                    type="setting"
-                    style="margin-right:3px"
-                  />用户
-                </div>
-                <div v-else>
-                  <a-icon
-                    type="setting"
-                    style="margin-right:3px"
-                  />系统
-                </div>
+
                 <div @click="handleShowThemeSetting(item)" >
                   <a-icon
                     type="setting"

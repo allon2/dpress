@@ -25,6 +25,7 @@ import run.halo.app.security.util.SecurityUtils;
 import run.halo.app.utils.HaloUtils;
 
 import javax.servlet.Servlet;
+import javax.servlet.http.HttpServletRequest;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -64,7 +65,7 @@ public class LoginActor implements Actor<ServletMessage> {
         user.setPassword((String)userMap.get("password"));
         message.getRequest().getSession().invalidate();
         message.setUser(user);
-        message.getRequest().getSession().setAttribute(Utils.ADMIN_SITEID,getSiteId());
+        message.getRequest().getSession().setAttribute(Utils.ADMIN_SITEID,getSiteId(message.getRequest()));
 
         AuthToken token= autokenService.buildAuthToken(user);
         Map rtnMap=new HashMap();
@@ -74,7 +75,17 @@ public class LoginActor implements Actor<ServletMessage> {
         return rtnMap;
     }
 
-    public Object getSiteId(){
+    public Object getSiteId(HttpServletRequest request){
+
+        String domain=request.getServerName();
+        Map tMap=new HashMap();
+        tMap.put("domain",domain);
+        Map rtnMap=sqlSession.selectOne("dpress.qsiteid",tMap);
+        if(rtnMap==null||rtnMap.isEmpty()){
+
+        }else{
+            return rtnMap.get("id") ;
+        }
         List ls=sqlSession.selectList("dpress.qallsite");
 
         for(int i=0;i<ls.size();i++){
