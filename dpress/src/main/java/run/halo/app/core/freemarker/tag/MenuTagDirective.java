@@ -36,7 +36,7 @@ public class MenuTagDirective implements TemplateDirectiveModel {
         this.menuService = menuService;
         configuration.setSharedVariable("menuTag", this);
     }
-
+    @Autowired
     private MenusService menusService;
     @Override
     public void execute(Environment env, Map params, TemplateModel[] loopVars, TemplateDirectiveBody body) throws TemplateException, IOException {
