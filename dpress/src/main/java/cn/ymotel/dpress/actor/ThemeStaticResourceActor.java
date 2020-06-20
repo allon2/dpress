@@ -75,6 +75,13 @@ public class ThemeStaticResourceActor implements Actor<ServletMessage> {
 
         MediaType mediaType= ContentTypeUtil.getMediaType((HttpServletRequest) message.getAsyncContext().getRequest(),path);
         HttpServletResponse response=(HttpServletResponse)message.getAsyncContext().getResponse();
+
+
+        java.util.Date date = new java.util.Date();
+         response.setDateHeader("Last-Modified",date.getTime()); //Last-Modified:页面的最后生成时间
+          response.setDateHeader("Expires",date.getTime()+20000); //Expires:过时期限值
+          response.setHeader("Cache-Control", "public"); //Cache-Control来控制页面的缓存与否,public:浏览器和缓存服务器都可以缓存页面信息
+
         {
             String contentTpe=null;
         if(mediaType!=null){

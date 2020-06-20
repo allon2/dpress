@@ -29,7 +29,7 @@
 			and id<=#{startid}
 			  ]]>
 		</if>
-			order by  create_time desc, id desc limit  #{size}
+			order by top_priority desc , create_time desc limit  #{size}
 	</select>
 	<select id="qpostscount" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select count(id) as ct from posts  where type=0 and status=#{status} and siteid=#{siteid} and id >=0
@@ -78,7 +78,7 @@ and status=#{status}
 		and (title like #{keyword} or original_content like #{keyword})
 		</if>
 
- order by   create_time desc limit #{start},#{size}
+ order by   top_priority desc ,create_time desc limit #{start},#{size}
 
 	</select>
 	<update id="u" parameterType="java.util.HashMap">
@@ -176,17 +176,17 @@ delete from posts where id=#{id} and siteid=#{siteid}
 	</select>
 
 	<select id="qcountbynormal" resultType="java.lang.Long" parameterType="java.util.HashMap">
-			select count(id) as ct from posts  where type=0  and siteid=#{siteid} and status=#{status} and id >=0
+			select count(id) as ct from posts  where type=0  and siteid=#{siteid} and status=#{status}
 	</select>
 	<select id="qlimitbynormal" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select create_time,slug,title from posts  where type=0  and siteid=#{siteid} and status=#{status}
 			 order by create_time asc  limit #{start},100
 	</select>
 	<select id="qmaxid" resultType="java.lang.Long" parameterType="java.util.HashMap">
-		select max(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}
+		select max(id) from posts  where type=0  and siteid=#{siteid} and status=#{status} and type='0'
 	</select>
 	<select id="qminid" resultType="java.lang.Long" parameterType="java.util.HashMap">
-		select min(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}
+		select min(id) from posts  where type=0  and siteid=#{siteid} and status=#{status}  and type='0'
 	</select>
 	<select id="qbetweenids" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 				<![CDATA[
@@ -233,4 +233,30 @@ delete from posts where id=#{id} and siteid=#{siteid}
 			limit #{step}
 		</if>
 	</select>
+	<select id="qpostslimit2" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+		top_priority , url , visits from posts
+		where type=0 and status=#{status} and siteid=#{siteid}
+		<if test="startid != null">
+
+			<![CDATA[
+			and id<=#{startid}
+			  ]]>
+		</if>
+		  limit  #{size}
+	</select>
+
+	<select id="qbaidunull" resultType="java.util.HashMap" parameterType="java.util.HashMap">
+		select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
+		top_priority , url , visits from posts
+		where type=0 and status=#{status} and siteid=#{siteid}
+		 and baidudate is null
+		limit  #{size}
+	</select>
+	<select id="qbaiducount"  resultType="java.lang.Long" parameterType="java.util.HashMap">
+		select count(1) from posts where siteid=#{siteid} and baidudate =#{date}
+	</select>
+	<update id="ubaidudate" parameterType="java.util.HashMap">
+		update posts set baidudate=#{date} where id=#{id}
+	</update>
 </mapper>

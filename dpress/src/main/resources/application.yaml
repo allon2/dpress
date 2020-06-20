@@ -96,7 +96,8 @@ logging:
     java.sql.PreparedStatement: DEBUG
     run.halo.app: DEBUG
   file:
-    path: ${user.home}/.halo/logs
+#    path: ${user.home}/.halo/logs
+    path: ../logs
 
 halo:
   download-timeout: 5m

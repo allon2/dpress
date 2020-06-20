@@ -21,7 +21,7 @@ import java.util.Map;
 
 import static org.springframework.core.Ordered.HIGHEST_PRECEDENCE;
 
-@Component
+//@Component
 //@WebFilter()
 //@Order(HIGHEST_PRECEDENCE)
 

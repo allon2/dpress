@@ -47,7 +47,12 @@ public class UrlUtil {
 		entity.params = new HashMap<>();
 		for (String param : params) {
 			String[] keyValue = param.split("=");
-			entity.params.put(keyValue[0], keyValue[1]);
+			if(keyValue.length==1){
+				entity.params.put(keyValue[0], "");
+
+			}else {
+				entity.params.put(keyValue[0], keyValue[1]);
+			}
 		}
 
 		return entity;

@@ -112,6 +112,12 @@ public class FreemarkerActor implements Actor<ServletMessage> {
                     message.getResponse().setContentType("text/html; charset=utf-8");
 
                 }
+
+                java.util.Date date = new java.util.Date();
+                message.getResponse().setDateHeader("Last-Modified",date.getTime()); //Last-Modified:页面的最后生成时间
+                message.getResponse().setDateHeader("Expires",date.getTime()+20000); //Expires:过时期限值
+                message.getResponse().setHeader("Cache-Control", "public"); //Cache-Control来控制页面的缓存与否,public:浏览器和缓存服务器都可以缓存页面信息
+
                 message.getResponse().setCharacterEncoding("UTF-8");
 
 

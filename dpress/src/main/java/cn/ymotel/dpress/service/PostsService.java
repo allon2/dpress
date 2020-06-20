@@ -20,6 +20,8 @@ import run.halo.app.utils.MarkdownUtils;
 
 import javax.annotation.Resource;
 import java.util.*;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.ThreadLocalRandom;
 import java.util.function.Consumer;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -46,6 +48,56 @@ public class PostsService {
         data.put("keyword","%"+keyword+"%");
 
         return sqlSession.selectOne("posts.qsearchcountbynormal",data);
+    }
+    public long getMaxId(Object siteid){
+        Map data=new HashMap();
+        data.put("siteid",siteid);
+        data.put("status",0);
+        return  sqlSession.selectOne("posts.qmaxid",data);
+    }
+    public long getMinId(Object siteid){
+        Map data=new HashMap();
+        data.put("siteid",siteid);
+        data.put("status",0);
+        return  sqlSession.selectOne("posts.qminid",data);
+    }
+    public long getOffSet(long min,long max){
+        if(max<=min){
+            return min;
+        }
+        return ThreadLocalRandom.current().nextLong(min,max);
+    }
+    @Cached
+    public List<Posts> getRandomPosts(Object siteid,int size){
+        long max=getMaxId(siteid);
+        long min=getMinId(siteid);
+        List rtnList=new ArrayList();
+        List<CompletableFuture>  futureList= Collections.synchronizedList(new ArrayList<>());
+
+        for(int i=0;i<size;i++) {
+            CompletableFuture future1=  java.util.concurrent.CompletableFuture.runAsync(new Runnable() {
+                @Override
+                public void run() {
+                    Posts posts=sqlSession.getMapper(PostsMapper.class).selectById(getOffSet(min,max));
+                    if(!siteid.toString().equals(posts.getSiteid()+"")){
+                        return;
+                    }
+                    if(posts.getStatus()!=0){
+                        return;
+                    }
+                    if(posts.getType()!=0){
+                        return;
+                    }
+                    posts.setFullPath(buildFullPath(siteid,posts.getSlug()));
+                    rtnList.add(posts);
+                }
+            });
+            futureList.add(future1);
+
+        }
+        CompletableFuture.allOf(futureList.toArray(new CompletableFuture[0])).join();
+
+        return rtnList;
     }
     public String buildFullPath(Object siteid,String slug){
         return "/"+optionsService.getArchives(siteid)+"/"+slug+optionsService.getPathSuffix(siteid);

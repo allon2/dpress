@@ -28,6 +28,16 @@
                 @onSave="onSaveOptions"
               />
             </a-tab-pane>
+            <a-tab-pane key="baduziyuan">
+              <span slot="tab">
+                <a-icon type="global" />百度站长
+              </span>
+              <BaduziyuanxTab
+                :options="options"
+                @onChange="onOptionsChange"
+                @onSave="onSaveOptions"
+              />
+            </a-tab-pane>
             <a-tab-pane key="post">
               <span slot="tab">
                 <a-icon type="form" />文章设置
@@ -139,6 +149,8 @@
 <script>
 import GeneralTab from './optiontabs/GeneralTab'
 import SeoTab from './optiontabs/SeoTab'
+import BaduziyuanxTab from './optiontabs/BaduziyuanxTab'
+
 import PostTab from './optiontabs/PostTab'
 import CommentTab from './optiontabs/CommentTab'
 import AttachmentTab from './optiontabs/AttachmentTab'
@@ -154,6 +166,7 @@ export default {
   components: {
     GeneralTab,
     SeoTab,
+    BaduziyuanxTab,
     PostTab,
     CommentTab,
     AttachmentTab,

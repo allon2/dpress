@@ -7,7 +7,9 @@ import cn.ymotel.dpress.Utils;
 import org.apache.ibatis.session.SqlSession;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMethod;
+import run.halo.app.model.properties.PropertyEnum;
 
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -15,6 +17,8 @@ import java.util.function.BiConsumer;
 
 @ActorCfg(urlPatterns = "/api/admin/options/map_view/saving",methods = RequestMethod.POST)
 public class OptionsSaveActor implements Actor {
+    private   Map<String, PropertyEnum> propertyEnumMap= Collections.unmodifiableMap(PropertyEnum.getValuePropertyEnumMap());
+
     @Autowired
     private SqlSession sqlSession;
 
@@ -41,7 +45,12 @@ public class OptionsSaveActor implements Actor {
             Map params=new HashMap();
             params.put("siteid", Utils.getSiteId());
             params.put("update_time",new java.sql.Timestamp(System.currentTimeMillis()));
-            params.put("option_value", value);
+            if(value instanceof Boolean){
+                params.put("option_value",((Boolean)value).toString());
+            }else {
+                params.put("option_value", value);
+            }
+
             params.put("option_key", key);
             int update=sqlSession.update("options.uoption",params);
             if(update==0){
@@ -53,6 +62,9 @@ public class OptionsSaveActor implements Actor {
 
 
         return new HashMap<>();
+    }
+    public static void main(String[] args){
+        System.out.println(Boolean.TRUE.toString());
     }
 
 }

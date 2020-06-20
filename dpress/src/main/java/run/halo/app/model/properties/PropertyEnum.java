@@ -163,6 +163,7 @@ public interface PropertyEnum extends ValueEnum<String> {
         propertyEnumClasses.add(GitStaticDeployProperties.class);
         propertyEnumClasses.add(NetlifyStaticDeployProperties.class);
         propertyEnumClasses.add(PermalinkProperties.class);
+        propertyEnumClasses.add(BaiduZiyuanProperties.class);
 
         Map<String, PropertyEnum> result = new HashMap<>();
 

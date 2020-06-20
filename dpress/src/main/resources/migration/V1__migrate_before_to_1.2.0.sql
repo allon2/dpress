@@ -313,10 +313,13 @@ CREATE TABLE posts  (
   url varchar(255)   NULL DEFAULT NULL,
   visits bigint(20) NULL DEFAULT 0,
   siteid bigint(20) NULL DEFAULT NULL,
+  baidudate date NULL DEFAULT NULL,
+   ourl varchar(1024)  NULL DEFAULT NULL,
   PRIMARY KEY (id) USING BTREE,
   UNIQUE INDEX UK_qmmso8qxjpbxwegdtp0l90390(slug,siteid) USING BTREE,
-  INDEX posts_type_status_siteid(type, status,siteid) USING BTREE,
-  INDEX posts_create_time(create_time) USING BTREE
+  INDEX posts_type_status_siteid(siteid,type, status) USING BTREE,
+  INDEX posts_create_time(create_time) USING BTREE,
+  INDEX posts_siteid_priority_create_time(siteid,top_priority,create_time) USING BTREE
 ) ;
 
 -- ----------------------------

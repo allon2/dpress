@@ -3,7 +3,6 @@ package cn.ymotel.dpress;
 import cn.ymotel.dactor.core.MessageThreadLocal;
 import cn.ymotel.dactor.message.ServletMessage;
 import cn.ymotel.dpress.actor.FreemarkerActor;
-import cn.ymotel.dpress.admin.sitemgmt.ChangeCurrentSiteActor;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.boot.system.ApplicationHome;
 import org.springframework.lang.NonNull;
@@ -132,11 +131,19 @@ public class Utils {
             return null;
         }
         String token=null;
-       if(referer.startsWith(getBaseUrl(request)+"/admin/index.html")){
+        String baseurl=getBaseUrl(request);
+        if(!referer.startsWith(baseurl)){
+            return null;
+        }
+       if(referer.startsWith(baseurl+"/admin/index.html")){
           token=   request.getParameter("token");
        }else{
-           UrlUtil.UrlEntity urlEntity= UrlUtil.parse(referer);
-            token=urlEntity.params.get("token");
+           try {
+               UrlUtil.UrlEntity urlEntity= UrlUtil.parse(referer);
+               token=urlEntity.params.get("token");
+           } catch (java.lang.Throwable e) {
+               e.printStackTrace();
+           }
        }
        if(token==null){
            return null;

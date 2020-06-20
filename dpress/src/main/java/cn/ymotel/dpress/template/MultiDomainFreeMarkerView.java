@@ -177,6 +177,7 @@ public class MultiDomainFreeMarkerView implements ApplicationContextAware {
         configuration.setSharedVariable("tagTag", applicationContext.getBean(TagTagDirective.class));
         configuration.setSharedVariable("toolTag", applicationContext.getBean(ToolTagDirective.class));
         configuration.setSharedVariable("largetPostsTag", applicationContext.getBean(LargePostsTagDirective.class));
+        configuration.setSharedVariable("randomRecommendTag", applicationContext.getBean(RandomRecommendTagDirective.class));
     }
     private void loadUserConfig(Configuration configuration) throws TemplateModelException {
         List list=sqlSession.selectList("users.qall");
