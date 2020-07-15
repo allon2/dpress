@@ -22,11 +22,13 @@
 	<select id="qpostslimit" resultType="java.util.HashMap" parameterType="java.util.HashMap">
 			select id , create_time  as createTime  , siteid , update_time , disallow_comment  as disallowComment, edit_time , editor_type , format_content , likes , meta_description , meta_keywords , original_content , password , slug , status , summary , template , thumbnail, title ,
 			 top_priority , url , visits from posts
-			where type=0 and status=#{status} and siteid=#{siteid}
+			   force index(posts_index)
+
+		where type=0 and status=#{status} and siteid=#{siteid}
 		<if test="startid != null">
 
 		<![CDATA[
-			and id<=#{startid}
+			and id<=#{startid} and id>#{startid}-2000
 			  ]]>
 		</if>
 			order by top_priority desc , create_time desc limit  #{size}

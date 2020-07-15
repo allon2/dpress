@@ -23,8 +23,9 @@ public enum BaiduZiyuanProperties implements PropertyEnum {
     /**
      * Baidu bos endpoint.
      */
-    BaiduZiyuan_DAYSIZE("baiduziyuan_daysize", Integer.class, "10000");
+    BaiduZiyuan_DAYSIZE("baiduziyuan_daysize", Integer.class, "10000"),
 
+    GoogleAdsense_ADS("googleadsense_ads", String.class, "");
 
     private final String value;
 

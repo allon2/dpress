@@ -32,7 +32,7 @@ public class BaiduIndex {
     OptionsService optionsService;
 
     /**fixedRate:上一次开始执行时间点之后10分再执行*/
-    @Scheduled(fixedRate = 1000*60*10)
+//    @Scheduled(fixedRate = 1000*60*10)
     @Async
     public void push2Baidu(){
         if(!Utils.isInstall()){

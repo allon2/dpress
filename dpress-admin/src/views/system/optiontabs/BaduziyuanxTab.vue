@@ -4,22 +4,27 @@
       layout="vertical"
       :wrapperCol="wrapperCol"
     >
-      <a-form-item label="开启百度索引提交：">
+      <a-form-item label="开启百度站长索引提交：">
         <a-switch v-model="options.baiduziyuan_disabled" />
       </a-form-item>
-      <a-form-item label="每天提交条数：">
+      <a-form-item label="百度站长每天提交条数：">
         <a-input
           type="number"
           v-model="options.baiduziyuan_daysize"
         />
       </a-form-item>
-      <a-form-item label="API：">
+      <a-form-item label="百度站长API：">
         <a-input
           v-model="options.baiduziyuan_api"
           placeholder="api"
         />
       </a-form-item>
-
+ <a-form-item label="Google Adsense Ads.txt：">
+        <a-input
+          v-model="options.googleadsense_ads"
+          placeholder="google.com, pub-0000000000000000, DIRECT, f08c47fec0942fa0"
+        />
+      </a-form-item>
       <a-form-item>
         <a-button
           type="primary"

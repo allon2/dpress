@@ -39,7 +39,7 @@ import javax.servlet.DispatcherType;
  * @author ryanwang
  * @date 2017-11-14
  */
-@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"},exclude = {DataSourceAutoConfiguration.class, FlywayAutoConfiguration.class})
+@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress","cn.ymotel.spider"},exclude = {DataSourceAutoConfiguration.class, FlywayAutoConfiguration.class})
 //@SpringBootApplication(scanBasePackages = {"run.halo.app","cn.ymotel.dpress"})
 @EnableJpaAuditing
 @EnableScheduling

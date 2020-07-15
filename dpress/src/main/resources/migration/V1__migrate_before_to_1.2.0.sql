@@ -319,7 +319,8 @@ CREATE TABLE posts  (
   UNIQUE INDEX UK_qmmso8qxjpbxwegdtp0l90390(slug,siteid) USING BTREE,
   INDEX posts_type_status_siteid(siteid,type, status) USING BTREE,
   INDEX posts_create_time(create_time) USING BTREE,
-  INDEX posts_siteid_priority_create_time(siteid,top_priority,create_time) USING BTREE
+  INDEX posts_siteid_priority_create_time(siteid,top_priority,create_time) USING BTREE,
+   INDEX posts_index(type, id, create_time, status, top_priority, siteid) USING BTREE
 ) ;
 
 -- ----------------------------

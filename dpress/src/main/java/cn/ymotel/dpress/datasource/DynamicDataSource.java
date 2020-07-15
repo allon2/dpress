@@ -83,6 +83,9 @@ public class DynamicDataSource extends MockDataSource {
         dataSource.setUrl(ps.getProperty("url"));
         dataSource.setUsername(ps.getProperty("username"));
         dataSource.setPassword(ps.getProperty("password"));
+        if(ps.containsKey("maxActive")){
+            dataSource.setMaxActive(Integer.parseInt(ps.getProperty("maxActive")));
+        }
         dataSource.setDriverClassName("com.mysql.cj.jdbc.Driver");
 
     }

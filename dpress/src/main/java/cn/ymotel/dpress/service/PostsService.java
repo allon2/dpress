@@ -33,7 +33,7 @@ public class PostsService {
 
     @Autowired
     OptionsService optionsService;
-    @Cached
+    @Cached(expire =60*30 )
     public Long count(Object siteid,Object status){
         Map data=new HashMap<>();
         data.put("siteid",siteid);

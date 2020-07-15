@@ -159,7 +159,7 @@ dependencies {
     compile group: 'com.alicp.jetcache', name: 'jetcache-starter-redis', version: '2.6.0'
 //    developmentOnly 'org.springframework.boot:spring-boot-devtools'
 //    compile  project(':halo-admin')//server模块依赖web模块
-
+//    compile  project(':spider')
     // https://mvnrepository.com/artifact/org.apache.any23/apache-any23-encoding
     compile group: 'org.apache.any23', name: 'apache-any23-encoding', version: '2.3'
     compile group: 'org.apache.pdfbox', name: 'jbig2-imageio', version: '3.0.0'

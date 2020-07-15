@@ -30,7 +30,7 @@
             </a-tab-pane>
             <a-tab-pane key="baduziyuan">
               <span slot="tab">
-                <a-icon type="global" />百度站长
+                <a-icon type="global" />百度/Google
               </span>
               <BaduziyuanxTab
                 :options="options"
