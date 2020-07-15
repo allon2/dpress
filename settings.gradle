@@ -1,4 +1,4 @@
 rootProject.name = 'dpress-all'
 include 'dpress'
 include 'dpress-admin'
-include 'spider'
+//include 'spider'
