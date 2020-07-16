@@ -47,6 +47,7 @@ public class AtomActor extends FreemarkerActor {
         params.put("status",0);
         params.put("type",0);
         wrapper.allEq(params);
+        wrapper.last("limit 20");
        List<Posts> posts= sqlSession.getMapper(PostsMapper.class).selectPage(new Page(0,20),wrapper).getRecords();
        for(int i=0;i<posts.size();i++){
            Posts post=  posts.get(i);
