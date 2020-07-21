@@ -25,6 +25,8 @@ public class PostSave1Actor implements Actor<ServletMessage> {
     @Override
     public Map Execute(ServletMessage message) throws Throwable {
         Map post=message.getContext();
+        post.put("disallow_comment",post.get("disallowComment"));
+
         if(post.get("editorType")==null){
             post.put("editor_type", PostEditorType.MARKDOWN.getValue());
         }else{
