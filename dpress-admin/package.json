@@ -11,7 +11,7 @@
   },
   "dependencies": {
     "ant-design-vue": "^1.5.0-rc.3",
-    "axios": "^0.19.2",
+    "axios": "^0.21.1",
     "enquire.js": "^2.1.6",
     "filepond": "^4.13.0",
     "filepond-plugin-image-preview": "^4.6.1",
